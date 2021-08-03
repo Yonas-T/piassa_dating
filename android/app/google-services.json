@@ -1,0 +1,88 @@
+{
+  "project_info": {
+    "project_number": "413902351161",
+    "firebase_url": "https://piassa-dating-app-99c93.firebaseio.com",
+    "project_id": "piassa-dating-app-99c93",
+    "storage_bucket": "piassa-dating-app-99c93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413902351161:android:f40d5a2c75ed308be396e8",
+        "android_client_info": {
+          "package_name": "com.piassa.piassaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413902351161-astr2lcuni9a65v7r29ciqnvd19dke0i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "d83fbe7a78805eeb066921223016e077f6f43abb"
+          }
+        },
+        {
+          "client_id": "413902351161-bntv5og81tr8tqc9tb6mius6vnmp7cgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "295ecadc071d6d49e685260dc6cb47924c8af3a5"
+          }
+        },
+        {
+          "client_id": "413902351161-quraln6g21qprg9e2cr2it0o7r5j6t8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "9cf37510b2da4ed65536b32502949b94db7714fc"
+          }
+        },
+        {
+          "client_id": "413902351161-r5rrat7pbu3uhqd0e4b7vfdlmi3kqr9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "67effe73f756cef2345a3a6fedb50e0890358899"
+          }
+        },
+        {
+          "client_id": "413902351161-rp7nmaulian3hrs9sb72v14fpve7hhne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "583ac135b8c0eb6b0380aab1f5f358358cbda087"
+          }
+        },
+        {
+          "client_id": "413902351161-t3f023r0g8m7oomv32jl9f4d9frto0sp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piassa.piassaa",
+            "certificate_hash": "10be74cf70bfe2a29c0e2d1613fb3849865f1dbb"
+          }
+        },
+        {
+          "client_id": "413902351161-agq7hg93ms61bier68sarcoib4177v9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9tF4lM2Ew2TfLYKf7xXjwQsBhf8WUJFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413902351161-agq7hg93ms61bier68sarcoib4177v9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
