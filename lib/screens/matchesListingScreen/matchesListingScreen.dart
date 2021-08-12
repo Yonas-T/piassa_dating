@@ -11,18 +11,18 @@ class MatchesListingScreen extends StatefulWidget {
 }
 
 class _MatchesListingScreenState extends State<MatchesListingScreen> {
-  List<Peoples> _likesList = [];
+  List<Peoples> _matchesList = [];
 
   @override
   void initState() {
-    _likesList.add(Peoples(
+    _matchesList.add(Peoples(
         name: 'Test Person',
         id: '1',
         time: '10:00',
         profilePictureURL:
             'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
         lastMessage: 'Hey There'));
-    _likesList.add(Peoples(
+    _matchesList.add(Peoples(
         name: 'Another Person',
         id: '2',
         time: '04:00',
@@ -57,7 +57,7 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                     ),
                   ),
                   Text(
-                    'Likes',
+                    'Matches',
                     style:
                         TextStyle(fontSize: kTitleFont, color: Color(kWhite)),
                   ),
@@ -74,7 +74,7 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
             ),
             MatchSearchBarWidget(
               height: restHeight / 2,
-              listOfPeoples: _likesList,
+              listOfPeoples: _matchesList,
             ),
             Expanded(
               child: Container(
@@ -92,9 +92,9 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: _likesList.length,
+                    itemCount: _matchesList.length,
                     itemBuilder: (context, i) {
-                      return SingleMatchesListWidget(peoples: _likesList[i]);
+                      return SingleMatchesListWidget(peoples: _matchesList[i]);
                     }),
               ),
             )
