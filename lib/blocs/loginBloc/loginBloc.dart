@@ -1,15 +1,20 @@
+import 'dart:async';
+
 import 'package:piassa_application/blocs/signinBloc/signinState.dart';
 
 import './loginEvent.dart';
 import './loginState.dart';
-import '../../repositories/userRepository.dart';
+import '../../repositories/authRepository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  late UserRepository userRepository;
+  late AuthRepository userRepository;
+  StreamSubscription? subscription;
 
-  LoginBloc({required UserRepository userRepository}) : super(LoginInitialState()) {
+  String verID = "";
+
+  LoginBloc({required AuthRepository userRepository}) : super(LoginInitialState()) {
     this.userRepository = userRepository;
   }
 

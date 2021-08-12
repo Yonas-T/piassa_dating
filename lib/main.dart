@@ -1,24 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:piassa_application/screens/likesListingScreen/likesListingScreen.dart';
 
 import './blocs/authBloc/authBloc.dart';
 import './blocs/authBloc/authState.dart';
-import './repositories/userRepository.dart';
+import 'repositories/authRepository.dart';
 import './screens/homeScreen/homeScreen.dart';
 import './screens/loginScreen/loginScreen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/authBloc/authEvent.dart';
-import 'package:meta/meta.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  UserRepository userRepository = UserRepository();
+  final AuthRepository userRepository = AuthRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +31,17 @@ class MyApp extends StatelessWidget {
       home: BlocProvider(
         create: (context) =>
             AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
-        child: Appp(
-          userRepository: userRepository,
-        ),
+        child: LikesListingScreen()
+        // Appp(
+        //   userRepository: userRepository,
+        // ),
       ),
     );
   }
 }
 
 class Appp extends StatelessWidget {
-  UserRepository userRepository;
+  final AuthRepository userRepository;
 
   Appp({required this.userRepository});
 

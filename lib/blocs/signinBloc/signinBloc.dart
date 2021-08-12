@@ -1,13 +1,13 @@
 import './signinEvent.dart';
 import './signinState.dart';
-import '../../repositories/userRepository.dart';
+import '../../repositories/authRepository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class SigninBloc extends Bloc<SigninEvent, SigninState> {
-  late UserRepository userRepository;
+  late AuthRepository userRepository;
 
-  SigninBloc({required UserRepository userRepository}) : super(SigninInitial()) {
+  SigninBloc({required AuthRepository userRepository}) : super(SigninInitial()) {
     this.userRepository = userRepository;
   }
 

@@ -1,16 +1,15 @@
 import '../../blocs/homePageBloc/homePageBloc.dart';
 import '../../blocs/homePageBloc/homePageEvent.dart';
 import '../../blocs/homePageBloc/homePageState.dart';
-import '../../repositories/userRepository.dart';
-import '../signinScreen/signinScreen.dart';
+import '../../repositories/authRepository.dart';
+import '../signUpScreen/signUpScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 class HomePageParent extends StatelessWidget {
   User user;
-  UserRepository userRepository;
+  AuthRepository userRepository;
 
   HomePageParent({required this.user, required this.userRepository});
 
@@ -26,7 +25,7 @@ class HomePageParent extends StatelessWidget {
 class HomePage extends StatelessWidget {
   late User user;
   late HomePageBloc homePageBloc;
-  late UserRepository userRepository;
+  late AuthRepository userRepository;
 
   HomePage({required this.user, required this.userRepository});
 

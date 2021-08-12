@@ -31,7 +31,7 @@ class LoginFailState extends LoginState {
 
   String message;
 
-  LoginFailState(@required this.message);
+  LoginFailState(this.message);
 
   @override
   // TODO: implement props

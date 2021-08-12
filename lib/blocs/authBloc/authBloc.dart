@@ -1,13 +1,13 @@
 import './authEvent.dart';
 import './authState.dart';
-import '../../repositories/userRepository.dart';
+import '../../repositories/authRepository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  late UserRepository userRepository;
+  late AuthRepository userRepository;
 
-  AuthBloc({required UserRepository userRepository}) : super(AuthInitialState()) {
+  AuthBloc({required AuthRepository userRepository}) : super(AuthInitialState()) {
     this.userRepository = userRepository;
   }
 

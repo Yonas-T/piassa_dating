@@ -1,13 +1,13 @@
 import './homePageEvent.dart';
 import './homePageState.dart';
-import '../../repositories/userRepository.dart';
+import '../../repositories/authRepository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
-  late UserRepository userRepository;
+  late AuthRepository userRepository;
 
-  HomePageBloc({required UserRepository userRepository}) : super(LogOutInitial()) {
+  HomePageBloc({required AuthRepository userRepository}) : super(LogOutInitial()) {
     this.userRepository = userRepository;
   }
 
