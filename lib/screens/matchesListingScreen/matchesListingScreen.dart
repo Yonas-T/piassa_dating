@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
@@ -19,6 +20,8 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
         name: 'Test Person',
         id: '1',
         time: '10:00',
+        gender: 'female',
+        location: GeoPoint(10, 10),
         profilePictureURL:
             'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
         lastMessage: 'Hey There'));
@@ -26,6 +29,8 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
         name: 'Another Person',
         id: '2',
         time: '04:00',
+        gender: 'female',
+        location: GeoPoint(10, 10),
         profilePictureURL:
             'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
         lastMessage: 'Hello'));

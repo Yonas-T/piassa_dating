@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piassa_application/models/peoples.dart';
-
+import 'package:http/http.dart' as http;
 import '../utils/errorCodes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -141,6 +143,7 @@ class AuthRepository {
 
   Future<User?> loginWithFacebook() async {
     User? currentUser;
+    User? authGoogleResult;
     // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     // if you remove above comment then facebook login will take username and pasword for login in Webview
     try {
@@ -151,13 +154,45 @@ class AuthRepository {
             facebookLoginResult.accessToken;
         final AuthCredential credential =
             FacebookAuthProvider.credential(facebookAccessToken.token);
-        final User? user =
-            (await firebaseAuth.signInWithCredential(credential)).user;
-        assert(user!.email != null);
-        assert(user!.displayName != null);
-        assert(!user!.isAnonymous);
-        currentUser = firebaseAuth.currentUser!;
-        assert(user!.uid == currentUser.uid);
+        print('facebook cred: $credential');
+        final userCred = await firebaseAuth
+            .signInWithCredential(credential)
+            .catchError((e) async {
+          print('error: ${e.code}');
+          if (e.code == 'account-exists-with-different-credential') {
+            var url = Uri.parse(
+                'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(400)&access_token=${facebookLoginResult.accessToken.token}');
+            var graphResponse = await http.get(url);
+            Map<String, dynamic> profile = json.decode(graphResponse.body);
+            var profileData = profile;
+
+            var email = profileData["email"];
+
+            final signInMethods =
+                await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+            if (signInMethods.contains("google.com")) {
+              authGoogleResult = await signInwithGoogle();
+              print(authGoogleResult);
+
+              if (authGoogleResult!.email == e.email) {
+                await authGoogleResult!.linkWithCredential(e.credential);
+              }
+            }
+          }
+        }).then((value) {
+          print('in then block: $value');
+          final User? user = value.user;
+
+          // final User? user =
+          //     (await firebaseAuth.signInWithCredential(credential)).user;
+          assert(user!.email != null);
+          assert(user!.displayName != null);
+          assert(!user!.isAnonymous);
+          currentUser = firebaseAuth.currentUser!;
+          assert(user!.uid == currentUser!.uid);
+          // return currentUser;
+        });
+        print('current user: $currentUser');
         return currentUser;
       }
     } on PlatformException catch (e) {
@@ -203,17 +238,21 @@ class AuthRepository {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
+      print('111111111111111');
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount!.authentication;
+      print('222222222222222');
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
+      print('3333333333333333');
       final User? user =
           (await firebaseAuth.signInWithCredential(credential)).user;
       assert(user!.displayName != null);
       assert(!user!.isAnonymous);
       currentUser = firebaseAuth.currentUser!;
+      print('444444444444 $currentUser');
       return currentUser;
     } on PlatformException catch (e) {
       String authError = "";
@@ -249,6 +288,7 @@ class AuthRepository {
           authError = ErrorMessages.DEFAULT;
           break;
       }
+      print(authError);
       throw Exception(authError);
     }
   }

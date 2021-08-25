@@ -322,7 +322,7 @@ class LoginPage extends StatelessWidget {
       }
     } catch (e, s) {
       await hideProgress();
-      print('_LoginScreen.loginWithFacebook $e $s');
+      print('_LoginScreen.loginWithGoogle $e $s');
       showAlertDialog(context, 'Error', 'Couldn\'t login with google.');
     }
   }

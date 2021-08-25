@@ -93,7 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       } else if (state is SigninFailure) {
                         return buildFailureUi(state.message);
                       }
-                     
+
                       return Container();
                     },
                   ),
@@ -160,46 +160,46 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     Container(
-                      
                         child: Theme(
-                          data: Theme.of(context).copyWith(accentColor: Color(kWhite)),
-                          child: Card(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                            color: Color(kWhite).withOpacity(0.4),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: ExpansionTile(
-                                // backgroundColor: Color(kWhite).withOpacity(0.4),
-                                title: Text(
-                                  _selectedCountry,
-                                  style: TextStyle(
-                                      fontSize: kNormalFont, color: Color(kWhite)),
-                                ),
-                                children: <Widget>[
-                                  ListView.builder(
-                                      
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: _countries.length,
-                                      itemBuilder: (context, i) {
-                                        return Container(
-                                          padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            _countries[i],
-                                            style: TextStyle(
-                                                fontSize: kNormalFont,
-                                                color: Color(kWhite)),
-                                          ),
-                                        );
-                                      })
-                                ],
-                              ),
+                      data: Theme.of(context)
+                          .copyWith(accentColor: Color(kWhite)),
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        color: Color(kWhite).withOpacity(0.4),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: ExpansionTile(
+                            // backgroundColor: Color(kWhite).withOpacity(0.4),
+                            title: Text(
+                              _selectedCountry,
+                              style: TextStyle(
+                                  fontSize: kNormalFont, color: Color(kWhite)),
                             ),
+                            children: <Widget>[
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: _countries.length,
+                                  itemBuilder: (context, i) {
+                                    return Container(
+                                      padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        _countries[i],
+                                        style: TextStyle(
+                                            fontSize: kNormalFont,
+                                            color: Color(kWhite)),
+                                      ),
+                                    );
+                                  })
+                            ],
                           ),
-                        )),
+                        ),
+                      ),
+                    )),
                     Container(
                       padding: EdgeInsets.all(5.0),
                       child: TextField(
@@ -281,11 +281,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: kButtonHeight,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(kWhite),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)
-                          )
-                        ),
+                            primary: Color(kWhite),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16))),
                         child: Text("Register",
                             style: TextStyle(
                                 fontSize: kNormalFont,
