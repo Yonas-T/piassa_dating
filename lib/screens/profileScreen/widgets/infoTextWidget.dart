@@ -39,7 +39,7 @@ class InfoTextWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 36),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -74,7 +74,7 @@ class InfoTextWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 36),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

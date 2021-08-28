@@ -37,14 +37,14 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                     child: Text(
                       widget.peoples.name,
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kWhite)),
+                          fontSize: kNormalFont, color: Color(kDarkGrey)),
                     ),
                   ),
                   Text(
                     widget.peoples.time,
                     style: TextStyle(
                       fontSize: kNormalFont,
-                      color: Color(kWhite),
+                      color: Color(kDarkGrey),
                     ),
                   ),
                 ],
@@ -53,12 +53,12 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
               Text(
                 widget.peoples.lastMessage,
                 textAlign: TextAlign.start,
-                style: TextStyle(fontSize: kSmallFont, color: Color(kWhite)),
+                style: TextStyle(fontSize: kSmallFont, color: Color(kDarkGrey)),
               ),
               SizedBox(height: 8,),
               Container(
                 width: MediaQuery.of(context).size.width*.75,
-                color: Color(kWhite).withOpacity(0.6),
+                color: Color(kDarkGrey).withOpacity(0.6),
                 height: 1,
               )
             ],

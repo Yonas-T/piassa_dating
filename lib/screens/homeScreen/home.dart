@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:piassa_application/constants/constants.dart';
+import 'package:swipeable_card/swipeable_card.dart';
+
 import 'package:piassa_application/blocs/searchBloc/searchBloc.dart';
 import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
 import 'package:piassa_application/blocs/searchBloc/searchState.dart';
@@ -25,6 +28,7 @@ class _HomeState extends State<Home> {
   late SearchBloc _searchBloc;
   late Peoples _user, _currentUser;
   int difference = 0;
+  int currentCardIndex = 0;
 
   getDifference(GeoPoint userLocation) async {
     Position position = await Geolocator.getCurrentPosition();
@@ -35,16 +39,64 @@ class _HomeState extends State<Home> {
     difference = location.toInt();
   }
 
+  void swipeLeft() {
+    print("left");
+
+    // NOTE: it is your job to change the card
+    setState(() => currentCardIndex++);
+  }
+
+  void swipeRight() {
+    print("right");
+    setState(() => currentCardIndex++);
+  }
+
+  List<Peoples> profileData = [];
+
+  List<ProfileWidget> getProfileWidgets() {
+    List<ProfileWidget> list = [];
+      print('in get profile widget: ${profileData.length}');
+
+    for (var i = 0; i < profileData.length; i++) {
+      list.add(ProfileWidget(
+
+        userId: widget.userId,
+        userData: profileData[i],
+      ));
+    }
+    return list;
+  }
+
   @override
   void initState() {
     _searchBloc = SearchBloc(searchRepository: _searchRepository);
+
+    profileData.add(Peoples(
+        name: 'Test Person',
+        id: '1',
+        time: '10:00',
+        gender: 'female',
+        location: GeoPoint(10, 10),
+        profilePictureURL:
+            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
+        lastMessage: 'Hey There'));
+    profileData.add(Peoples(
+        name: 'Another Person',
+        id: '2',
+        time: '04:00',
+        gender: 'female',
+        location: GeoPoint(10, 10),
+        profilePictureURL:
+            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
+        lastMessage: 'Hello'));
     // getDifference(GeoPoint(10, 10));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // ignore: unused_local_variable 
+    SwipeableWidgetController _cardController = SwipeableWidgetController();
 
     return BlocBuilder<SearchBloc, SearchState>(
       bloc: _searchBloc,
@@ -55,14 +107,14 @@ class _HomeState extends State<Home> {
           );
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.blueGrey),
+              valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
             ),
           );
         }
         if (state is LoadingState) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.blueGrey),
+              valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
             ),
           );
         }
@@ -81,84 +133,61 @@ class _HomeState extends State<Home> {
                   color: Colors.black),
             );
           } else
-            return profileWidget(
-              padding: size.height * 0.017,
-              photoHeight: size.height * 0.824,
-              photoWidth: size.width * 0.95,
-              photo: 'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-              clipRadius: size.height * 0.02,
-              containerHeight: size.height * 0.3,
-              containerWidth: size.width * 0.9,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: size.height * 0.06,
+            return currentCardIndex < profileData.length
+                ? Column(
+                    children: [
+                      SizedBox(height: 70),
+                      SwipeableWidget(
+                        key: ObjectKey(currentCardIndex),
+                        animationDuration: 800,
+                        child: getProfileWidgets()[currentCardIndex],
+                        onLeftSwipe: () => swipeLeft(),
+                        onRightSwipe: () => swipeRight(),
+                        nextCards: <Widget>[
+                          // show next card
+                          // if there are no next cards, show nothing
+                          if (!(currentCardIndex + 1 >= profileData.length))
+                            Align(
+                              alignment: Alignment.center,
+                              child: getProfileWidgets()[currentCardIndex + 1],
+                            ),
+                        ],
+                      ),
+                      // if (currentCardIndex < profileData.length)
+                      //   cardControllerRow(_cardController),
+                    ],
+                  )
+                : currentCardIndex == profileData.length ?Container(
+                  child: Center(
+                    child: Text(
+                      'You finished your daily recommendation',
+                      style: TextStyle(
+                        fontSize: kNormalFont,
+                        color: Color(kDarkGrey)
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        userGender(_user.gender),
-                        Expanded(
-                          child: Text(
-                            " " + _user.name + ", ",
-                            // +
-                            // (DateTime.now().year - _user.age.toDate().year)
-                            //     .toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: size.height * 0.05),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          difference != null
-                              ? (difference / 1000).floor().toString() +
-                                  "km away"
-                              : "away",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.05,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                  
-                        iconWidget(Icons.clear, () {
-                          _searchBloc
-                              .add(PassUserEvent(widget.userId, _user.id));
-                        }, size.height * 0.08, Colors.blue),
-                        iconWidget(FontAwesomeIcons.solidHeart, () {
-                          _searchBloc.add(
-                            SelectUserEvent(
-                                widget.userId,
-                                _user.id,
-                                _currentUser.name,
-                                _currentUser.profilePictureURL),
-                          );
-                        }, size.height * 0.06, Colors.red),
-                      
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
+                  ),
+                ) : Container();
         } else {
           return Container();
         }
       },
+    );
+  }
+
+  Widget cardControllerRow(SwipeableWidgetController cardController) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        TextButton(
+          child: Text("Left"),
+          onPressed: () => cardController.triggerSwipeLeft(),
+        ),
+        TextButton(
+          child: Text("Right"),
+          onPressed: () => cardController.triggerSwipeRight(),
+        ),
+      ],
     );
   }
 }

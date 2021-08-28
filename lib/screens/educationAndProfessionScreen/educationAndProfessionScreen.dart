@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/generalWidgets/appBar.dart';
 
 class EducationAndProfessionScreen extends StatefulWidget {
   @override
@@ -28,22 +29,34 @@ class _EducationAndProfessionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white10,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          'Education & Profession',
-          style: TextStyle(
-            fontSize: kNormalFont,
-            color: Color(kDarkGrey),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: AppBarWidget(
+          actionIcon: IconButton(onPressed: () {}, icon: Icon(Icons.check, color: Color(kPrimaryPink),)),
+          colorVal: Color(kDarkGrey),
+          leadingIcon: IconButton(
+            icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
+            onPressed: () => Navigator.of(context).pop(),
           ),
+          title: 'education',
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.check, color: Color(kPrimaryPink),))],
       ),
+      // AppBar(
+      //   elevation: 0,
+      //   backgroundColor: Colors.white10,
+      //   leading: IconButton(
+      //     icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
+      //     onPressed: () => Navigator.of(context).pop(),
+      //   ),
+      //   title: Text(
+      //     'Education & Profession',
+      //     style: TextStyle(
+      //       fontSize: kNormalFont,
+      //       color: Color(kDarkGrey),
+      //     ),
+      //   ),
+        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.check, color: Color(kPrimaryPink),))],
+      // ),
       body: Container(
         padding: EdgeInsets.all(8),
         child: Column(

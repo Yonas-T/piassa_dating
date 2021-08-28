@@ -9,6 +9,7 @@ const kTitleFont = 25.0;
 const kHeadingFont = 32.0;
 const kButtonHeight = 48.0;
 const kDarkGrey = 0xFF3E3E3E;
+const klightPink = 0xFFFE676E;
 
 const kFacebookColor = 0xFF415893;
 const kGoogleColor = 0xFFDB4437;

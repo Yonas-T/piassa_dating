@@ -6,6 +6,7 @@ import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart'
 import 'package:piassa_application/screens/matchesListingScreen/widgets/topBarWidgetTransparent.dart';
 import 'package:piassa_application/screens/profileInfoScreen/widgets/profileCard.dart';
 
+
 class ProfileInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,10 +31,10 @@ class ProfileInfoScreen extends StatelessWidget {
                 SizedBox(height: 100),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return EducationAndProfessionScreen();
-                    }));
+                    // Navigator.of(context)
+                    //     .push(MaterialPageRoute(builder: (context) {
+                    //   return EducationAndProfessionScreen();
+                    // }));
                   },
                   child: ProfileCard(
                     cardIcon: [

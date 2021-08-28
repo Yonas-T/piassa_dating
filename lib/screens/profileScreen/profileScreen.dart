@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/generalWidgets/customBottomNavBar.dart';
 import 'package:piassa_application/models/profile.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/topBarWidgetTransparent.dart';
@@ -35,6 +37,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBarWidget(
+            title: '',
+            actionIcon: Card(
+              shape: CircleBorder(),
+              elevation: 1,
+              color: Color(kWhite),
+              child: IconButton(onPressed: () {
+                
+              }, icon: Icon(FontAwesomeIcons.slidersH, color: Color(kPrimaryPink),)),
+            ),
+            leadingIcon: Container(),
+            colorVal: Colors.transparent),
+      ),
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
@@ -63,24 +81,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InfoTextWidget(myProfile: _profile[0]),
-                  
-                  Container(
-                    height: 120,
-                    padding: EdgeInsets.all(24),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Color(kWhite),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(24),
-                      ),
-                    ),
-                    child: CustomBottomNavBar(),
-                  )
+                  // Container(
+                  //   height: 120,
+                  //   padding: EdgeInsets.all(24),
+                  //   width: MediaQuery.of(context).size.width,
+                  //   decoration: BoxDecoration(
+                  //     color: Color(kWhite),
+                  //     borderRadius: BorderRadius.only(
+                  //       topRight: Radius.circular(24),
+                  //     ),
+                  //   ),
+                  //   child: CustomBottomNavBar(),
+                  // )
                 ],
               ),
             ),
           ),
-          TopBarWidgetTransparent(titleBar: ''),
         ],
       ),
     );
