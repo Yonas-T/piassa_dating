@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPageParent extends StatelessWidget {
-  AuthRepository userRepository;
+  final AuthRepository userRepository;
 
   LoginPageParent({required this.userRepository});
 
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.fromLTRB(5, 48, 5, 5),
                 child: BlocListener<LoginBloc, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccessState) {
@@ -94,15 +94,15 @@ class LoginPage extends StatelessWidget {
                           filled: true,
                           fillColor: Color(kWhite).withOpacity(0.4),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           hintText: "E-mail",
@@ -122,15 +122,15 @@ class LoginPage extends StatelessWidget {
                           filled: true,
                           fillColor: Color(kWhite).withOpacity(0.4),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(4),
                               borderSide:
                                   BorderSide(color: Colors.transparent)),
                           hintText: "Password",
@@ -152,7 +152,7 @@ class LoginPage extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                                 primary: Color(kWhite),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16))),
+                                    borderRadius: BorderRadius.circular(4))),
                             child: Text("Login",
                                 style: TextStyle(
                                     fontSize: kNormalFont,
@@ -253,7 +253,7 @@ class LoginPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     primary: Color(kFacebookColor),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(4.0),
                       side: BorderSide(
                         color: Color(kFacebookColor),
                       ),
@@ -286,7 +286,7 @@ class LoginPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     primary: Color(kGoogleColor),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(4.0),
                       side: BorderSide(
                         color: Color(kGoogleColor),
                       ),
@@ -353,7 +353,7 @@ class LoginPage extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       child: Text(
         "Login",
-        style: TextStyle(fontSize: kHeadingFont, color: Color(kWhite)),
+        style: TextStyle(fontSize: kExtraLargeFont, color: Color(kWhite)),
       ),
     );
   }

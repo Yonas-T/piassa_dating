@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/matchSearchBarWidget.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/singleMatchesListWidget.dart';
@@ -40,61 +41,59 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var restHeight = 160;
     return Scaffold(
-      body: Container(
-          // color: Color(kDarkGrey),
-          child:
-              // Column(
-              //   children: [
-              // Container(
-              //   padding: EdgeInsets.fromLTRB(16, 24, 16, 4),
-              //   height: restHeight / 2,
-              //   color: Color(kDarkGrey),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       CircleAvatar(
-              //         backgroundColor: Color(kWhite),
-              //         radius: 20,
-              //         child: Icon(
-              //           FontAwesomeIcons.slidersH,
-              //           color: Color(kDarkGrey),
-              //         ),
-              //       ),
-              //       Text(
-              //         'Matches',
-              //         style:
-              //             TextStyle(fontSize: kTitleFont, color: Color(kWhite)),
-              //       ),
-              //       CircleAvatar(
-              //         backgroundColor: Color(kWhite),
-              //         radius: 20,
-              //         child: Icon(
-              //           FontAwesomeIcons.bell,
-              //           color: Color(kDarkGrey),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // MatchSearchBarWidget(
-              //   height: restHeight / 2,
-              //   listOfPeoples: _matchesList,
-              // ),
-
-              // SizedBox(height: 8),
-              Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          color: Color(kWhite),
-          // borderRadius: BorderRadius.only(
-          //   topRight: Radius.circular(24),
-          // ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBarWidget(
+          actionIcon: Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Container(
+                height: 30,
+                width: 30,
+                decoration:
+                    BoxDecoration(color: Color(kWhite), shape: BoxShape.circle),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.check,
+                      color: Color(klightPink),
+                      size: 14,
+                    ))),
+          ),
+          colorVal: Color(klightPink),
+          leadingIcon: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: Color(kWhite), size: 30),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          title: Text('Matches',
+              style: TextStyle(
+                  fontSize: kTitleBoldFont,
+                  fontWeight: FontWeight.bold,
+                  color: Color(kWhite))),
         ),
+      ),
+      body: Container(
+        color: Color(kWhite),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 70),
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Text(
+                'New Likes',
+                style: TextStyle(
+                  fontSize: kButtonFont,
+                  color: Color(kDarkGrey),
+                ),
+              ),
+            ),
             Container(
               height: MediaQuery.of(context).size.height * .18,
               padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
@@ -121,34 +120,48 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
             ),
             SizedBox(height: 4),
             Container(
+              padding: EdgeInsets.only(left: 8, right: 8),
               height: 1,
               width: MediaQuery.of(context).size.width,
-              color: Color(kDarkGrey).withOpacity(0.6),
+              color: Color(kLightGrey).withOpacity(0.6),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Text(
+                'Matches',
+                style: TextStyle(
+                  fontSize: kButtonFont,
+                  color: Color(kDarkGrey),
+                ),
+              ),
+            ),
+            SizedBox(height: 8),
             Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: _matchesList.length,
-                  itemBuilder: (context, i) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return ProfileScreen();
-                        }));
-                      },
-                      child: SingleMatchesListWidget(peoples: _matchesList[i]),
-                    );
-                  }),
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                childAspectRatio: 0.8,
+                scrollDirection: Axis.vertical,
+                children: _matchesList.map((value) {
+                  return InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      alignment: Alignment.center,
+                      child: SingleMatchesListWidget(
+                        userData: value,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ],
         ),
-      )
-          //   ],
-          // ),
-          ),
+      ),
     );
   }
 }

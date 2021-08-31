@@ -3,14 +3,21 @@ const kPrimaryPurple = 0xFF7C1DFD;
 const kPrimaryOrange = 0xFF7F00FF;
 const kPrimaryYellow = 0xFFE100FF;
 const kMidPurple = 0xFFAC29BA;
-const kNormalFont = 17.0;
-const kSmallFont = 14.0;
-const kTitleFont = 25.0;
-const kHeadingFont = 32.0;
-const kButtonHeight = 48.0;
 const kDarkGrey = 0xFF3E3E3E;
+const kLightGrey = 0xFFA4A8B1;
 const klightPink = 0xFFFE676E;
-
 const kFacebookColor = 0xFF415893;
 const kGoogleColor = 0xFFDB4437;
 const kWhite = 0xFFFFFFFF;
+
+const kNormalFont = 14.0;
+const kLargeFont = 24.0;
+const kSmallFont = 14.0;
+const kTitleFont = 25.0;
+const kButtonFont = 16.0;
+const kTitleBoldFont = 18.0;
+const kNavBarTextFont = 12.0;
+const kExtraLargeFont = 40.0;
+const kExtraSmallFont = 8.0;
+const kHeadingFont = 32.0;
+const kButtonHeight = 55.0;

@@ -18,7 +18,7 @@ class _MoveMakersScreenState extends State<MoveMakersScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBarWidget(
-            title: 'Move Makers',
+            title: Text('Move Makers', style: TextStyle(fontSize: kTitleBoldFont, color: Color(kDarkGrey))),
             actionIcon: IconButton(
               onPressed: () {},
               icon: Icon(

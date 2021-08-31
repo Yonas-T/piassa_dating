@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: AppBarWidget(
-            title: '',
+            title: Text(''),
             actionIcon: Card(
               shape: CircleBorder(),
               elevation: 1,

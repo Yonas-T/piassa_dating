@@ -59,12 +59,12 @@ class _TabsState extends State<Tabs> {
         child: AppBarWidget(
           actionIcon: Card(
               shape: CircleBorder(),
-              shadowColor: Colors.grey[300],
-              elevation: 1,
+              shadowColor: Colors.grey,
+              elevation: 4,
               color: Color(kWhite),
               child: IconButton(onPressed: () {
                 
-              }, icon: Icon(FontAwesomeIcons.slidersH, color: Color(kPrimaryPink),)),
+              }, icon: Icon(FontAwesomeIcons.slidersH, color: Color(kDarkGrey),size: 17,)),
             ),
           colorVal: Colors.transparent,
           leadingIcon: Container(),
@@ -72,7 +72,7 @@ class _TabsState extends State<Tabs> {
           //   icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
           //   onPressed: () => Navigator.of(context).pop(),
           // ),
-          title: '${_titles[_selectedPageIndex]}',
+          title: _selectedPageIndex == 1 ? Container(child: Image.asset('assets/images/piassa-logo.png'), width: 160,) :Text(_titles[_selectedPageIndex], style: TextStyle(fontSize: kTitleBoldFont, fontWeight: FontWeight.bold, color: Color(kDarkGrey))),
         ),
       ),
         // appBar: AppBar(

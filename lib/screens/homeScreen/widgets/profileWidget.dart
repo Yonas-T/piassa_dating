@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:piassa_application/blocs/searchBloc/searchBloc.dart';
 import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
+import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/searchRepository.dart';
 import 'package:piassa_application/screens/homeScreen/widgets/iconWidget.dart';
@@ -53,14 +54,14 @@ class ProfileWidget extends StatelessWidget {
       padding: EdgeInsets.all(size.height * 0.005),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black54,
-              blurRadius: 5.0,
-              spreadRadius: 2.0,
-              offset: Offset(10.0, 10.0),
-            )
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.black54,
+          //     blurRadius: 5.0,
+          //     spreadRadius: 2.0,
+          //     offset: Offset(10.0, 10.0),
+          //   )
+          // ],
           borderRadius: BorderRadius.circular(size.height * 0.02),
         ),
         child: Stack(
@@ -94,12 +95,13 @@ class ProfileWidget extends StatelessWidget {
                     bottomLeft: Radius.circular(size.height * 0.02),
                     bottomRight: Radius.circular(size.height * 0.02),
                   )),
-              width: size.width * 0.9,
+              width: size.width * 0.95,
               height: size.height * 0.3,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     SizedBox(
                       height: size.height * 0.06,
@@ -109,49 +111,49 @@ class ProfileWidget extends StatelessWidget {
                         userGender(userData.gender),
                         Expanded(
                           child: Text(
-                            " " + userData.name + ", ",
+                            " " + userData.name + " ,22 ",
                             // +
                             // (DateTime.now().year - userData.age.toDate().year)
                             //     .toString(),
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: size.height * 0.05),
+                                fontSize: kLargeFont),
                           ),
                         )
                       ],
                     ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          difference != null
-                              ? (difference / 1000).floor().toString() +
-                                  "km away"
-                              : "away",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Icon(
+                    //       Icons.location_on,
+                    //       color: Colors.white,
+                    //     ),
+                    //     Text(
+                    //       difference != null
+                    //           ? (difference / 1000).floor().toString() +
+                    //               "km away"
+                    //           : "away",
+                    //       style: TextStyle(color: Colors.white),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(
                       height: size.height * 0.05,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        iconWidget(Icons.clear, () {
-                          _searchBloc.add(PassUserEvent(userId, userData.id));
-                        }, size.height * 0.08, Colors.blue),
-                        iconWidget(FontAwesomeIcons.solidHeart, () {
-                          _searchBloc.add(
-                            SelectUserEvent(userId, userData.id, _currentUser.name,
-                                _currentUser.profilePictureURL),
-                          );
-                        }, size.height * 0.06, Colors.red),
-                      ],
-                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: <Widget>[
+                    //     iconWidget(Icons.clear, () {
+                    //       _searchBloc.add(PassUserEvent(userId, userData.id));
+                    //     }, size.height * 0.08, Colors.blue),
+                    //     iconWidget(FontAwesomeIcons.solidHeart, () {
+                    //       _searchBloc.add(
+                    //         SelectUserEvent(userId, userData.id, _currentUser.name,
+                    //             _currentUser.profilePictureURL),
+                    //       );
+                    //     }, size.height * 0.06, Colors.red),
+                    //   ],
+                    // )
                   ],
                 ),
               ),

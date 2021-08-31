@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piassa_application/constants/constants.dart';
 
 class AppBarWidget extends StatelessWidget {
-  final String title;
+  final Widget title;
   final Widget leadingIcon;
   final Widget actionIcon;
   final Color colorVal;
@@ -15,9 +15,9 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: Text(title,
-            style: TextStyle(fontSize: kNormalFont, color: Color(kDarkGrey))),
+        title: title,
         centerTitle: true,
+        leadingWidth: 30,
         leading: leadingIcon,
         elevation: 0,
         backgroundColor: colorVal,

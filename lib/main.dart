@@ -1,13 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
 import 'package:custom_splash/custom_splash.dart';
+import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
 
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/homeScreen/home.dart';
+import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart';
 import 'package:piassa_application/screens/likesListingScreen/likesListingScreen.dart';
+import 'package:piassa_application/screens/matchesListingScreen/matchesListingScreen.dart';
 import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.dart';
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
+import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 
 import './blocs/authBloc/authBloc.dart';
 import './blocs/authBloc/authState.dart';
@@ -36,20 +40,19 @@ void main() async {
 
   Map<int, Widget> op = {1: MyApp(), 2: MyApp()};
 
-  
   runApp(
     MaterialApp(
       home: CustomSplash(
-            imagePath: 'assets/images/piassa-logo.png',
-            backGroundColor: Colors.white10,
-            animationEffect: 'fade-in',
-            logoSize: 200,
-            home: MyApp(),
-            customFunction: duringSplash,
-            duration: 3000,
-            type: CustomSplashType.StaticDuration,
-            outputAndHome: op,
-          ),
+        imagePath: 'assets/images/piassa-logo.png',
+        backGroundColor: Colors.white10,
+        animationEffect: 'fade-in',
+        logoSize: 200,
+        home: MyApp(),
+        customFunction: duringSplash,
+        duration: 3000,
+        type: CustomSplashType.StaticDuration,
+        outputAndHome: op,
+      ),
     ),
   );
 }
@@ -62,15 +65,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: 
-      BlocProvider(
+          // primaryColor: kPrimaryPurple,
+          // accentColor: kPrimaryPink,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: "Heebo",
+        ),
+      home: BlocProvider(
         create: (context) =>
             AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
-        child: 
-        // LikesListingScreen()
-        Appp(
+        child:
+            // LikesListingScreen()
+            Appp(
           userRepository: userRepository,
         ),
       ),
@@ -91,10 +96,16 @@ class Appp extends StatelessWidget {
         if (state is AuthInitialState) {
           return Container();
         } else if (state is AuthenticatedState) {
-          return Tabs(
-            user: state.user,
-            userId: state.user.uid, userRepository: userRepository,
+          return 
+          MatchesListingScreen(
+            // user: state.user, 
+            // userRepository: userRepository,
           );
+          // Tabs(
+          //   user: state.user,
+          //   userId: state.user.uid,
+          //   userRepository: userRepository,
+          // );
         } else if (state is UnauthenticatedState) {
           return LoginPageParent(userRepository: userRepository);
         }

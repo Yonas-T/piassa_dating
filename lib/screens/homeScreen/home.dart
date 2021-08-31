@@ -98,80 +98,83 @@ class _HomeState extends State<Home> {
     // ignore: unused_local_variable 
     SwipeableWidgetController _cardController = SwipeableWidgetController();
 
-    return BlocBuilder<SearchBloc, SearchState>(
-      bloc: _searchBloc,
-      builder: (context, state) {
-        if (state is InitialSearchState) {
-          _searchBloc.add(
-            LoadUserEvent(widget.userId),
-          );
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
-            ),
-          );
-        }
-        if (state is LoadingState) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
-            ),
-          );
-        }
-        if (state is LoadUserState) {
-          _user = state.people;
-          _currentUser = state.currentUser;
-
-          getDifference(_user.location);
-          // ignore: unnecessary_null_comparison
-          if (_user.location == null) {
-            return Text(
-              "No One Here",
-              style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BlocBuilder<SearchBloc, SearchState>(
+        bloc: _searchBloc,
+        builder: (context, state) {
+          if (state is InitialSearchState) {
+            _searchBloc.add(
+              LoadUserEvent(widget.userId),
             );
-          } else
-            return currentCardIndex < profileData.length
-                ? Column(
-                    children: [
-                      SizedBox(height: 70),
-                      SwipeableWidget(
-                        key: ObjectKey(currentCardIndex),
-                        animationDuration: 800,
-                        child: getProfileWidgets()[currentCardIndex],
-                        onLeftSwipe: () => swipeLeft(),
-                        onRightSwipe: () => swipeRight(),
-                        nextCards: <Widget>[
-                          // show next card
-                          // if there are no next cards, show nothing
-                          if (!(currentCardIndex + 1 >= profileData.length))
-                            Align(
-                              alignment: Alignment.center,
-                              child: getProfileWidgets()[currentCardIndex + 1],
-                            ),
-                        ],
-                      ),
-                      // if (currentCardIndex < profileData.length)
-                      //   cardControllerRow(_cardController),
-                    ],
-                  )
-                : currentCardIndex == profileData.length ?Container(
-                  child: Center(
-                    child: Text(
-                      'You finished your daily recommendation',
-                      style: TextStyle(
-                        fontSize: kNormalFont,
-                        color: Color(kDarkGrey)
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
+              ),
+            );
+          }
+          if (state is LoadingState) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Color(kPrimaryPurple)),
+              ),
+            );
+          }
+          if (state is LoadUserState) {
+            _user = state.people;
+            _currentUser = state.currentUser;
+
+            getDifference(_user.location);
+            // ignore: unnecessary_null_comparison
+            if (_user.location == null) {
+              return Text(
+                "No One Here",
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              );
+            } else
+              return currentCardIndex < profileData.length
+                  ? Column(
+                      children: [
+                        SizedBox(height: 70),
+                        SwipeableWidget(
+                          key: ObjectKey(currentCardIndex),
+                          animationDuration: 800,
+                          child: getProfileWidgets()[currentCardIndex],
+                          onLeftSwipe: () => swipeLeft(),
+                          onRightSwipe: () => swipeRight(),
+                          nextCards: <Widget>[
+                            // show next card
+                            // if there are no next cards, show nothing
+                            if (!(currentCardIndex + 1 >= profileData.length))
+                              Align(
+                                alignment: Alignment.center,
+                                child: getProfileWidgets()[currentCardIndex + 1],
+                              ),
+                          ],
+                        ),
+                        // if (currentCardIndex < profileData.length)
+                        //   cardControllerRow(_cardController),
+                      ],
+                    )
+                  : currentCardIndex == profileData.length ?Container(
+                    child: Center(
+                      child: Text(
+                        'You finished your daily recommendation',
+                        style: TextStyle(
+                          fontSize: kNormalFont,
+                          color: Color(kDarkGrey)
+                        ),
                       ),
                     ),
-                  ),
-                ) : Container();
-        } else {
-          return Container();
-        }
-      },
+                  ) : Container();
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 
