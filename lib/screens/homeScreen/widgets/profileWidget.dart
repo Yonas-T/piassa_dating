@@ -54,14 +54,7 @@ class ProfileWidget extends StatelessWidget {
       padding: EdgeInsets.all(size.height * 0.005),
       child: Container(
         decoration: BoxDecoration(
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.black54,
-          //     blurRadius: 5.0,
-          //     spreadRadius: 2.0,
-          //     offset: Offset(10.0, 10.0),
-          //   )
-          // ],
+         
           borderRadius: BorderRadius.circular(size.height * 0.02),
         ),
         child: Stack(

@@ -4,6 +4,7 @@ import 'package:piassa_application/blocs/phoneAuthBloc/phoneAuthState.dart';
 import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginBloc.dart';
 import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginEvent.dart';
 import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginState.dart';
+import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/utils/editTextUtils.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
@@ -62,12 +63,16 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Phone Login"),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-        ),
         body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: <Color>[Color(kPrimaryPink), Color(kPrimaryPurple)],
+            ),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -82,7 +87,6 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                   },
                   child: BlocBuilder<PhoneLoginBloc, PhoneLoginState>(
                     builder: (context, state) {
-                      
                       return getViewAsPerState(state);
                     },
                   ),
@@ -102,7 +106,8 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   Widget buildLoadingUi() {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
     );
   }
 
@@ -146,46 +151,69 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
       );
 }
 
+final _formKey = GlobalKey<FormState>();
+
 class NumberInput extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  final _phoneTextController = TextEditingController();
+  TextEditingController _phoneTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          const EdgeInsets.only(top: 48, bottom: 16.0, left: 16.0, right: 16.0),
+          const EdgeInsets.only(top: 16, bottom: 16.0, left: 16.0, right: 16.0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+            child: Text(
+              'Login',
+              style: TextStyle(fontSize: kExtraLargeFont, color: Color(kWhite)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+            child: Text(
+              'Via Phone number',
+              style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+            ),
+          ),
+          SizedBox(height: 100),
           Form(
             key: _formKey,
             child: EditTextUtils().getCustomEditTextArea(
                 labelValue: "Enter phone number",
-                hintValue: "9876543210",
+                hintValue: "911010100",
                 controller: _phoneTextController,
                 keyboardType: TextInputType.number,
-                icon: Icons.phone,
+                // icon: Icons.phone,
                 validator: (value) {
                   return validateMobile(value!);
                 }),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          SizedBox(height: 16),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: kButtonHeight,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Color(kWhite),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4))),
+              child: Text("Send",
+                  style: TextStyle(
+                      fontSize: kButtonFont, color: Color(kPrimaryPink))),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   BlocProvider.of<PhoneLoginBloc>(context).add(
                       SendOtpEvent("+251" + _phoneTextController.value.text));
                 }
               },
-              child: Text(
-                "Submit",
-                style: TextStyle(color: Colors.white),
-              ),
             ),
           )
         ],
@@ -218,10 +246,10 @@ class OtpInput extends StatelessWidget {
               controller: pinEditingController,
               hideCharacter: true,
               highlight: true,
-              highlightColor: Colors.blue,
-              defaultBorderColor: Colors.black,
-              hasTextBorderColor: Colors.green,
-              highlightPinBoxColor: Colors.orange,
+              highlightColor: Color(kDarkGrey),
+              defaultBorderColor: Color(kWhite),
+              hasTextBorderColor: Color(kWhite),
+              highlightPinBoxColor: Color(klightPink),
               maxLength: 6,
               onDone: (String pin) {
                 BlocProvider.of<PhoneLoginBloc>(context)
@@ -243,16 +271,24 @@ class OtpInput extends StatelessWidget {
               highlightAnimationEndColor: Colors.white12,
               keyboardType: TextInputType.number,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(height: 16),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: kButtonHeight,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Color(kWhite),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4))),
+                child: Text("Send",
+                    style: TextStyle(
+                        fontSize: kButtonFont, color: Color(kPrimaryPink))),
                 onPressed: () {
-                  BlocProvider.of<PhoneLoginBloc>(context).add(AppStartEvent());
+                  if (_formKey.currentState!.validate()) {
+                    BlocProvider.of<PhoneLoginBloc>(context)
+                        .add(AppStartEvent());
+                  }
                 },
-                child: Text(
-                  "Back",
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
             )
           ],

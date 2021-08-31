@@ -15,7 +15,7 @@ class SettingTileWidget extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Color(0xfe676e).withOpacity(0.03),
+        color: Color(klightPink).withOpacity(0.05),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,12 +28,12 @@ class SettingTileWidget extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(fontSize: kNormalFont, color: Color(kDarkGrey)),
+            style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
           ),
             ],
           ),
           
-          Icon(Icons.arrow_forward_ios, color: Color(kPrimaryPink),)
+          Icon(Icons.arrow_forward_ios, color: Color(kPrimaryPink),size: 16,)
         ],
       ),
     );

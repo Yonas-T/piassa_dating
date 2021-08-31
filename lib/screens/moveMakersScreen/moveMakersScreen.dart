@@ -17,140 +17,158 @@ class _MoveMakersScreenState extends State<MoveMakersScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
-        child: AppBarWidget(
-            title: Text('Move Makers', style: TextStyle(fontSize: kTitleBoldFont, color: Color(kDarkGrey))),
-            actionIcon: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.check,
-                color: Color(kPrimaryPink),
-              ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 16.0),
+          child: AppBarWidget(
+            actionIcon: Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: Color(klightPink), shape: BoxShape.circle),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.check,
+                      color: Color(kWhite),
+                      size: 14,
+                    ))),
+            colorVal: Color(kWhite),
+            leadingIcon: IconButton(
+              icon: Icon(Icons.arrow_back, color: Color(klightPink), size: 30),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            leadingIcon: Container(),
-            colorVal: Color(kWhite)),
+            title: Text('Move Makers',
+                style: TextStyle(
+                    fontSize: kTitleBoldFont, color: Color(kBlack))),
+          ),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  SizedBox(height: 32),
-                  TextField(
-                    controller: movieCntrl,
-                    minLines: 3,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Color(kDarkGrey).withOpacity(0.02),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      hintText: "Your favorite movie",
-                      hintStyle: TextStyle(
-                          color: Color(kDarkGrey), fontSize: kNormalFont),
+      body: Container(
+        color: Color(kWhite),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: 32),
+                    TextField(
+                      controller: movieCntrl,
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Color(kWhite).withOpacity(0.5),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        hintText: "Your favorite movie",
+                        hintStyle: TextStyle(
+                            color: Color(kDarkGrey), fontSize: kNormalFont),
+                      ),
+                      keyboardType: TextInputType.text,
                     ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 24),
-                  TextField(
-                    controller: bandCntrl,
-                    minLines: 3,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Color(kDarkGrey).withOpacity(0.02),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      hintText: "Your favorite movie",
-                      hintStyle: TextStyle(
-                          color: Color(kDarkGrey), fontSize: kNormalFont),
+                    SizedBox(height: 24),
+                    TextField(
+                      controller: bandCntrl,
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Color(kWhite).withOpacity(0.5),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        hintText: "Your favorite movie",
+                        hintStyle: TextStyle(
+                            color: Color(kDarkGrey), fontSize: kNormalFont),
+                      ),
+                      keyboardType: TextInputType.text,
                     ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 24),
-                  TextField(
-                    controller: petCntrl,
-                    minLines: 3,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Color(kDarkGrey).withOpacity(0.02),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              BorderSide(color: Color(kDarkGrey), width: 1)),
-                      hintText: "Your pet's name",
-                      hintStyle: TextStyle(
-                          color: Color(kDarkGrey), fontSize: kNormalFont),
+                    SizedBox(height: 24),
+                    TextField(
+                      controller: petCntrl,
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Color(kWhite).withOpacity(0.5),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide:
+                                BorderSide(color: Color(kDarkGrey), width: 1)),
+                        hintText: "Your pet's name",
+                        hintStyle: TextStyle(
+                            color: Color(kDarkGrey), fontSize: kNormalFont),
+                      ),
+                      keyboardType: TextInputType.text,
                     ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 32),
-                ],
+                    SizedBox(height: 32),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(kDarkGrey), width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(kDarkGrey), width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
 
-                // boxShadow: [
-                //   BoxShadow(
-                //       color: Color(kDarkGrey).withOpacity(0.5),
-                //       offset: Offset(0.0, 5.0),
-                //       blurRadius: 20.0)
-                // ],
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //       color: Color(kDarkGrey).withOpacity(0.5),
+                  //       offset: Offset(0.0, 5.0),
+                  //       blurRadius: 20.0)
+                  // ],
+                ),
+                width: MediaQuery.of(context).size.width,
+                height: kButtonHeight,
+                child: TextButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary: Color(kWhite),
+                        padding: EdgeInsets.all(8),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4))),
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          fontSize: kNormalFont, color: Color(kBlack)),
+                    )),
               ),
-              width: MediaQuery.of(context).size.width,
-              height: kButtonHeight,
-              child: TextButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      primary: Color(kWhite),
-                      padding: EdgeInsets.all(8),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16))),
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        fontSize: kNormalFont, color: Color(kDarkGrey)),
-                  )),
-            ),
-          ],
+              SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );

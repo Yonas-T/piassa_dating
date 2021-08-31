@@ -314,7 +314,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget buildLoadingUi() {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))
+      ),
     );
   }
 

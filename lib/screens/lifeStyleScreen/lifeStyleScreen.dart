@@ -61,7 +61,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
             ),
             title: Text('Life Style',
                 style: TextStyle(
-                    fontSize: kTitleBoldFont, color: Color(kDarkGrey))),
+                    fontSize: kTitleBoldFont, color: Color(kBlack))),
           ),
         ),
       ),
@@ -89,7 +89,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedReligion,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -107,7 +107,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _religions[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -132,7 +132,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedRnStatus,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -150,7 +150,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _rnStatuses[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -175,7 +175,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedKids,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -193,7 +193,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _kids[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -218,7 +218,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedWorkout,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -236,7 +236,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _workouts[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -261,7 +261,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedDrinking,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -279,7 +279,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _drinkings[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -304,7 +304,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                         title: Text(
                           _selectedSmoking,
                           style: TextStyle(
-                              fontSize: kNormalFont, color: Color(kDarkGrey)),
+                              fontSize: kNormalFont, color: Color(kBlack)),
                         ),
                         collapsedIconColor: Color(klightPink),
                         iconColor: Color(klightPink),
@@ -322,7 +322,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     _smokings[i],
                                     style: TextStyle(
                                         fontSize: kNormalFont,
-                                        color: Color(kDarkGrey)),
+                                        color: Color(kBlack)),
                                   ),
                                 );
                               })
@@ -351,11 +351,11 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                       child: Text(
                         'Save',
                         style: TextStyle(
-                            fontSize: kButtonFont, color: Color(kDarkGrey)),
+                            fontSize: kButtonFont, color: Color(kBlack)),
                       )),
                 ),
                 SizedBox(
-                  height: 48,
+                  height: 16,
                 ),
               ],
             )),

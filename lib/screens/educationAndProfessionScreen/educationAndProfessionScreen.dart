@@ -54,7 +54,7 @@ class _EducationAndProfessionScreenState
                   Icon(Icons.arrow_back, color: Color(klightPink), size: 30),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text('Education and Profession', style: TextStyle(fontSize: kTitleBoldFont, fontWeight: FontWeight.bold, color: Color(kDarkGrey))),
+            title: Text('Education and Profession', style: TextStyle(fontSize: kTitleBoldFont, fontWeight: FontWeight.bold, color: Color(kBlack))),
           ),
         ),
       ),
@@ -97,7 +97,7 @@ class _EducationAndProfessionScreenState
                           title: Text(
                             _selectedUniversity,
                             style: TextStyle(
-                                fontSize: kNormalFont, color: Color(kDarkGrey)),
+                                fontSize: kNormalFont, color: Color(kBlack)),
                           ),
                           collapsedIconColor: Color(klightPink),
                           iconColor: Color(klightPink),
@@ -115,7 +115,7 @@ class _EducationAndProfessionScreenState
                                       _universities[i],
                                       style: TextStyle(
                                           fontSize: kNormalFont,
-                                          color: Color(kDarkGrey)),
+                                          color: Color(kBlack)),
                                     ),
                                   );
                                 })
@@ -138,7 +138,7 @@ class _EducationAndProfessionScreenState
                           title: Text(
                             _selectedProfession,
                             style: TextStyle(
-                                fontSize: kNormalFont, color: Color(kDarkGrey)),
+                                fontSize: kNormalFont, color: Color(kBlack)),
                           ),
                           collapsedIconColor: Color(klightPink),
                           iconColor: Color(klightPink),
@@ -156,7 +156,7 @@ class _EducationAndProfessionScreenState
                                       _professions[i],
                                       style: TextStyle(
                                           fontSize: kNormalFont,
-                                          color: Color(kDarkGrey)),
+                                          color: Color(kBlack)),
                                     ),
                                   );
                                 })
@@ -235,7 +235,7 @@ class _EducationAndProfessionScreenState
                     child: Text(
                       'Save',
                       style: TextStyle(
-                          fontSize: kButtonFont, fontWeight: FontWeight.bold, color: Color(kDarkGrey)),
+                          fontSize: kButtonFont, fontWeight: FontWeight.bold, color: Color(kBlack)),
                     )),
               ),
               SizedBox(

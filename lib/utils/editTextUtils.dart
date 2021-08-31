@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:piassa_application/constants/constants.dart';
 
 class EditTextUtils {
   TextFormField getCustomEditTextArea(
@@ -14,42 +15,28 @@ class EditTextUtils {
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          prefixStyle: TextStyle(color: Colors.orange),
-          fillColor: Colors.white.withOpacity(0.6),
-          filled: true,
-          isDense: true,
-          labelStyle: TextStyle(color: Colors.orange),
-          focusColor: Colors.orange,
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(8.0),
-            ),
-            borderSide: new BorderSide(
-              color: Colors.orange,
-              width: 1.0,
-            ),
-          ),
-          disabledBorder: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(8.0),
-            ),
-            borderSide: new BorderSide(
-              color: Colors.orange,
-              width: 1.0,
-            ),
-          ),
-          focusedBorder: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(8.0),
-            ),
-            borderSide: new BorderSide(
-              color: Colors.orange,
-              width: 1.0,
-            ),
-          ),
-          hintText: hintValue,
-          labelText: labelValue,),
+        errorStyle: TextStyle(color: Colors.white),
+        filled: true,
+        labelText: labelValue,
+        labelStyle: TextStyle(color: Color(kWhite)),
+        fillColor: Color(kWhite).withOpacity(0.4),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4),
+            borderSide:
+                BorderSide(color: Colors.transparent)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4),
+            borderSide:
+                BorderSide(color: Colors.transparent)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4),
+            borderSide:
+                BorderSide(color: Colors.transparent)),
+        hintText: hintValue,
+        
+        hintStyle: TextStyle(
+            color: Color(kWhite), fontSize: kNormalFont),
+      ),
     validator: validator,
     );
   }

@@ -8,7 +8,9 @@ class SecondStepperPageWidget extends StatefulWidget {
   final User user;
   final AuthRepository userRepository;
 
-  const SecondStepperPageWidget({Key? key, required this.user, required this.userRepository}) : super(key: key);
+  const SecondStepperPageWidget(
+      {Key? key, required this.user, required this.userRepository})
+      : super(key: key);
 
   @override
   _SecondStepperPageWidgetState createState() =>
@@ -41,13 +43,15 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             children: [
-              SizedBox(height: 8,),
+              SizedBox(height: 32),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Row(
@@ -56,12 +60,12 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                     Text(
                       'Age',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     ),
                     Text(
-                      '${values.start} - ${values.end}',
+                      '${values.start.round()} - ${values.end.round()}',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     )
                   ],
                 ),
@@ -69,10 +73,21 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
               SliderTheme(
                 data: SliderThemeData(
                   trackHeight: 5,
+                  activeTickMarkColor: Color(kWhite),
+                  thumbColor: Color(kWhite),
+                  inactiveTickMarkColor: Color(kWhite),
+                  disabledInactiveTickMarkColor: Color(kWhite),
+                  rangeThumbShape: RoundRangeSliderThumbShape(
+                    elevation: 4,
+                    pressedElevation: 8,
+                    disabledThumbRadius: 12,
+                    enabledThumbRadius: 12,
+                  ),
+                  disabledActiveTickMarkColor: Color(kWhite),
                 ),
                 child: RangeSlider(
                   divisions: divisions,
-                  activeColor: Color(kPrimaryYellow),
+                  activeColor: Color(klightPink),
                   inactiveColor: Colors.grey[300],
                   min: 1,
                   max: 100,
@@ -80,17 +95,18 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                   labels: labels,
                   onChanged: (value) {
                     print("START: ${value.start}, End: ${value.end}");
-          
+
                     setState(() {
                       values = value;
                       labels = RangeLabels("${value.start.toInt().toString()}",
-                          "${value.start.toInt().toString()}");
+                          "${value.end.toInt().toString()}");
                     });
                   },
                 ),
               ),
-              SizedBox(height: 32,),
-          
+              SizedBox(
+                height: 24,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Row(
@@ -99,12 +115,12 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                     Text(
                       'Distance',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     ),
                     Text(
                       '$_currentScore Km',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     )
                   ],
                 ),
@@ -112,12 +128,14 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   trackHeight: 5,
-                  activeTrackColor: Color(kPrimaryYellow),
+                  activeTrackColor: Color(klightPink),
                   inactiveTrackColor: Colors.grey[300],
-                  thumbColor: Color(kPrimaryYellow),
-                  // thumbShape: RoundSliderThumbShape(enabledThumbRadius: 20),
-                  // overlayShape: RoundSliderOverlayShape(overlayRadius: 35),
-                  // overlayColor: Color(kPrimaryYellow),
+                  thumbColor: Color(klightPink),
+                  thumbShape: RoundSliderThumbShape(
+                      elevation: 4,
+                      pressedElevation: 8,
+                      disabledThumbRadius: 12,
+                      enabledThumbRadius: 12),
                 ),
                 child: Slider(
                     value: _currentScore.toDouble(),
@@ -131,8 +149,9 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                       });
                     }),
               ),
-              SizedBox(height: 32,),
-          
+              SizedBox(
+                height: 24,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Row(
@@ -141,12 +160,12 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                     Text(
                       'Education',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     ),
                     Text(
                       '${_educationLevel[eduIndex]}',
                       style: TextStyle(
-                          fontSize: kNormalFont, color: Color(kDarkGrey)),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     )
                   ],
                 ),
@@ -154,12 +173,14 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   trackHeight: 5,
-                  activeTrackColor: Color(kPrimaryYellow),
+                  activeTrackColor: Color(klightPink),
                   inactiveTrackColor: Colors.grey[300],
-                  thumbColor: Color(kPrimaryYellow),
-                  // thumbShape: RoundSliderThumbShape(enabledThumbRadius: 20),
-                  // overlayShape: RoundSliderOverlayShape(overlayRadius: 35),
-                  // overlayColor: Color(kPrimaryYellow),
+                  thumbColor: Color(klightPink),
+                  thumbShape: RoundSliderThumbShape(
+                      elevation: 4,
+                      pressedElevation: 8,
+                      disabledThumbRadius: 12,
+                      enabledThumbRadius: 12),
                 ),
                 child: Slider(
                     value: eduIndex.toDouble(),
@@ -174,42 +195,48 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
                       });
                     }),
               ),
-                          SizedBox(height: 32,),
-          
-              Container(
-                child: Card(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(kDarkGrey), width: 1),
-                      borderRadius: BorderRadius.circular(16)),
-                  color: Color(kDarkGrey).withOpacity(0.02),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: ExpansionTile(
-                      title: Text(
-                        _selectedUniversity,
-                        style: TextStyle(
-                            fontSize: kNormalFont, color: Color(kDarkGrey)),
+              SizedBox(
+                height: 24,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Container(
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Color(kLightGrey), width: 1),
+                        borderRadius: BorderRadius.circular(4)),
+                    color: Color(kWhite).withOpacity(0.5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: ExpansionTile(
+                        title: Text(
+                          _selectedUniversity,
+                          style: TextStyle(
+                              fontSize: kNormalFont, color: Color(kBlack)),
+                        ),
+                        collapsedIconColor: Color(klightPink),
+                        iconColor: Color(klightPink),
+                        children: <Widget>[
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: _universities.length,
+                              itemBuilder: (context, i) {
+                                return Container(
+                                  padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    _universities[i],
+                                    style: TextStyle(
+                                        fontSize: kNormalFont,
+                                        color: Color(kBlack)),
+                                  ),
+                                );
+                              })
+                        ],
                       ),
-                      children: <Widget>[
-                        ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: _universities.length,
-                            itemBuilder: (context, i) {
-                              return Container(
-                                padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  _universities[i],
-                                  style: TextStyle(
-                                      fontSize: kNormalFont,
-                                      color: Color(kDarkGrey)),
-                                ),
-                              );
-                            })
-                      ],
                     ),
                   ),
                 ),
@@ -217,44 +244,39 @@ class _SecondStepperPageWidgetState extends State<SecondStepperPageWidget> {
             ],
           ),
           SizedBox(
-            height: 48,
+            height: 18,
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(kDarkGrey), width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-    
-              // boxShadow: [
-              //   BoxShadow(
-              //       color: Color(kDarkGrey).withOpacity(0.5),
-              //       offset: Offset(0.0, 5.0),
-              //       blurRadius: 20.0)
-              // ],
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(kLightGrey), width: 1),
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: kButtonHeight,
+              child: TextButton(
+                  onPressed: () {
+                    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    //   return AllDoneScreen(user: widget.user, userRepository: widget.userRepository);
+                    // }));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      primary: Color(kWhite),
+                      padding: EdgeInsets.all(8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16))),
+                  child: Text(
+                    'Save',
+                    style:
+                        TextStyle(fontSize: kButtonFont, color: Color(kBlack)),
+                  )),
             ),
-            width: MediaQuery.of(context).size.width,
-            height: kButtonHeight,
-            child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                  return AllDoneScreen(user: widget.user, userRepository: widget.userRepository);
-                }));
-                },
-                style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    primary: Color(kWhite),
-                    padding: EdgeInsets.all(8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16))),
-                child: Text(
-                  'Save',
-                  style:
-                      TextStyle(fontSize: kNormalFont, color: Color(kDarkGrey)),
-                )),
           ),
-          // SizedBox(
-          //   height: 8,
-          // ),
+          SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );

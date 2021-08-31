@@ -31,7 +31,6 @@ class _TabsState extends State<Tabs> {
   List<Widget> _pages = [];
   List<String> _titles = ['Profile', 'Search', 'Matches'];
 
-
   int _selectedPageIndex = 1;
 
   void selectPage(int index) {
@@ -53,70 +52,88 @@ class _TabsState extends State<Tabs> {
         accentColor: Colors.white,
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: AppBarWidget(
-          actionIcon: Card(
+          preferredSize: const Size.fromHeight(50),
+          child: AppBarWidget(
+            actionIcon: Card(
               shape: CircleBorder(),
               shadowColor: Colors.grey,
               elevation: 4,
               color: Color(kWhite),
-              child: IconButton(onPressed: () {
-                
-              }, icon: Icon(FontAwesomeIcons.slidersH, color: Color(kDarkGrey),size: 17,)),
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    FontAwesomeIcons.slidersH,
+                    color: Color(kDarkGrey),
+                    size: 17,
+                  )),
             ),
-          colorVal: Colors.transparent,
-          leadingIcon: Container(),
-          // IconButton(
-          //   icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
-          //   onPressed: () => Navigator.of(context).pop(),
-          // ),
-          title: _selectedPageIndex == 1 ? Container(child: Image.asset('assets/images/piassa-logo.png'), width: 160,) :Text(_titles[_selectedPageIndex], style: TextStyle(fontSize: kTitleBoldFont, fontWeight: FontWeight.bold, color: Color(kDarkGrey))),
+            colorVal: _selectedPageIndex == 0 ? Color(klightPink) : _selectedPageIndex == 1 ? Color(kWhite) : Color(kWhite),
+            leadingIcon: Container(),
+            // IconButton(
+            //   icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
+            //   onPressed: () => Navigator.of(context).pop(),
+            // ),
+            title: _selectedPageIndex == 1
+                ? Container(
+                    child: Image.asset('assets/images/piassa-logo.png'),
+                    width: 160,
+                  )
+                : Text(_titles[_selectedPageIndex],
+                    style: TextStyle(
+                        fontSize: kTitleBoldFont,
+                        fontWeight: FontWeight.bold,
+                        color: Color(kDarkGrey))),
+          ),
         ),
-      ),
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   backgroundColor: Color(kDarkGrey),
-        //   title: Text(
-        //     "Home",
-        //     style: TextStyle(
-        //       fontSize: kTitleFont,
-        //     ),
-        //   ),
-        //   actions: <Widget>[
-        //     IconButton(
-        //       icon: Icon(Icons.exit_to_app),
-        //       onPressed: () {
-        //         BlocProvider.of<HomePageBloc>(context).add(LogOutEvent());
-        //       },
-        //     )
-        //   ],
-        // ),
         body: _pages[_selectedPageIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: selectPage,
-          iconSize: 17,
-          elevation: 10,
-          backgroundColor: Color(kWhite),
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Color(kPrimaryPurple),
-          currentIndex: _selectedPageIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.user),
-              label: "Profile",
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+          child: Container(
+            height: 80,
+            decoration: BoxDecoration(
+                color: Color(kWhite),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 3.0,
+                    spreadRadius: 2.0,
+                    offset: Offset(6.0, 6.0),
+                  )
+                ],
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(16),
+                    bottomLeft: Radius.circular(16))),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  bottomLeft: Radius.circular(16)),
+              child: BottomNavigationBar(
+                onTap: selectPage,
+                iconSize: 17,
+                elevation: 10,
+                backgroundColor: Color(kWhite),
+                unselectedItemColor: Colors.grey,
+                selectedItemColor: Color(klightPink),
+                currentIndex: _selectedPageIndex,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.user),
+                    label: "Profile",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(FontAwesomeIcons.search),
+                    label: "Discover",
+                  ),
+                  BottomNavigationBarItem(
+                    // icon: Icon(Icons.arrow_upward),
+                    icon: FaIcon(FontAwesomeIcons.star),
+                    label: "Matches",
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.search),
-              label: "Search",
-            ),
-            BottomNavigationBarItem(
-              // icon: Icon(Icons.arrow_upward),
-              icon: FaIcon(FontAwesomeIcons.star),
-              label: "Matches",
-            ),
-          ],
+          ),
         ),
       ),
     );

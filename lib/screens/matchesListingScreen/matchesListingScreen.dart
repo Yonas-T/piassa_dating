@@ -42,41 +42,8 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: AppBarWidget(
-          actionIcon: Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Container(
-                height: 30,
-                width: 30,
-                decoration:
-                    BoxDecoration(color: Color(kWhite), shape: BoxShape.circle),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.check,
-                      color: Color(klightPink),
-                      size: 14,
-                    ))),
-          ),
-          colorVal: Color(klightPink),
-          leadingIcon: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Color(kWhite), size: 30),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ),
-          title: Text('Matches',
-              style: TextStyle(
-                  fontSize: kTitleBoldFont,
-                  fontWeight: FontWeight.bold,
-                  color: Color(kWhite))),
-        ),
-      ),
+      backgroundColor: Color(kWhite),
       body: Container(
-        color: Color(kWhite),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -90,13 +57,13 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                 'New Likes',
                 style: TextStyle(
                   fontSize: kButtonFont,
-                  color: Color(kDarkGrey),
+                  color: Color(kBlack),
                 ),
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * .18,
-              padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+              height: MediaQuery.of(context).size.height * .14,
+              padding: EdgeInsets.only(left: 20),
               child: ListView.builder(
                   // shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -132,11 +99,11 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                 'Matches',
                 style: TextStyle(
                   fontSize: kButtonFont,
-                  color: Color(kDarkGrey),
+                  color: Color(kBlack),
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 4),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -144,12 +111,13 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                 mainAxisSpacing: 4,
                 childAspectRatio: 0.8,
                 scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
                 children: _matchesList.map((value) {
                   return InkWell(
                     onTap: () {},
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.45,
-                      height: MediaQuery.of(context).size.height * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       alignment: Alignment.center,
                       child: SingleMatchesListWidget(
                         userData: value,

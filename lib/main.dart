@@ -1,13 +1,21 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
-import 'package:custom_splash/custom_splash.dart';
 import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
 
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
+import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/homeScreen/home.dart';
+import 'package:piassa_application/screens/itsAMatchScreen/itsAMatchScreen.dart';
 import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart';
 import 'package:piassa_application/screens/likesListingScreen/likesListingScreen.dart';
 import 'package:piassa_application/screens/matchesListingScreen/matchesListingScreen.dart';
+import 'package:piassa_application/screens/moveMakersScreen/moveMakersScreen.dart';
+import 'package:piassa_application/screens/myProfileScreen/myProfileScreen.dart';
+import 'package:piassa_application/screens/phoneLoginScreen/phoneLoginScreen.dart';
+import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
 import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.dart';
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
@@ -23,37 +31,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/authBloc/authEvent.dart';
 import 'screens/forgotPasswordScreen/forgotPasswordScreen.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  Function duringSplash = () {
-    int a = 123 + 23;
-    print(a);
-
-    if (a > 100)
-      return 1;
-    else
-      return 2;
-  };
-
-  Map<int, Widget> op = {1: MyApp(), 2: MyApp()};
-
   runApp(
-    MaterialApp(
-      home: CustomSplash(
-        imagePath: 'assets/images/piassa-logo.png',
-        backGroundColor: Colors.white10,
-        animationEffect: 'fade-in',
-        logoSize: 200,
-        home: MyApp(),
-        customFunction: duringSplash,
-        duration: 3000,
-        type: CustomSplashType.StaticDuration,
-        outputAndHome: op,
-      ),
-    ),
+    MyApp(),
   );
 }
 
@@ -65,20 +50,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // primaryColor: kPrimaryPurple,
-          // accentColor: kPrimaryPink,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: "Heebo",
-        ),
-      home: BlocProvider(
-        create: (context) =>
-            AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
-        child:
-            // LikesListingScreen()
-            Appp(
+        // primaryColor: kPrimaryPurple,
+        // accentColor: kPrimaryPink,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: "Heebo",
+      ),
+      home: SplashScreenPage(
           userRepository: userRepository,
         ),
-      ),
     );
   }
 }
@@ -97,8 +76,8 @@ class Appp extends StatelessWidget {
           return Container();
         } else if (state is AuthenticatedState) {
           return 
-          MatchesListingScreen(
-            // user: state.user, 
+          GallaryScreen(
+            // user: state.user,
             // userRepository: userRepository,
           );
           // Tabs(
@@ -111,6 +90,31 @@ class Appp extends StatelessWidget {
         }
         return Container();
       },
+    );
+  }
+}
+
+class SplashScreenPage extends StatelessWidget {
+  final AuthRepository userRepository;
+
+  SplashScreenPage({required this.userRepository});
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 4,
+      navigateAfterSeconds: BlocProvider(
+          create: (context) =>
+              AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
+          child: Appp(userRepository: userRepository)),
+      image: new Image.asset("assets/images/piassa-logo-light.png"),
+      photoSize: 100.0,
+      useLoader: false,
+      gradientBackground: LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: <Color>[Color(kPrimaryPink), Color(kPrimaryPurple)],
+      ),
     );
   }
 }

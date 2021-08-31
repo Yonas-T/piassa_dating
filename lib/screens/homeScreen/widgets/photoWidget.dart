@@ -18,7 +18,7 @@ class PhotoWidget extends StatelessWidget {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
             return Center(
-              child: CircularProgressIndicator(),
+              child: Container(),
             );
             // break;
           case LoadState.completed:

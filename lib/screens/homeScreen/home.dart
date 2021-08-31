@@ -98,7 +98,8 @@ class _HomeState extends State<Home> {
     // ignore: unused_local_variable 
     SwipeableWidgetController _cardController = SwipeableWidgetController();
 
-    return Padding(
+    return Container(
+      color: Color(kWhite),
       padding: const EdgeInsets.all(8.0),
       child: BlocBuilder<SearchBloc, SearchState>(
         bloc: _searchBloc,
@@ -128,17 +129,17 @@ class _HomeState extends State<Home> {
             // ignore: unnecessary_null_comparison
             if (_user.location == null) {
               return Text(
-                "No One Here",
+                "",
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                    color: Color(kBlack)),
               );
             } else
               return currentCardIndex < profileData.length
                   ? Column(
                       children: [
-                        SizedBox(height: 70),
+                        SizedBox(height: 8),
                         SwipeableWidget(
                           key: ObjectKey(currentCardIndex),
                           animationDuration: 800,
@@ -165,7 +166,7 @@ class _HomeState extends State<Home> {
                         'You finished your daily recommendation',
                         style: TextStyle(
                           fontSize: kNormalFont,
-                          color: Color(kDarkGrey)
+                          color: Color(kBlack)
                         ),
                       ),
                     ),

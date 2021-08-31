@@ -23,7 +23,7 @@ class _ProfileDetailTileWidgetState extends State<ProfileDetailTileWidget> {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Color(0xfe676e).withOpacity(0.03),
+        color: Color(klightPink).withOpacity(0.05),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,12 +37,13 @@ class _ProfileDetailTileWidgetState extends State<ProfileDetailTileWidget> {
               Text(
                 widget.tileTitle,
                 style:
-                    TextStyle(fontSize: kNormalFont, color: Color(kDarkGrey)),
+                    TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
               ),
             ],
           ),
           Icon(
             Icons.arrow_forward_ios,
+            size: 16,
             color: Color(kPrimaryPink),
           )
         ],
