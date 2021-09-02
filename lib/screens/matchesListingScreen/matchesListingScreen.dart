@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/screens/chatScreen/chatScreen.dart';
+import 'package:piassa_application/screens/itsAMatchScreen/itsAMatchScreen.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/matchSearchBarWidget.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/singleMatchesListWidget.dart';
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
@@ -15,9 +17,11 @@ class MatchesListingScreen extends StatefulWidget {
 
 class _MatchesListingScreenState extends State<MatchesListingScreen> {
   List<Peoples> _matchesList = [];
+  bool _isLiked = false;
 
   @override
   void initState() {
+    _isLiked = false;
     _matchesList.add(Peoples(
         name: 'Test Person',
         id: '1',
@@ -80,6 +84,42 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                             _matchesList[i].profilePictureURL,
                           ),
                           radius: 40,
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Card(
+                              shape: CircleBorder(),
+                              elevation: 6,
+                              child: InkWell(
+                                onTap: () {
+                                    setState(() {
+                                      _isLiked = true;
+                                      
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) {
+                                        return ItsAMatchScreen();
+                                      }));
+                                    });
+                                  
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 8.0,
+                                  child: !_isLiked
+                                      ? Icon(
+                                          Icons.favorite,
+                                          size: 10.0,
+                                          color: Colors.red,
+                                        )
+                                      : Icon(
+                                          Icons.check,
+                                          size: 10.0,
+                                          color: Colors.green,
+                                        ),
+                                  // ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     );
@@ -119,8 +159,20 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                       width: MediaQuery.of(context).size.width * 0.45,
                       height: MediaQuery.of(context).size.height * 0.35,
                       alignment: Alignment.center,
-                      child: SingleMatchesListWidget(
-                        userData: value,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return ChatScreen(
+                                'Helina',
+                                'Female / 5km / 44m',
+                                'I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',
+                                "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg");
+                          }));
+                        },
+                        child: SingleMatchesListWidget(
+                          userData: value,
+                        ),
                       ),
                     ),
                   );

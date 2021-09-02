@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
 import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
+import 'package:piassa_application/screens/chatScreen/chatScreen.dart';
+import 'package:piassa_application/screens/chatScreen/widgets/chatProfileWIdget.dart';
 
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
@@ -76,15 +78,16 @@ class Appp extends StatelessWidget {
           return Container();
         } else if (state is AuthenticatedState) {
           return 
-          GallaryScreen(
-            // user: state.user,
-            // userRepository: userRepository,
-          );
-          // Tabs(
-          //   user: state.user,
-          //   userId: state.user.uid,
-          //   userRepository: userRepository,
+          // ChatScreen(
+          //   'Helina','Female / 5km / 44m','I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',chat1Image
+          //   // user: state.user,
+          //   // userRepository: userRepository,
           // );
+          Tabs(
+            user: state.user,
+            userId: state.user.uid,
+            userRepository: userRepository,
+          );
         } else if (state is UnauthenticatedState) {
           return LoginPageParent(userRepository: userRepository);
         }

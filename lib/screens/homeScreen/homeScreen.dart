@@ -34,7 +34,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     homePageBloc = BlocProvider.of<HomePageBloc>(context);
-    return WillPopScope(onWillPop: () async => false, child: Home(userId: user.uid,));
+    return WillPopScope(onWillPop: () async => false, child: Home(
+      // userId: user.uid,
+      ));
   }
 
   void navigateToSignUpPage(BuildContext context) {

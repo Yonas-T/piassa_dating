@@ -14,6 +14,7 @@ import 'package:piassa_application/screens/likesListingScreen/likesListingScreen
 import 'package:piassa_application/screens/matchesListingScreen/matchesListingScreen.dart';
 import 'package:piassa_application/screens/myProfileScreen/myProfileScreen.dart';
 import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.dart';
+import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 
 class Tabs extends StatefulWidget {
@@ -61,7 +62,11 @@ class _TabsState extends State<Tabs> {
               elevation: 4,
               color: Color(kWhite),
               child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return SettingsScreen();
+              }));
+                  },
                   icon: Icon(
                     FontAwesomeIcons.slidersH,
                     color: Color(kDarkGrey),

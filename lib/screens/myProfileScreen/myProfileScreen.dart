@@ -8,6 +8,7 @@ import 'package:piassa_application/screens/moveMakersScreen/moveMakersScreen.dar
 import 'package:piassa_application/screens/myProfileScreen/widgets/paymentPackageListWidget.dart';
 import 'package:piassa_application/screens/myProfileScreen/widgets/photoAndNameWidget.dart';
 import 'package:piassa_application/screens/myProfileScreen/widgets/profileDetailTileWidget.dart';
+import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
 
 class MyProfileScreen extends StatefulWidget {
   @override
@@ -43,9 +44,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: InkWell(
                     onTap: () {
-                      //       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      //   return ();
-                      // }));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        return PreferenceScreen();
+                      }));
                     },
                     child: ProfileDetailTileWidget(
                       tileIcon: Card(
