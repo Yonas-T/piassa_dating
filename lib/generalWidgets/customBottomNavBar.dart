@@ -38,7 +38,7 @@
 //     return Scaffold(
 //         extendBodyBehindAppBar: true,
 //         appBar: PreferredSize(
-//           preferredSize: const Size.fromHeight(50),
+//           preferredSize: const Size.fromHeight(60),
 //           child: AppBarWidget(
 //             actionIcon: Card(
 //               shape: CircleBorder(),

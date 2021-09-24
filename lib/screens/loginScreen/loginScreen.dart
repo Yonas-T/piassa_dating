@@ -1,7 +1,11 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/screens/forgotPasswordScreen/forgotPasswordScreen.dart';
 import 'package:piassa_application/screens/phoneLoginScreen/phoneLoginScreen.dart';
+import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 import 'package:piassa_application/utils/helper.dart';
 
 import '../../blocs/loginBloc/loginBloc.dart';
@@ -33,6 +37,7 @@ class LoginPage extends StatelessWidget {
   TextEditingController passCntrlr = TextEditingController();
   late LoginBloc loginBloc;
   late AuthRepository userRepository;
+  BasicProfileRepository basicProfileRepository = BasicProfileRepository();
 
   LoginPage({required this.userRepository});
 
@@ -60,7 +65,7 @@ class LoginPage extends StatelessWidget {
                 child: BlocListener<LoginBloc, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccessState) {
-                      navigateToHomeScreen(context, state.user);
+                      navigateToSignupQuestionsScreen(context, state.user);
                     }
                   },
                   child: BlocBuilder<LoginBloc, LoginState>(
@@ -313,7 +318,7 @@ class LoginPage extends StatelessWidget {
         // print('=' * 20);
         // print(result);
         // MyAppState.currentUser = result;
-        navigateToHomeScreen(context, result);
+        navigateToSignupQuestionsScreen(context, result);
         // pushAndRemoveUntil(context, HomeScreen(user: result), false);
       } else if (result != null && result is String) {
         showAlertDialog(context, 'Error', result);
@@ -334,7 +339,7 @@ class LoginPage extends StatelessWidget {
       await hideProgress();
       if (result != null && result is User) {
         // MyAppState.currentUser = result;
-        navigateToHomeScreen(context, result);
+        navigateToSignupQuestionsScreen(context, result);
         // pushAndRemoveUntil(context, HomeScreen(user: result), false);
       } else if (result != null && result is String) {
         showAlertDialog(context, 'Error', result);
@@ -361,8 +366,7 @@ class LoginPage extends StatelessWidget {
   Widget buildLoadingUi() {
     return Center(
       child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))
-      ),
+          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
     );
   }
 
@@ -382,9 +386,12 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void navigateToHomeScreen(BuildContext context, User user) {
+  void navigateToSignupQuestionsScreen(BuildContext context, User user) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HomePageParent(user: user, userRepository: userRepository);
+      return SignupQuestionsScreen(
+          user: user, 
+          basicProfileRepository: basicProfileRepository);
+      // Tabs(user: user, userRepository: userRepository);
     }));
   }
 

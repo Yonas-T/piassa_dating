@@ -30,7 +30,7 @@ class _ChatScreen extends State<ChatScreen> {
         child: Scaffold(
           backgroundColor: Color(klightPink),
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
+            preferredSize: const Size.fromHeight(60),
             child: AppBarWidget(
               actionIcon: Padding(
                 padding: const EdgeInsets.only(right: 12.0),
@@ -167,32 +167,18 @@ class _ChatScreen extends State<ChatScreen> {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: Image.network('https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-                          height: 60, fit: BoxFit.cover, width: 60),
+                      child: Image.network(
+                          'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg',
+                          height: 60,
+                          fit: BoxFit.cover,
+                          width: 60),
                     ),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      height: 25,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Color(klightPink),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(16),
-                            bottomLeft: Radius.circular(16)),
-                      ),
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            time,
-                            style: TextStyle(
-                                color: Color(kWhite),
-                                fontSize: kExtraSmallFont),
-                          )),
-                    ),
+                    
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: Container(
@@ -211,6 +197,24 @@ class _ChatScreen extends State<ChatScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    Container(
+                      height: 20,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        color: Color(klightPink).withOpacity(0.5),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomLeft: Radius.circular(8)),
+                      ),
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            time,
+                            style: TextStyle(
+                                color: Color(kWhite),
+                                fontSize: kExtraSmallFont),
+                          )),
                     ),
                   ],
                 ),
@@ -238,23 +242,7 @@ class _ChatScreen extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Container(
-                height: 25,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Color(klightPink),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(16),
-                      bottomLeft: Radius.circular(16)),
-                ),
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      time,
-                      style: TextStyle(
-                          color: Color(kWhite), fontSize: kExtraSmallFont),
-                    )),
-              ),
+              
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                 child: Container(
@@ -273,6 +261,23 @@ class _ChatScreen extends State<ChatScreen> {
                     ),
                   ),
                 ),
+              ),
+              Container(
+                height: 20,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: Color(klightPink).withOpacity(0.5),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      bottomLeft: Radius.circular(8)),
+                ),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      time,
+                      style: TextStyle(
+                          color: Color(kWhite), fontSize: kExtraSmallFont),
+                    )),
               ),
             ],
           ),

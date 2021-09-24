@@ -23,23 +23,27 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
   void initState() {
     _isLiked = false;
     _matchesList.add(Peoples(
-        name: 'Test Person',
-        id: '1',
-        time: '10:00',
-        gender: 'female',
-        location: GeoPoint(10, 10),
-        profilePictureURL:
-            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-        lastMessage: 'Hey There'));
+        userName: 'Test Person',
+        fullName: '1',
+        gender: '10:00',
+        email: 'female',
+        latitude: GeoPoint(10, 10).latitude,
+        longitude: GeoPoint(10, 10).longitude,
+        birthDay: '12/12/12',
+        nationality: 'Ethiopian',
+        headline: 'asdfgh',
+        height: 1.7));
     _matchesList.add(Peoples(
-        name: 'Another Person',
-        id: '2',
-        time: '04:00',
-        gender: 'female',
-        location: GeoPoint(10, 10),
-        profilePictureURL:
-            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-        lastMessage: 'Hello'));
+        userName: 'Test Person',
+        fullName: '1',
+        gender: '10:00',
+        email: 'female',
+        latitude: GeoPoint(10, 10).latitude,
+        longitude: GeoPoint(10, 10).longitude,
+        birthDay: '12/12/12',
+        nationality: 'Ethiopian',
+        headline: 'asdfgh',
+        height: 1.7));
     super.initState();
   }
 
@@ -81,7 +85,7 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                         backgroundColor: Color(kDarkGrey),
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
-                            _matchesList[i].profilePictureURL,
+                            '_matchesList[i].profilePictureURL',
                           ),
                           radius: 40,
                           child: Align(
@@ -91,15 +95,14 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                               elevation: 6,
                               child: InkWell(
                                 onTap: () {
-                                    setState(() {
-                                      _isLiked = true;
-                                      
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context) {
-                                        return ItsAMatchScreen();
-                                      }));
-                                    });
-                                  
+                                  setState(() {
+                                    _isLiked = true;
+
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      return ItsAMatchScreen();
+                                    }));
+                                  });
                                 },
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,

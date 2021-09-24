@@ -2,8 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piassa_application/blocs/authBloc/authBloc.dart';
+import 'package:piassa_application/blocs/authBloc/authEvent.dart';
 import 'package:piassa_application/blocs/homePageBloc/homePageBloc.dart';
 import 'package:piassa_application/blocs/homePageBloc/homePageEvent.dart';
+import 'package:piassa_application/blocs/homePageBloc/homePageState.dart';
+import 'package:piassa_application/blocs/loginBloc/loginBloc.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
@@ -15,6 +19,7 @@ import 'package:piassa_application/screens/matchesListingScreen/matchesListingSc
 import 'package:piassa_application/screens/myProfileScreen/myProfileScreen.dart';
 import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
+import 'package:piassa_application/screens/signUpScreen/signUpScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 
 class Tabs extends StatefulWidget {
@@ -22,7 +27,9 @@ class Tabs extends StatefulWidget {
   final userId;
   final AuthRepository userRepository;
 
-  const Tabs({this.userId, required this.user, required this.userRepository});
+  const Tabs({this.userId, 
+  required this.user, 
+  required this.userRepository});
 
   @override
   _TabsState createState() => _TabsState();
@@ -31,8 +38,14 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   List<Widget> _pages = [];
   List<String> _titles = ['Profile', 'Search', 'Matches'];
+  late int _selectedPageIndex;
+  late AuthBloc authBloc;
 
-  int _selectedPageIndex = 1;
+  @override
+  void initState() {
+    _selectedPageIndex = 1;
+    super.initState();
+  }
 
   void selectPage(int index) {
     setState(() {
@@ -42,9 +55,14 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
+    authBloc = BlocProvider.of<AuthBloc>(context);
     _pages = [
-      MyProfileScreen(),
-      HomePageParent(user: widget.user, userRepository: widget.userRepository),
+      MyProfileScreen(
+        user: widget.user, 
+        userRepository: widget.userRepository),
+      HomePageParent(
+        // user: widget.user, 
+        userRepository: widget.userRepository),
       MatchesListingScreen()
     ];
     return Theme(
@@ -54,26 +72,41 @@ class _TabsState extends State<Tabs> {
       ),
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
+          preferredSize: const Size.fromHeight(60),
           child: AppBarWidget(
             actionIcon: Card(
               shape: CircleBorder(),
               shadowColor: Colors.grey,
               elevation: 4,
               color: Color(kWhite),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return SettingsScreen();
-              }));
-                  },
-                  icon: Icon(
-                    FontAwesomeIcons.slidersH,
-                    color: Color(kDarkGrey),
-                    size: 17,
-                  )),
+              child: _selectedPageIndex == 2
+                  ? IconButton(
+                      onPressed: () {
+                        authBloc.add(LogOutEvent());
+                      },
+                      icon: Icon(
+                        Icons.logout_outlined,
+                        color: Color(kDarkGrey),
+                        size: 17,
+                      ))
+                  : IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return SettingsScreen();
+                        }));
+                      },
+                      icon: Icon(
+                        FontAwesomeIcons.slidersH,
+                        color: Color(kDarkGrey),
+                        size: 17,
+                      )),
             ),
-            colorVal: _selectedPageIndex == 0 ? Color(klightPink) : _selectedPageIndex == 1 ? Color(kWhite) : Color(kWhite),
+            colorVal: _selectedPageIndex == 0
+                ? Color(klightPink)
+                : _selectedPageIndex == 1
+                    ? Color(kWhite)
+                    : Color(kWhite),
             leadingIcon: Container(),
             // IconButton(
             //   icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
@@ -93,19 +126,20 @@ class _TabsState extends State<Tabs> {
         ),
         body: _pages[_selectedPageIndex],
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+          padding: const EdgeInsets.only(
+              left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
           child: Container(
             height: 80,
             decoration: BoxDecoration(
                 color: Color(kWhite),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 3.0,
-                    spreadRadius: 2.0,
-                    offset: Offset(6.0, 6.0),
-                  )
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.black54,
+                //     blurRadius: 3.0,
+                //     spreadRadius: 2.0,
+                //     offset: Offset(6.0, 6.0),
+                //   )
+                // ],
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(16),
                     bottomLeft: Radius.circular(16))),
@@ -142,5 +176,11 @@ class _TabsState extends State<Tabs> {
         ),
       ),
     );
+  }
+
+  void navigateToSignUpPage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return SignUpPageParent(userRepository: widget.userRepository);
+    }));
   }
 }

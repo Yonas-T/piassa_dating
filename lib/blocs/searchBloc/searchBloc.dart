@@ -47,16 +47,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     // Peoples currentUser =
     //     await _searchRepository.getUserInterests(currentUserId);
-    Peoples user = Peoples(
-        name: 'name',
-        id: 'id',
-        gender: 'male',
-        time: 'time',
-        location: GeoPoint(10, 10),
-        profilePictureURL: 'profilePictureURL',
-        lastMessage: 'lastMessage');
-    Peoples currentUser = Peoples(name: 'name', gender: 'male', location: GeoPoint(10, 10), id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
-    yield LoadUserState(user, currentUser);
+    // Peoples user = Peoples(
+    //     name: 'name',
+    //     id: 'id',
+    //     gender: 'male',
+    //     time: 'time',
+    //     location: GeoPoint(10, 10),
+    //     profilePictureURL: 'profilePictureURL',
+    //     lastMessage: 'lastMessage');
+    // Peoples currentUser = Peoples(name: 'name', gender: 'male', location: GeoPoint(10, 10), id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
+    // yield LoadUserState(user, currentUser);
   }
 
   Stream<SearchState> _mapPassToState(
@@ -67,17 +67,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     //     await _searchRepository.passUser(currentPeoplesId, selectedPeoplesId);
     // Peoples currentUser =
     //     await _searchRepository.getUserInterests(currentPeoplesId);
-    Peoples user = Peoples(
-        name: 'name',
-        id: 'id',
-        time: 'time',
-        gender: 'male',
-        location: GeoPoint(10, 10),
-        profilePictureURL: 'profilePictureURL',
-        lastMessage: 'lastMessage');
-    Peoples currentUser = Peoples(name: 'name', location: GeoPoint(10, 10), gender: 'male', id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
+    // Peoples user = Peoples(
+    //     name: 'name',
+    //     id: 'id',
+    //     time: 'time',
+    //     gender: 'male',
+    //     location: GeoPoint(10, 10),
+    //     profilePictureURL: 'profilePictureURL',
+    //     lastMessage: 'lastMessage');
+    // Peoples currentUser = Peoples(name: 'name', location: GeoPoint(10, 10), gender: 'male', id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
 
-    yield LoadUserState(user, currentUser);
+    // yield LoadUserState(user, currentUser);
   }
 
   Stream<SearchState> _mapLoadUserToState(
@@ -86,16 +86,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     // Peoples user = await _searchRepository.getUser(currentPeoplesId);
     // Peoples currentUser =
     //     await _searchRepository.getUserInterests(currentPeoplesId);
-    Peoples user = Peoples(
-        name: 'name',
-        id: 'id',
-        time: 'time',
-        gender: 'male',
-        location: GeoPoint(10, 10),
-        profilePictureURL: 'profilePictureURL',
-        lastMessage: 'lastMessage');
-    Peoples currentUser = Peoples(name: 'name', gender: 'male', id: 'id', location: GeoPoint(10, 10),time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
+    // Peoples user = Peoples(
+    //     name: 'name',
+    //     id: 'id',
+    //     time: 'time',
+    //     gender: 'male',
+    //     location: GeoPoint(10, 10),
+    //     profilePictureURL: 'profilePictureURL',
+    //     lastMessage: 'lastMessage');
+    // Peoples currentUser = Peoples(name: 'name', gender: 'male', id: 'id', location: GeoPoint(10, 10),time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
 
-    yield LoadUserState(user, currentUser);
+    // yield LoadUserState(user, currentUser);
   }
 }

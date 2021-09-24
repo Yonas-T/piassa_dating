@@ -1,9 +1,9 @@
-import 'package:equatable/equatable.dart';
+// import 'package:equatable/equatable.dart';
 
-abstract class HomePageEvent extends Equatable {}
+// abstract class HomePageEvent extends Equatable {}
 
-class LogOutEvent extends HomePageEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
+// class LogOutEvent extends HomePageEvent {
+//   @override
+//   // TODO: implement props
+//   List<Object> get props => [];
+// }

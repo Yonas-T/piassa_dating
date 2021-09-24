@@ -26,3 +26,15 @@ class UnauthenticatedState extends AuthState {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class LogOutInitial extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class LogOutSuccessState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

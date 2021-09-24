@@ -20,7 +20,10 @@ class _SingleLikesListWidgetState extends State<SingleLikesListWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           CircleAvatar(
-            backgroundImage: NetworkImage(widget.peoples.profilePictureURL),
+            backgroundImage: NetworkImage(
+              ''
+              // widget.peoples.profilePictureURL
+              ),
             radius: 32,
           ),
           SizedBox(
@@ -35,13 +38,13 @@ class _SingleLikesListWidgetState extends State<SingleLikesListWidget> {
                   Container(
                     width: MediaQuery.of(context).size.width * .65,
                     child: Text(
-                      widget.peoples.name,
+                      widget.peoples.fullName,
                       style: TextStyle(
                           fontSize: kNormalFont, color: Color(kWhite)),
                     ),
                   ),
                   Text(
-                    widget.peoples.time,
+                    'widget.peoples.time',
                     style: TextStyle(
                       fontSize: kNormalFont,
                       color: Color(kWhite),
@@ -51,7 +54,7 @@ class _SingleLikesListWidgetState extends State<SingleLikesListWidget> {
               ),
               SizedBox(height: 8,),
               Text(
-                widget.peoples.lastMessage,
+                'widget.peoples.lastMessage',
                 textAlign: TextAlign.start,
                 style: TextStyle(fontSize: kSmallFont, color: Color(kWhite)),
               ),

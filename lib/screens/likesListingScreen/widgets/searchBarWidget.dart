@@ -19,7 +19,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   void initState() {
     widget.listOfPeoples.map((ppl) {
-      lists.add(ppl.name);
+      lists.add(ppl.fullName);
     });
     listsFilter = lists;
 

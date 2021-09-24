@@ -130,7 +130,9 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   void navigateToHomeScreen(BuildContext context, User user) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HomePageParent(user: user, userRepository: widget.userRepository);
+      return HomePageParent(
+        // user: user, 
+        userRepository: widget.userRepository);
     }));
   }
 

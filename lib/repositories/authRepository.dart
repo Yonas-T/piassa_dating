@@ -7,6 +7,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/errorCodes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -56,7 +57,11 @@ class AuthRepository {
         password: pass,
       );
       print("REPO : ${authResult.user?.email}");
+
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setString('token', authResult.credential!.token.toString());
       return authResult.user;
+
     } on PlatformException catch (e) {
       String authError = "";
       switch (e.code) {
@@ -102,6 +107,8 @@ class AuthRepository {
         email: email,
         password: password,
       );
+      //  SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setString('token', authresult.credential!.token.toString());
       return authresult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -179,7 +186,7 @@ class AuthRepository {
               }
             }
           }
-        }).then((value) {
+        }).then((value) async{
           print('in then block: $value');
           final User? user = value.user;
 
@@ -190,6 +197,9 @@ class AuthRepository {
           assert(!user!.isAnonymous);
           currentUser = firebaseAuth.currentUser!;
           assert(user!.uid == currentUser!.uid);
+
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // prefs.setString('token', credential.token.toString());
           // return currentUser;
         });
         print('current user: $currentUser');
@@ -247,6 +257,11 @@ class AuthRepository {
         idToken: googleSignInAuthentication.idToken,
       );
       print('3333333333333333');
+      print(credential);
+      
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setString('token', credential.token.toString());
+
       final User? user =
           (await firebaseAuth.signInWithCredential(credential)).user;
       assert(user!.displayName != null);

@@ -16,7 +16,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: Color(klightPink),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: AppBarWidget(
           actionIcon: Padding(
             padding: const EdgeInsets.only(right: 16.0),

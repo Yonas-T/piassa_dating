@@ -7,3 +7,9 @@ class AppStartedEvent extends AuthEvent {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class LogOutEvent extends AuthEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

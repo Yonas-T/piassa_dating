@@ -1,16 +1,29 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
+import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/repositories/authRepository.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
 
 class GallaryScreen extends StatefulWidget {
-  GallaryScreen({this.title});
-
   final String? title;
+
+  // final User user;
+  final BasicProfileRepository basicProfileRepository;
+
+  const GallaryScreen(
+      {Key? key,
+      this.title,
+      // required this.user,
+      required this.basicProfileRepository})
+      : super(key: key);
 
   @override
   _GallaryScreenState createState() => _GallaryScreenState();
@@ -18,6 +31,8 @@ class GallaryScreen extends StatefulWidget {
 
 class _GallaryScreenState extends State<GallaryScreen> {
   List<XFile>? _imageFileList;
+  late AuthRepository userRepository;
+  late User user;
 
   set _imageFile(XFile? value) {
     _imageFileList = value == null ? null : [value];
@@ -242,7 +257,7 @@ class _GallaryScreenState extends State<GallaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 16.0),
           child: AppBarWidget(
@@ -252,7 +267,13 @@ class _GallaryScreenState extends State<GallaryScreen> {
                 decoration: BoxDecoration(
                     color: Color(klightPink), shape: BoxShape.circle),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return Tabs(
+                            user: user, userRepository: userRepository);
+                      }));
+                    },
                     icon: Icon(
                       Icons.check,
                       color: Color(kWhite),
@@ -330,7 +351,10 @@ class _GallaryScreenState extends State<GallaryScreen> {
               },
               heroTag: 'image1',
               tooltip: 'Pick Multiple Image from gallery',
-              child: const Icon(Icons.camera, color: Color(kWhite),),
+              child: const Icon(
+                Icons.camera,
+                color: Color(kWhite),
+              ),
             ),
           ),
           Padding(
@@ -343,7 +367,10 @@ class _GallaryScreenState extends State<GallaryScreen> {
               },
               heroTag: 'image2',
               tooltip: 'Take a Photo',
-              child: const Icon(Icons.camera_alt, color: Color(kWhite),),
+              child: const Icon(
+                Icons.camera_alt,
+                color: Color(kWhite),
+              ),
             ),
           ),
         ],

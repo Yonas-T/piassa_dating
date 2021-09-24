@@ -21,9 +21,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   static const List explore_json = [
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -35,7 +35,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       "img":
           "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/236x/ff/d0/d3/ffd0d35d790e8212797af70ad18318f2.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -47,7 +47,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       "img":
           "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://thumbs.dreamstime.com/b/ethiopian-dress-young-girl-wearing-white-traditional-95969103.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       "img":
           "https://image.shutterstock.com/image-photo/portrait-beautiful-happy-black-woman-600w-667483969.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://viva.pressbooks.pub/app/uploads/sites/42/2020/10/young-ethnic-woman-pointing-at-camera-3880943-scaled-1.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -68,10 +68,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       "likes": ["Travel", "Fashion", "Reading"],
     },
     {
-      "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+      "img": "https://live.staticflickr.com/2594/4069449255_9f4e09c928_n.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://live.staticflickr.com/2594/4069449255_9f4e09c928_n.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -81,9 +80,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     },
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://i.pinimg.com/originals/8e/6e/3f/8e6e3f007f3bfb5c568d5cfe207fe9d1.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/originals/8e/6e/3f/8e6e3f007f3bfb5c568d5cfe207fe9d1.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -93,9 +92,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     },
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -105,9 +104,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     },
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -117,9 +116,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     },
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -129,9 +128,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     },
     {
       "img":
-          "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
       "userImages": [
-        "https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg",
+        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
         "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
         "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
       ],
@@ -164,7 +163,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     var size = MediaQuery.of(context).size;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 1),
+      padding: const EdgeInsets.only(bottom: 1, top: 16),
       child: Container(
         height: size.height,
         child: TinderSwapCard(
@@ -185,14 +184,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Stack(
-          alignment: Alignment.bottomCenter,
-
+                alignment: Alignment.bottomCenter,
                 children: [
-                PageView(
-                      controller: _pageController = PageController(initialPage: 0),
-                      children: _userProfile(size, index),
-                      scrollDirection: Axis.vertical,
-                    ),
+                  PageView(
+                    controller: _pageController =
+                        PageController(initialPage: 0),
+                    children: _userProfile(size, index),
+                    scrollDirection: Axis.vertical,
+                  ),
                   // Container(
                   //   width: size.width,
                   //   height: size.height,
@@ -204,7 +203,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   // ),
                   Container(
                     width: size.width,
-                    height: size.height/3,
+                    height: size.height / 6,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             colors: [
@@ -249,7 +248,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: Row(
@@ -258,23 +256,25 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                             (indexLikes) {
                                           if (indexLikes == 0) {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.only(right: 8),
+                                              padding: const EdgeInsets.only(
+                                                  right: 8),
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Color(kWhite),
-                                                        width: 2),
+                                                    // border: Border.all(
+                                                    //     color: Color(kWhite),
+                                                    //     width: 2),
                                                     borderRadius:
-                                                        BorderRadius.circular(30),
+                                                        BorderRadius.circular(
+                                                            30),
                                                     color: Color(kWhite)
-                                                        .withOpacity(0.4)),
+                                                        .withOpacity(0.2)),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      top: 3,
-                                                      bottom: 3,
-                                                      left: 10,
-                                                      right: 10),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 3,
+                                                          bottom: 3,
+                                                          left: 10,
+                                                          right: 10),
                                                   child: Text(
                                                     itemsTemp[index]['likes']
                                                         [indexLikes],
@@ -400,25 +400,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               width: size.width,
               color: Colors.white,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(0.0),
-                child: Image.network(itemsTemp[index]['userImages'][i], fit: BoxFit.cover)
-                // CachedNetworkImage(
-                //   imageUrl: itemsTemp[index]['userImages'][i],
-                //   placeholder: (context, url) => Container(
-                //     transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-                //     child: Container(
-                //         width: double.infinity,
-                //         height: MediaQuery.of(context).size.height * 0.77,
-                //         child: Center(child: new CircularProgressIndicator())),
-                //   ),
-                //   errorWidget: (context, url, error) => new Icon(Icons.error),
-                //   width: double.infinity,
-                //   height: MediaQuery.of(context).size.height * 0.77,
-                //   fit: BoxFit.cover,
-                // ),
-              ),
+                  borderRadius: BorderRadius.circular(0.0),
+                  child: Image.network(itemsTemp[index]['userImages'][i],
+                      fit: BoxFit.cover)
+                  // CachedNetworkImage(
+                  //   imageUrl: itemsTemp[index]['userImages'][i],
+                  //   placeholder: (context, url) => Container(
+                  //     transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                  //     child: Container(
+                  //         width: double.infinity,
+                  //         height: MediaQuery.of(context).size.height * 0.77,
+                  //         child: Center(child: new CircularProgressIndicator())),
+                  //   ),
+                  //   errorWidget: (context, url, error) => new Icon(Icons.error),
+                  //   width: double.infinity,
+                  //   height: MediaQuery.of(context).size.height * 0.77,
+                  //   fit: BoxFit.cover,
+                  // ),
+                  ),
             ),
-            onLongPress: () {
+            onVerticalDragUpdate: (dragUpdateDetails) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -427,6 +428,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             initIndex: i,
                           )));
             },
+            // onLongPress: () {
+            //   Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => FullPhoto(
+            //                 imageUrlList: itemsTemp[index]['userImages'],
+            //                 initIndex: i,
+            //               )));
+            // },
           ),
           // Positioned(
           //   bottom: 4,

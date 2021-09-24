@@ -35,7 +35,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                   child: PhotoWidget(
-                    photoLink: widget.userData.profilePictureURL,
+                    photoLink: 'widget.userData.profilePictureURL',
                   ),
                 ),
               ),
@@ -76,7 +76,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                           userGender(widget.userData.gender),
                           Expanded(
                             child: Text(
-                              " " + widget.userData.name + " ,22 ",
+                              " " + 'widget.userData.name' + " ,22 ",
                               // +
                               // (DateTime.now().year - userData.age.toDate().year)
                               //     .toString(),

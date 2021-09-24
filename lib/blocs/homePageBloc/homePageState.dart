@@ -1,16 +1,16 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:flutter/foundation.dart';
 
-abstract class HomePageState extends Equatable {}
+// abstract class HomePageState extends Equatable {}
 
-class LogOutInitial extends HomePageState {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
+// class LogOutInitial extends HomePageState {
+//   @override
+//   // TODO: implement props
+//   List<Object> get props => [];
+// }
 
-class LogOutSuccessState extends HomePageState {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
+// class LogOutSuccessState extends HomePageState {
+//   @override
+//   // TODO: implement props
+//   List<Object> get props => [];
+// }

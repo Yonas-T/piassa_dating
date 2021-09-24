@@ -8,7 +8,9 @@ class AllDoneScreen extends StatefulWidget {
   final User user;
   final AuthRepository userRepository;
 
-  const AllDoneScreen({Key? key, required this.user, required this.userRepository}) : super(key: key);
+  const AllDoneScreen({Key? key, 
+  required this.user, 
+  required this.userRepository}) : super(key: key);
 
   @override
   _AllDoneScreenState createState() => _AllDoneScreenState();
@@ -74,7 +76,9 @@ class _AllDoneScreenState extends State<AllDoneScreen> {
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return Tabs(user: widget.user, userRepository: widget.userRepository);
+                    return Tabs(
+                      user: widget.user, 
+                      userRepository: widget.userRepository);
                   }));
                       },
                       child: Text(

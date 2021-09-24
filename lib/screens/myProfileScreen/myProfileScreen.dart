@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
+import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/repositories/authRepository.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart';
 import 'package:piassa_application/screens/moveMakersScreen/moveMakersScreen.dart';
@@ -11,16 +15,23 @@ import 'package:piassa_application/screens/myProfileScreen/widgets/profileDetail
 import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
 
 class MyProfileScreen extends StatefulWidget {
+  final User user;
+  final AuthRepository userRepository;
+
+  const MyProfileScreen({
+    required this.user, 
+    required this.userRepository});
+
   @override
   _MyProfileScreenState createState() => _MyProfileScreenState();
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
+  late BasicProfileRepository basicProfileRepository;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(klightPink),
-      
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -34,7 +45,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 24),
-            PhotoAndNameWidget(),
+            PhotoAndNameWidget(
+              user: widget.user,
+              basicProfileRepository: basicProfileRepository,
+            ),
             SizedBox(
               height: 16,
             ),
@@ -44,7 +58,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: InkWell(
                     onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
                         return PreferenceScreen();
                       }));
                     },

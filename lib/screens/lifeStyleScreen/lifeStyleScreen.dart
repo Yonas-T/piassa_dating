@@ -38,7 +38,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 16.0),
           child: AppBarWidget(
@@ -60,8 +60,8 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text('Life Style',
-                style: TextStyle(
-                    fontSize: kTitleBoldFont, color: Color(kBlack))),
+                style:
+                    TextStyle(fontSize: kTitleBoldFont, color: Color(kBlack))),
           ),
         ),
       ),

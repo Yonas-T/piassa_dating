@@ -19,7 +19,7 @@ class _MatchSearchBarWidgetState extends State<MatchSearchBarWidget> {
   @override
   void initState() {
     widget.listOfPeoples.map((ppl) {
-      lists.add(ppl.name);
+      lists.add(ppl.fullName);
     });
     listsFilter = lists;
 

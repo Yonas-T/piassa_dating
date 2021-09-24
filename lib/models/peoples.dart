@@ -1,34 +1,44 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Peoples {
-  String name;
-  String id;
-  String profilePictureURL;
-  String time;
+  String userName;
+  String fullName;
   String gender;
-  GeoPoint location;
-  String lastMessage;
+  String email;
+  double height;
+  String birthDay;
+  String nationality;
+  String headline;
+  double longitude;
+  double latitude;
 
   Peoples(
-      {required this.name,
-      required this.id,
+      {required this.userName,
+      required this.fullName,
       required this.gender,
-      required this.location,
-      required this.time,
-      required this.profilePictureURL,
-      required this.lastMessage});
+      required this.email,
+      required this.height,
+      required this.birthDay,
+      required this.nationality,
+      required this.headline,
+      required this.longitude,
+      required this.latitude});
 
   factory Peoples.fromJson(Map<String, dynamic> parsedJson) {
     return new Peoples(
-        name: parsedJson['name'],
+        userName: parsedJson['userName'],
+        fullName: parsedJson['fullName'],
         gender: parsedJson['gender'],
-        location: parsedJson['location'],
-        time: parsedJson['time'],
-        lastMessage: parsedJson['lastMessage'],
-        id: parsedJson['id'] ?? parsedJson['userID'],
-        profilePictureURL: parsedJson['profilePictureURL']);
+        email: parsedJson['email'],
+        height: parsedJson['height'],
+        birthDay: parsedJson['birthDay'],
+        nationality: parsedJson['nationality'],
+        headline: parsedJson['headline'],
+        longitude: parsedJson['longtiude'],
+        latitude: parsedJson['latitude']);
   }
 
   // Map<String, dynamic> toJson() {

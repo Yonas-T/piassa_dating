@@ -1,3 +1,6 @@
+import 'package:piassa_application/blocs/authBloc/authBloc.dart';
+import 'package:piassa_application/models/peoples.dart';
+
 import '../../blocs/homePageBloc/homePageBloc.dart';
 import '../../blocs/homePageBloc/homePageEvent.dart';
 import '../../blocs/homePageBloc/homePageState.dart';
@@ -10,30 +13,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home.dart';
 
 class HomePageParent extends StatelessWidget {
-  User user;
+  // Peoples user;
   AuthRepository userRepository;
 
-  HomePageParent({required this.user, required this.userRepository});
+  HomePageParent({
+    // required this.user, 
+    required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomePageBloc(userRepository: userRepository),
-      child: HomePage(user: user, userRepository: userRepository),
+      create: (context) => AuthBloc(userRepository: userRepository),
+      child: HomePage(
+        // user: user, 
+        userRepository: userRepository),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  late User user;
-  late HomePageBloc homePageBloc;
+  // late Peoples user;
+  late AuthBloc authBloc;
   late AuthRepository userRepository;
 
-  HomePage({required this.user, required this.userRepository});
+  HomePage({
+    // required this.user, 
+    required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
-    homePageBloc = BlocProvider.of<HomePageBloc>(context);
+    authBloc = BlocProvider.of<AuthBloc>(context);
     return WillPopScope(onWillPop: () async => false, child: Home(
       // userId: user.uid,
       ));

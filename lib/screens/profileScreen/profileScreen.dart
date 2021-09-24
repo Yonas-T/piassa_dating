@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         religion: 'Orthodox',
         sport: 'Daily',
         imageUrl:
-            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
+            'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg',
         bio: 'I am an easy going person.'));
 
     super.initState();
@@ -39,16 +39,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: AppBarWidget(
             title: Text(''),
             actionIcon: Card(
               shape: CircleBorder(),
               elevation: 1,
               color: Color(kWhite),
-              child: IconButton(onPressed: () {
-                
-              }, icon: Icon(FontAwesomeIcons.slidersH, color: Color(kPrimaryPink),)),
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    FontAwesomeIcons.slidersH,
+                    color: Color(kPrimaryPink),
+                  )),
             ),
             leadingIcon: Container(),
             colorVal: Colors.transparent),
@@ -76,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   topRight: Radius.circular(24),
                 ),
               ),
-              height: MediaQuery.of(context).size.height * .6,
+              height: MediaQuery.of(context).size.height * .5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

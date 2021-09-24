@@ -32,7 +32,7 @@ class _EducationAndProfessionScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 16.0),
           child: AppBarWidget(
@@ -50,11 +50,14 @@ class _EducationAndProfessionScreenState
                     ))),
             colorVal: Color(kWhite),
             leadingIcon: IconButton(
-              icon:
-                  Icon(Icons.arrow_back, color: Color(klightPink), size: 30),
+              icon: Icon(Icons.arrow_back, color: Color(klightPink), size: 30),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text('Education and Profession', style: TextStyle(fontSize: kTitleBoldFont, fontWeight: FontWeight.bold, color: Color(kBlack))),
+            title: Text('Education and Profession',
+                style: TextStyle(
+                    fontSize: kTitleBoldFont,
+                    fontWeight: FontWeight.bold,
+                    color: Color(kBlack))),
           ),
         ),
       ),
@@ -88,7 +91,9 @@ class _EducationAndProfessionScreenState
                     child: Card(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1),
+                          side: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1),
                           borderRadius: BorderRadius.circular(4)),
                       color: Color(kWhite).withOpacity(0.5),
                       child: ClipRRect(
@@ -129,7 +134,9 @@ class _EducationAndProfessionScreenState
                     child: Card(
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1),
+                          side: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1),
                           borderRadius: BorderRadius.circular(4)),
                       color: Color(kWhite).withOpacity(0.5),
                       child: ClipRRect(
@@ -174,16 +181,19 @@ class _EducationAndProfessionScreenState
                       fillColor: Color(kWhite).withOpacity(0.5),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       hintText: "Job Title",
                       hintStyle: TextStyle(
                           color: Color(kDarkGrey), fontSize: kNormalFont),
@@ -199,16 +209,19 @@ class _EducationAndProfessionScreenState
                       fillColor: Color(kWhite).withOpacity(0.5),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
-                          borderSide:
-                              BorderSide(color: Color(kLightGrey).withOpacity(0.5), width: 1)),
+                          borderSide: BorderSide(
+                              color: Color(kLightGrey).withOpacity(0.5),
+                              width: 1)),
                       hintText: "Company",
                       hintStyle: TextStyle(
                           color: Color(kDarkGrey), fontSize: kNormalFont),
@@ -219,9 +232,9 @@ class _EducationAndProfessionScreenState
               )),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(klightPink).withOpacity(0.5), width: 1),
+                  border: Border.all(
+                      color: Color(klightPink).withOpacity(0.5), width: 1),
                   borderRadius: BorderRadius.all(Radius.circular(4)),
-                  
                 ),
                 width: MediaQuery.of(context).size.width,
                 height: kButtonHeight,
@@ -235,7 +248,9 @@ class _EducationAndProfessionScreenState
                     child: Text(
                       'Save',
                       style: TextStyle(
-                          fontSize: kButtonFont, fontWeight: FontWeight.bold, color: Color(kBlack)),
+                          fontSize: kButtonFont,
+                          fontWeight: FontWeight.bold,
+                          color: Color(kBlack)),
                     )),
               ),
               SizedBox(

@@ -44,7 +44,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     return Scaffold(
       backgroundColor: Color(kWhite),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(60),
         child: Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 16.0),
           child: AppBarWidget(
@@ -66,8 +66,8 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text('Preference',
-                style: TextStyle(
-                    fontSize: kTitleBoldFont, color: Color(kBlack))),
+                style:
+                    TextStyle(fontSize: kTitleBoldFont, color: Color(kBlack))),
           ),
         ),
       ),

@@ -66,7 +66,8 @@ class ProfileWidget extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(size.height * 0.02),
                 child: PhotoWidget(
-                  photoLink: userData.profilePictureURL,
+                  photoLink: 'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg',
+                  //  userData.profilePictureURL,
                 ),
               ),
             ),
@@ -104,7 +105,7 @@ class ProfileWidget extends StatelessWidget {
                         userGender(userData.gender),
                         Expanded(
                           child: Text(
-                            " " + userData.name + " ,22 ",
+                            " " + userData.fullName + " ,22 ",
                             // +
                             // (DateTime.now().year - userData.age.toDate().year)
                             //     .toString(),

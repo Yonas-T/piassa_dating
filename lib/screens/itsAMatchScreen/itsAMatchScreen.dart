@@ -26,11 +26,9 @@ class ItsAMatchScreen extends StatelessWidget {
               style: TextStyle(fontSize: kExtraLargeFont, color: Color(kWhite)),
             ),
           ),
-          
           Positioned(
             bottom: (MediaQuery.of(context).size.height / 2) - 170,
             left: (MediaQuery.of(context).size.width / 2) - 105,
-            
             child: Text(
               'Excepteur sint occaecat cupidatat',
               style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
@@ -39,7 +37,6 @@ class ItsAMatchScreen extends StatelessWidget {
           Positioned(
             bottom: (MediaQuery.of(context).size.height / 2) - 190,
             left: (MediaQuery.of(context).size.width / 2) - 140,
-            
             child: Text(
               'non proident, sunt in culpa qui officia deserunt',
               style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
@@ -48,14 +45,11 @@ class ItsAMatchScreen extends StatelessWidget {
           Positioned(
             bottom: (MediaQuery.of(context).size.height / 2) - 210,
             left: (MediaQuery.of(context).size.width / 2) - 85,
-            
             child: Text(
               'mollit anim id est laborum.',
               style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
             ),
           ),
-          
-          
           Positioned(
             top: (MediaQuery.of(context).size.height / 2) - 70,
             left: (MediaQuery.of(context).size.width / 2) - 25,
@@ -73,7 +67,7 @@ class ItsAMatchScreen extends StatelessWidget {
               child: Center(
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                      'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg'),
+                      'https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg'),
                   radius: 80,
                 ),
               ),
@@ -96,7 +90,7 @@ class ItsAMatchScreen extends StatelessWidget {
               child: Center(
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                      'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg'),
+                      'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg'),
                   radius: 80,
                 ),
               ),

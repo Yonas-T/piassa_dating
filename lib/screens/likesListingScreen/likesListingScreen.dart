@@ -18,23 +18,27 @@ class _LikesListingScreenState extends State<LikesListingScreen> {
   @override
   void initState() {
     _likesList.add(Peoples(
-        name: 'Test Person',
-        id: '1',
-        time: '10:00',
-        gender: 'female',
-        location: GeoPoint(10, 10),
-        profilePictureURL:
-            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-        lastMessage: 'Hey There'));
+        userName: 'Test Person',
+        fullName: '1',
+        gender: '10:00',
+        email: 'female',
+        latitude: GeoPoint(10, 10).latitude,
+        longitude: GeoPoint(10, 10).longitude,
+        birthDay: '12/12/12',
+        nationality: 'Ethiopian',
+        headline: 'asdfgh',
+        height: 1.7));
     _likesList.add(Peoples(
-        name: 'Another Person',
-        id: '2',
-        time: '04:00',
-        gender: 'female',
-        location: GeoPoint(10, 10),
-        profilePictureURL:
-            'https://thumbs.dreamstime.com/b/portrait-smiling-ethiopian-girl-woman-african-wearing-orange-red-sweater-jumper-colorful-bow-her-hair-black-165631021.jpg',
-        lastMessage: 'Hello'));
+        userName: 'Test Person',
+        fullName: '1',
+        gender: '10:00',
+        email: 'female',
+        latitude: GeoPoint(10, 10).latitude,
+        longitude: GeoPoint(10, 10).longitude,
+        birthDay: '12/12/12',
+        nationality: 'Ethiopian',
+        headline: 'asdfgh',
+        height: 1.7));
     super.initState();
   }
 
@@ -47,7 +51,9 @@ class _LikesListingScreenState extends State<LikesListingScreen> {
         // padding: EdgeInsets.fromLTRB(16, 32, 16, 32),
         child: Column(
           children: [
-            TopBarWidget(titleBar: 'Likes',),
+            TopBarWidget(
+              titleBar: 'Likes',
+            ),
             SearchBarWidget(
               height: restHeight / 2,
               listOfPeoples: _likesList,
@@ -80,4 +86,3 @@ class _LikesListingScreenState extends State<LikesListingScreen> {
     );
   }
 }
-

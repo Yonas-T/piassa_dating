@@ -110,9 +110,10 @@ class SplashScreenPage extends StatelessWidget {
           create: (context) =>
               AuthBloc(userRepository: userRepository)..add(AppStartedEvent()),
           child: Appp(userRepository: userRepository)),
-      image: new Image.asset("assets/images/piassa-logo-light.png"),
+      image: Image.asset("assets/images/piassa-logo-light.png"),
       photoSize: 100.0,
       useLoader: false,
+      
       gradientBackground: LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
