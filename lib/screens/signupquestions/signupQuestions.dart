@@ -77,6 +77,7 @@ class _SignupQuestionsScreenChildState
 
   List<String> _countries = ['Ethiopia', 'US', 'UK'];
   List<String> _gender = ['Male', 'Female'];
+  List<Widget> pageViewList = [];
 
   int _curPage = 1;
 
@@ -136,7 +137,7 @@ class _SignupQuestionsScreenChildState
       );
     }
 
-    List<Widget> pageViewList = [
+    pageViewList = [
       ListView(
         children: [
           TextField(
@@ -188,6 +189,7 @@ class _SignupQuestionsScreenChildState
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Color(kLightGrey), width: 1)),
             child: ExpansionTile(
+              key: GlobalKey(),
               title: Text(
                 _selectedCountry,
                 style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
@@ -228,6 +230,7 @@ class _SignupQuestionsScreenChildState
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Color(kLightGrey), width: 1)),
             child: ExpansionTile(
+              key: GlobalKey(),
               title: Text(
                 _selectedGender,
                 style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),

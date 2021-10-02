@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:piassa_application/models/peoples.dart';
@@ -22,20 +23,13 @@ class BasicProfileApiProvider {
 
   Future<Peoples> postBasicProfile(userName, fullName, gender, email, height,
       birthDay, nationality, headline, longitude, latitude) async {
-    // final user = await FirebaseAuth.instance.currentUser!;
-    // final idToken = user.getIdToken();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    var refreshData;
-    TokenRefresh().refreshSession().then((value) {
-      refreshData = prefs.getString('userData');
-      print('============== $refreshData');
-    });
-    var tokRef;
     final user = FirebaseAuth.instance.currentUser!;
+    // bool gotToken = false;
 
-    // var refreshData = prefs.getString('userData');
+
+    var tdata;
+
+    print('*************************');
 
     Map<String, dynamic> postJson = {
       "userName": userName,
@@ -50,35 +44,29 @@ class BasicProfileApiProvider {
       "latitude": latitude
     };
     print(postJson);
-    // print('ID TOKEN: $idToken');
-    // var refreshedToken = TokenRefresh().token;
-    // print('ID TOKEN: $idToken');
-    // final refreshIdToken = user.getIdTokenResult(true).then((value) {
-    //   print('REFRESH: $value');
 
-    //   tokRef = value.token;
-    // }).then((value) async {
-      print('IN THEN:  $refreshData');
-      final response = await http.post(
-        Uri.parse('$_baseUrl/api/match-preferences'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          // 'Content-type' : 'application/json',
-          'Accept': 'application/json',
-          'X-Authorization-Firebase': 'Bearer $refreshData'
-        },
-        body: json.encode(postJson),
-      );
-      print(response.statusCode);
-      print(response.body);
+    print('IN THEN:  $tdata');
 
-      if (response.statusCode == 200) {
-        return Peoples.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load');
-      }
-    // });
-    // return refreshIdToken;
+    final idToken = user.getIdToken(true).then((value) {
+      log('000000000000000: $value');
+      tdata = value;
+    });
+
+    final response = await http.post(
+      Uri.parse('$_baseUrl/api/match-preferences'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'X-Authorization-Firebase': '$tdata'
+      },
+      body: json.encode(postJson),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return Peoples.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load');
+    }
   }
 
   Future<Peoples> editBasicProfile() async {
@@ -98,9 +86,30 @@ class BasicProfileApiProvider {
       throw Exception('Failed to load');
     }
   }
+}
 
-  // Future<String> passRecommendedUsers() async {
-  //   final response = await client.post(Uri.parse('$_baseUrl/'));
+class DataJson {
+  String? token;
+  String? refreshToken;
 
-  // }
+  DataJson({required this.token, required this.refreshToken});
+
+  DataJson.fromJson(Map<String, dynamic> json) {
+    token = json['token'];
+    refreshToken = json['refresh_token'];
+  }
+}
+
+class DataToken {
+  late String token;
+  late String refreshToken;
+  late String userId;
+  late String expiryDate;
+
+  DataToken.fromJson(Map<String, dynamic> json) {
+    token = json['token'];
+    refreshToken = json['refresh_token'];
+    userId = json['userId'];
+    expiryDate = json['expiryDate'];
+  }
 }

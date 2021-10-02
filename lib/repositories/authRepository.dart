@@ -61,7 +61,6 @@ class AuthRepository {
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       // prefs.setString('token', authResult.credential!.token.toString());
       return authResult.user;
-
     } on PlatformException catch (e) {
       String authError = "";
       switch (e.code) {
@@ -109,6 +108,7 @@ class AuthRepository {
       );
       //  SharedPreferences prefs = await SharedPreferences.getInstance();
       // prefs.setString('token', authresult.credential!.token.toString());
+      print(authresult.user);
       return authresult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -186,7 +186,7 @@ class AuthRepository {
               }
             }
           }
-        }).then((value) async{
+        }).then((value) async {
           print('in then block: $value');
           final User? user = value.user;
 
@@ -252,22 +252,33 @@ class AuthRepository {
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount!.authentication;
       print('222222222222222');
+
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
       print('3333333333333333');
-      print(credential);
-      
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setString('token', credential.token.toString());
+      print(credential.token);
 
-      final User? user =
-          (await firebaseAuth.signInWithCredential(credential)).user;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+      final UserCredential userCred =
+          await firebaseAuth.signInWithCredential(credential);
+      userCred.user!.getIdToken(true).then((value) {
+        print('USERCRED: $value');
+        prefs.setString(
+          'token', value.toString());
+      });
+      // final User? user =
+      //     (await firebaseAuth.signInWithCredential(credential)).user;
+      final User? user = userCred.user;
       assert(user!.displayName != null);
       assert(!user!.isAnonymous);
+      print(user!.refreshToken);
       currentUser = firebaseAuth.currentUser!;
-      print('444444444444 $currentUser');
+      print('444444444444 ${currentUser.refreshToken}');
+      print(userCred.credential);
       return currentUser;
     } on PlatformException catch (e) {
       String authError = "";

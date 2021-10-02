@@ -16,6 +16,12 @@ class ImageUploadLoadingState extends ImageUploadState {
   List<Object> get props => [];
 }
 
+class ImagePickedState extends ImageUploadState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 class ImageUploadSuccessState extends ImageUploadState {
   // Peoples user;
   // Preference preference;

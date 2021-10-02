@@ -8,10 +8,10 @@ import './basicProfileState.dart';
 import 'package:bloc/bloc.dart';
 
 class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
-   BasicProfileRepository? basicProfileRepository;
-   MatchPreferenceRepository? matchPreferenceRepository;
-   Peoples? basicProfileToProceed;
-   Preference? preferencetoSubmit;
+  BasicProfileRepository? basicProfileRepository;
+  MatchPreferenceRepository? matchPreferenceRepository;
+  Peoples? basicProfileToProceed;
+  Preference? preferencetoSubmit;
 
   BasicProfileBloc({required BasicProfileRepository basicProfileRepository})
       : super(BasicProfileInitialState()) {
@@ -26,6 +26,8 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
     if (event is ProceedButtonPressed) {
       yield BasicProfileLoadingState();
       try {
+        print('BEFORE BLOC');
+
         basicProfileToProceed = Peoples(
             userName: event.userName,
             fullName: event.fullName,
@@ -37,7 +39,7 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
             headline: event.headline,
             longitude: event.longitude,
             latitude: event.latitude);
-
+        print(basicProfileToProceed!.userName);
         var userBasicProfile = await basicProfileRepository!.postBasicProfile(
             basicProfileToProceed!.userName,
             basicProfileToProceed!.fullName,
@@ -49,8 +51,10 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
             basicProfileToProceed!.headline,
             basicProfileToProceed!.latitude,
             basicProfileToProceed!.longitude);
-       
+
         // yield BasicProfileSuccessState(user);
+        print(userBasicProfile.userName);
+        print('AFTER BLOC');
         yield BasicProfileProceedState(userBasicProfile);
       } catch (e) {
         yield BasicProfileFailState(e.toString());
@@ -78,8 +82,8 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
             educationLevel: event.educationLevel,
             searchRadius: event.searchRadius);
 
-        var userMatchPreference =
-            await matchPreferenceRepository!.postMyPreference(
+        var userMatchPreference = await matchPreferenceRepository!
+            .postMyPreference(
                 preferencetoSubmit!.ageStart,
                 preferencetoSubmit!.ageEnd,
                 preferencetoSubmit!.religion,

@@ -6,7 +6,10 @@ class UploadImageRepository {
 
   Future<Peoples> uploadImageLink(uploadedFileURL, fileType) =>
       uploadImageProvider.uploadImageLink(uploadedFileURL, fileType);
-
+  
+  Future uploadFile(images) =>
+      uploadImageProvider.uploadFile(images);
+  
   // Future<Peoples> choosePeople() async {
   //   searchApiProvider.choosePeople();
   // }
