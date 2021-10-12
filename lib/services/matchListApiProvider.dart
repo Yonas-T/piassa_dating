@@ -58,7 +58,7 @@ class MatchListApiProvider {
   Future<String> postLikedMatch(likedId) async {
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       final response = await http.post(
-        Uri.parse('$_baseUrl/api/user-daily-recommendations/$likedId/pass'),
+        Uri.parse('$_baseUrl/api/user-daily-recommendations/$likedId/liked'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',

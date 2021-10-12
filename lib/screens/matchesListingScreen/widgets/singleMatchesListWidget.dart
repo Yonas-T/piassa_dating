@@ -50,20 +50,21 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                 height: size.height * 0.35,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  child: ExtendedImage.network(
-                          profileImgLink!,
-                          // width: ScreenUtil.instance.setWidth(400),
-                          // height: ScreenUtil.instance.setWidth(400),
-                          fit: BoxFit.fill,
-                          cache: true,
-                          // border: Border.all(color: Colors.red, width: 1.0),
-                          // shape: boxShape,
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          //cancelToken: cancellationToken,
-                        )
-                  //  PhotoWidget(
-                  //   photoLink: '$profileImgLink',
-                  // ),
+                  child: 
+                  // ExtendedImage.network(
+                  //         profileImgLink!,
+                  //         // width: ScreenUtil.instance.setWidth(400),
+                  //         // height: ScreenUtil.instance.setWidth(400),
+                  //         fit: BoxFit.fill,
+                  //         cache: true,
+                  //         // border: Border.all(color: Colors.red, width: 1.0),
+                  //         // shape: boxShape,
+                  //         borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  //         //cancelToken: cancellationToken,
+                  //       )
+                   PhotoWidget(
+                    photoLink: '$profileImgLink',
+                  ),
                 ),
               ),
             ),
