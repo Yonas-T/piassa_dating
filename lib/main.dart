@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
 import 'package:piassa_application/screens/chatScreen/chatScreen.dart';
 import 'package:piassa_application/screens/chatScreen/widgets/chatProfileWIdget.dart';
@@ -22,6 +26,9 @@ import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.d
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
+import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
+import 'package:piassa_application/utils/sheredPref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './blocs/authBloc/authBloc.dart';
 import './blocs/authBloc/authState.dart';
@@ -37,6 +44,7 @@ import 'package:splashscreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp();
 
   runApp(
@@ -58,38 +66,97 @@ class MyApp extends StatelessWidget {
         fontFamily: "Heebo",
       ),
       home: SplashScreenPage(
-          userRepository: userRepository,
-        ),
+        userRepository: userRepository,
+      ),
     );
   }
 }
 
-class Appp extends StatelessWidget {
+class Appp extends StatefulWidget {
   final AuthRepository userRepository;
 
   Appp({required this.userRepository});
 
   @override
+  _ApppState createState() => _ApppState();
+}
+
+class _ApppState extends State<Appp> {
+  String? value = '';
+  User? user;
+  bool isLoading = false;
+  late User userTemp;
+  bool isSignedIn = false;
+  BasicProfileRepository basicProfileRepository = BasicProfileRepository();
+  MatchPreferenceRepository matchPreferenceRepository =
+      MatchPreferenceRepository();
+
+  checkValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('signupValue') != null) {
+      setState(() {
+        value = prefs.getString('signupValue');
+      });
+    }
+  }
+
+  authval() async {
+    bool isSignedInAll = await widget.userRepository.isSignedIn();
+    var userTempAll = await widget.userRepository.getCurrentUser();
+    setState(() {
+      isSignedIn = isSignedInAll;
+      if (userTempAll != null) {
+        userTemp = userTempAll;
+      }
+    });
+    print('===========$isSignedIn');
+  }
+
+  @override
+  void initState() {
+    checkValue();
+    authval();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
-      // ignore: missing_return
       builder: (context, state) {
+        print(state);
         if (state is AuthInitialState) {
           return Container();
-        } else if (state is AuthenticatedState) {
-          return 
-          // ChatScreen(
-          //   'Helina','Female / 5km / 44m','I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',chat1Image
-          //   // user: state.user,
-          //   // userRepository: userRepository,
-          // );
-          Tabs(
-            user: state.user,
-            userId: state.user.uid,
-            userRepository: userRepository,
-          );
+        } else if (isSignedIn) {
+          return value == 'HasAllValue'
+              ? Tabs(
+                  user: userTemp,
+                  // userId: state.user.uid,
+                  userRepository: widget.userRepository,
+                )
+              : value == null
+                  ? SignupQuestionsScreen(
+                      matchPreferenceRepository: matchPreferenceRepository,
+                      basicProfileRepository: basicProfileRepository,
+                      user: userTemp)
+                  : value == 'HasImageValue'
+                      ? AllDoneScreen(
+                          user: user, userRepository: widget.userRepository)
+                      : value == 'HasPreferenceValue'
+                          ? GallaryScreen(
+                              basicProfileRepository: basicProfileRepository)
+                          : value == 'HasBasicProfileValue'
+                              ? SecondStepperPageWidget(
+                                  basicProfileRepository:
+                                      basicProfileRepository,
+                                  user: userTemp)
+                              : SignupQuestionsScreen(
+                                  matchPreferenceRepository:
+                                      matchPreferenceRepository,
+                                  basicProfileRepository:
+                                      basicProfileRepository,
+                                  user: userTemp);
         } else if (state is UnauthenticatedState) {
-          return LoginPageParent(userRepository: userRepository);
+          return LoginPageParent(userRepository: widget.userRepository);
         }
         return Container();
       },
@@ -113,7 +180,6 @@ class SplashScreenPage extends StatelessWidget {
       image: Image.asset("assets/images/piassa-logo-light.png"),
       photoSize: 100.0,
       useLoader: false,
-      
       gradientBackground: LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
@@ -122,3 +188,11 @@ class SplashScreenPage extends StatelessWidget {
     );
   }
 }
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+

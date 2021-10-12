@@ -20,7 +20,7 @@ import '../loginScreen/loginScreen.dart';
 import 'package:meta/meta.dart';
 
 class PhoneLoginParent extends StatelessWidget {
-  AuthRepository userRepository;
+  AuthRepository? userRepository;
 
   PhoneLoginParent({required this.userRepository});
 
@@ -34,7 +34,7 @@ class PhoneLoginParent extends StatelessWidget {
 }
 
 class PhoneLoginPage extends StatefulWidget {
-  late AuthRepository userRepository;
+  AuthRepository? userRepository;
 
   PhoneLoginPage({required this.userRepository});
 

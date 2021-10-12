@@ -7,12 +7,12 @@ import './phoneLoginEvent.dart';
 import './phoneLoginState.dart';
 
 class PhoneLoginBloc extends Bloc<PhoneLoginEvent, PhoneLoginState> {
-  final AuthRepository _userRepository;
+  final AuthRepository? _userRepository;
   StreamSubscription? subscription;
 
   String verID = "";
 
-  PhoneLoginBloc({required AuthRepository userRepository})
+  PhoneLoginBloc({required AuthRepository? userRepository})
       : _userRepository = userRepository,
         super(PhoneInitialLoginState());
 
@@ -41,7 +41,7 @@ class PhoneLoginBloc extends Bloc<PhoneLoginEvent, PhoneLoginState> {
       yield PhoneLoadingState();
       try {
         UserCredential result =
-            await _userRepository.verifyAndLogin(verID, event.otp);
+            await _userRepository!.verifyAndLogin(verID, event.otp);
         if (result.user != null) {
           yield PhoneLoginCompleteState(result.user!);
         } else {
@@ -76,8 +76,8 @@ class PhoneLoginBloc extends Bloc<PhoneLoginEvent, PhoneLoginState> {
   Stream<PhoneLoginEvent> sendOtp(String phoNo) async* {
     StreamController<PhoneLoginEvent> eventStream = StreamController();
     final phoneVerificationCompleted = (AuthCredential authCredential) {
-      _userRepository.getCurrentUser();
-      _userRepository.getCurrentUser().catchError((onError) {
+      _userRepository!.getCurrentUser();
+      _userRepository!.getCurrentUser().catchError((onError) {
         print(onError);
       }).then((user) {
         eventStream.add(PhoneLoginCompleteEvent(user!));
@@ -98,7 +98,7 @@ class PhoneLoginBloc extends Bloc<PhoneLoginEvent, PhoneLoginState> {
       eventStream.close();
     };
 
-    await _userRepository.sendOtp(
+    await _userRepository!.sendOtp(
         phoNo,
         Duration(seconds: 1),
         phoneVerificationFailed,

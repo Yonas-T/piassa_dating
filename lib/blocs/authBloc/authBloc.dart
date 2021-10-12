@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  late AuthRepository userRepository;
+  AuthRepository? userRepository;
 
-  AuthBloc({required AuthRepository userRepository})
+  AuthBloc({required AuthRepository? userRepository})
       : super(AuthInitialState()) {
     this.userRepository = userRepository;
   }
@@ -20,21 +20,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is AppStartedEvent) {
       try {
-        var isSignedIn = await userRepository.isSignedIn();
+        bool isSignedIn = await userRepository!.isSignedIn();
+        print('IS SIGNED IN: $isSignedIn');
         if (isSignedIn) {
-          var user = await userRepository.getCurrentUser();
+          var user = await userRepository!.getCurrentUser();
+          print('AUTH USER: $user');
           yield AuthenticatedState(user!);
         }
-        if (event is LogOutEvent) {
-          print("LOG out Bloc");
-          userRepository.signOut();
-          yield LogOutSuccessState();
-        } else {
-          yield UnauthenticatedState();
+        // if (event is LogOutEvent) {
+        //   print("LOG out Bloc");
+        //   userRepository!.signOut();
+        //   yield LogOutSuccessState();
+        // } 
+        else {
+          yield UnauthenticatedState('UnAuth');
         }
       } catch (e) {
-        yield UnauthenticatedState();
+        yield UnauthenticatedState(e.toString());
       }
     }
+
+    if (event is LogOutEvent) {
+          print("LOG out Bloc");
+          userRepository!.signOut();
+          yield LogOutSuccessState();
+        } else {
+          yield UnauthenticatedState('UnAuth');
+        }
   }
 }

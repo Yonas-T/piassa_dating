@@ -22,6 +22,10 @@ class AuthenticatedState extends AuthState {
 }
 
 class UnauthenticatedState extends AuthState {
+  String message;
+
+  UnauthenticatedState(this.message);
+
   @override
   // TODO: implement props
   List<Object> get props => [];

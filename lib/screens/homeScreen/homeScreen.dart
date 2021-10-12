@@ -1,5 +1,7 @@
 import 'package:piassa_application/blocs/authBloc/authBloc.dart';
+import 'package:piassa_application/blocs/searchBloc/searchBloc.dart';
 import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/repositories/searchRepository.dart';
 
 import '../../blocs/homePageBloc/homePageBloc.dart';
 import '../../blocs/homePageBloc/homePageEvent.dart';
@@ -14,43 +16,44 @@ import 'home.dart';
 
 class HomePageParent extends StatelessWidget {
   // Peoples user;
-  AuthRepository userRepository;
+  AuthRepository? userRepository;
 
-  HomePageParent({
-    // required this.user, 
-    required this.userRepository});
+  HomePageParent(
+      {
+      // required this.user,
+      required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthBloc(userRepository: userRepository),
       child: HomePage(
-        // user: user, 
-        userRepository: userRepository),
+          // user: user,
+          userRepository: userRepository),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
   // late Peoples user;
-  late AuthBloc authBloc;
-  late AuthRepository userRepository;
-
-  HomePage({
-    // required this.user, 
-    required this.userRepository});
+  AuthRepository? userRepository;
+  SearchRepository searchRepository = SearchRepository();
+  HomePage(
+      {
+      // required this.user,
+      required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
-    authBloc = BlocProvider.of<AuthBloc>(context);
-    return WillPopScope(onWillPop: () async => false, child: Home(
-      // userId: user.uid,
-      ));
+    return BlocProvider(
+      create: (context) => SearchBloc(searchRepository: searchRepository),
+      child:  WillPopScope(
+          onWillPop: () async => false,
+          child: Home(
+              searchRepository: searchRepository
+              )),
+    );
   }
 
-  void navigateToSignUpPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return SignUpPageParent(userRepository: userRepository);
-    }));
-  }
+
 }

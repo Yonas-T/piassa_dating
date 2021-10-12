@@ -7,15 +7,13 @@ class BasicProfileRepository {
   Future<Peoples> fetchBasicProfile() =>
       basicProfileApiProvider.fetchBasicProfile();
 
-  Future<Peoples> editBasicProfile() =>
-      basicProfileApiProvider.editBasicProfile();
+  Future<Peoples> editBasicProfile(userName, fullName, gender, email, height,
+          birthDay, nationality, headline, longitude, latitude) =>
+      basicProfileApiProvider.editBasicProfile(userName, fullName, gender, email, height,
+          birthDay, nationality, headline, longitude, latitude);
 
   Future<Peoples> postBasicProfile(userName, fullName, gender, email, height,
           birthDay, nationality, headline, longitude, latitude) =>
       basicProfileApiProvider.postBasicProfile(userName, fullName, gender,
           email, height, birthDay, nationality, headline, longitude, latitude);
-
-  // Future<Peoples> choosePeople() async {
-  //   searchApiProvider.choosePeople();
-  // }
 }

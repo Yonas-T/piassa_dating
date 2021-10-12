@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:piassa_application/models/images.dart';
-import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/repositories/uploadImageRepository.dart';
 import './imageUploadEvent.dart';
 import './imageUploadState.dart';
@@ -9,11 +9,12 @@ import 'package:bloc/bloc.dart';
 
 class ImageUploadBloc extends Bloc<ImageUploadEvent, ImageUploadState> {
   UploadImageRepository? uploadImageRepository;
-  Images? imagesToUpload;
-  List<File>? photosToCapture;
-  ImageUploadBloc({required UploadImageRepository ImageUploadRepository})
+  List<XFile>? images;
+  List<XFile>? photosToCapture;
+  String? photoTag;
+  ImageUploadBloc({required UploadImageRepository imageUploadRepository})
       : super(ImageUploadInitialState()) {
-    this.uploadImageRepository = ImageUploadRepository;
+    this.uploadImageRepository = imageUploadRepository;
   }
 
   @override
@@ -22,13 +23,11 @@ class ImageUploadBloc extends Bloc<ImageUploadEvent, ImageUploadState> {
   @override
   Stream<ImageUploadState> mapEventToState(ImageUploadEvent event) async* {
     if (event is UploadImageButtonPressed) {
-      yield ImagePickedState();
+      yield ImageUploadLoadingState();
       try {
-        imagesToUpload =
-            Images(filePath: event.filePath, fileType: event.fileType);
+        images = event.file;
 
-        var userImageUpload = await uploadImageRepository!.uploadImageLink(
-            imagesToUpload!.filePath, imagesToUpload!.fileType);
+        var userImageUpload = await uploadImageRepository!.uploadFile(images);
 
         // yield ImageUploadSuccessState(user);
         yield ImageUploadSuccessState();
@@ -36,16 +35,17 @@ class ImageUploadBloc extends Bloc<ImageUploadEvent, ImageUploadState> {
         yield ImageUploadFailState(e.toString());
       }
     }
-    if (event is PhotoCaptureButtonPressed) {
-      yield ImageUploadLoadingState();
-      try {
-        photosToCapture = event.images;
+    // if (event is PhotoCaptureButtonPressed) {
+    //   yield ImageUploadLoadingState();
+    //   try {
+    //     photosToCapture = event.images;
+    //     photoTag = event.fileType;
 
-        var userPhotosCapture =
-            await uploadImageRepository!.uploadFile(photosToCapture);
+    //     var userPhotosCapture =
+    //         await uploadImageRepository!.uploadFile(photosToCapture, photoTag);
 
-        yield ImagePickedState();
-      } catch (e) {}
-    }
+    //     yield ImagePickedState();
+    //   } catch (e) {}
+    // }
   }
 }

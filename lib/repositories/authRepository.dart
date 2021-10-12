@@ -18,6 +18,7 @@ class AuthRepository {
   static Reference storage = FirebaseStorage.instance.ref();
   final FacebookLogin fbLogin = new FacebookLogin();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  String? idToken;
 
   AuthRepository() {
     this.firebaseAuth = FirebaseAuth.instance;
@@ -56,10 +57,17 @@ class AuthRepository {
         email: email,
         password: pass,
       );
+      //     .then((value) {
+      //   value.user!.getIdToken(true).then((res) async {
+      //     idToken = res;
+      //     SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     prefs.setString('token', idToken!);
+      //   });
+      // });
       print("REPO : ${authResult.user?.email}");
 
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setString('token', authResult.credential!.token.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', authResult.credential!.token.toString());
       return authResult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -106,8 +114,15 @@ class AuthRepository {
         email: email,
         password: password,
       );
-      //  SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setString('token', authresult.credential!.token.toString());
+      //     .then((value) {
+      //   value.user!.getIdToken(true).then((res) async {
+      //     idToken = res;
+      //     SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     prefs.setString('token', idToken!);
+      //   });
+      // });
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', authresult.credential!.token.toString());
       print(authresult.user);
       return authresult.user;
     } on PlatformException catch (e) {
@@ -186,22 +201,17 @@ class AuthRepository {
               }
             }
           }
-        }).then((value) async {
-          print('in then block: $value');
-          final User? user = value.user;
+        });
+          final User? user = userCred.user;
 
-          // final User? user =
-          //     (await firebaseAuth.signInWithCredential(credential)).user;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', userCred.credential!.token.toString());
+      
           assert(user!.email != null);
           assert(user!.displayName != null);
           assert(!user!.isAnonymous);
           currentUser = firebaseAuth.currentUser!;
-          assert(user!.uid == currentUser!.uid);
-
-          // SharedPreferences prefs = await SharedPreferences.getInstance();
-          // prefs.setString('token', credential.token.toString());
-          // return currentUser;
-        });
+          assert(user!.uid == currentUser.uid);
         print('current user: $currentUser');
         return currentUser;
       }
@@ -260,25 +270,18 @@ class AuthRepository {
       print('3333333333333333');
       print(credential.token);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
-      final UserCredential userCred =
+      final userCred =
           await firebaseAuth.signInWithCredential(credential);
-      userCred.user!.getIdToken(true).then((value) {
-        print('USERCRED: $value');
-        prefs.setString(
-          'token', value.toString());
-      });
-      // final User? user =
-      //     (await firebaseAuth.signInWithCredential(credential)).user;
       final User? user = userCred.user;
-      assert(user!.displayName != null);
-      assert(!user!.isAnonymous);
-      print(user!.refreshToken);
-      currentUser = firebaseAuth.currentUser!;
-      print('444444444444 ${currentUser.refreshToken}');
-      print(userCred.credential);
+        assert(user!.email != null);
+        assert(user!.displayName != null);
+        assert(!user!.isAnonymous);
+        currentUser = firebaseAuth.currentUser!;
+        assert(user!.uid == currentUser.uid);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', userCred.credential!.token.toString());
+
       return currentUser;
     } on PlatformException catch (e) {
       String authError = "";

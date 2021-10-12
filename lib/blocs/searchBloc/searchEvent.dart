@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:piassa_application/models/education.dart';
+import 'package:piassa_application/models/lifeStyle.dart';
+import 'package:piassa_application/models/preference.dart';
 
 abstract class SearchEvent extends Equatable {
   @override
@@ -6,12 +9,9 @@ abstract class SearchEvent extends Equatable {
 }
 
 class LoadUserEvent extends SearchEvent {
-  final String peopleId;
-
-  LoadUserEvent(this.peopleId);
 
   @override
-  List<Object> get props => [peopleId];
+  List<Object> get props => [];
 }
 
 class LoadedUserEvent extends SearchEvent {
@@ -24,19 +24,19 @@ class LoadedUserEvent extends SearchEvent {
 }
 
 class SelectUserEvent extends SearchEvent {
-  final String currentPeopleId, selectedPeopleId, name, photoUrl;
+  final String recommendedId;
 
-  SelectUserEvent(this.currentPeopleId, this.selectedPeopleId, this.name, this.photoUrl);
+  SelectUserEvent(this.recommendedId);
 
   @override
-  List<Object> get props => [currentPeopleId, selectedPeopleId, name, photoUrl];
+  List<Object> get props => [recommendedId];
 }
 
 class PassUserEvent extends SearchEvent {
-  final String currentPeopleId, selectedPeopleId;
+  final String recommendedId;
 
-  PassUserEvent(this.currentPeopleId, this.selectedPeopleId);
+  PassUserEvent(this.recommendedId);
 
   @override
-  List<Object> get props => [currentPeopleId, selectedPeopleId];
+  List<Object> get props => [recommendedId];
 }

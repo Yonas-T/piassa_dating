@@ -8,6 +8,8 @@ class AppStartedEvent extends AuthEvent {
   List<Object> get props => [];
 }
 
+
+
 class LogOutEvent extends AuthEvent {
   @override
   // TODO: implement props

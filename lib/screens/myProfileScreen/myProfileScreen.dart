@@ -6,6 +6,7 @@ import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart';
 import 'package:piassa_application/screens/moveMakersScreen/moveMakersScreen.dart';
@@ -13,14 +14,13 @@ import 'package:piassa_application/screens/myProfileScreen/widgets/paymentPackag
 import 'package:piassa_application/screens/myProfileScreen/widgets/photoAndNameWidget.dart';
 import 'package:piassa_application/screens/myProfileScreen/widgets/profileDetailTileWidget.dart';
 import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
+import 'package:piassa_application/services/matchPreferenceApiProvider.dart';
 
 class MyProfileScreen extends StatefulWidget {
-  final User user;
-  final AuthRepository userRepository;
+  final User? user;
+  final AuthRepository? userRepository;
 
-  const MyProfileScreen({
-    required this.user, 
-    required this.userRepository});
+  const MyProfileScreen({required this.user, required this.userRepository});
 
   @override
   _MyProfileScreenState createState() => _MyProfileScreenState();
@@ -28,6 +28,7 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   late BasicProfileRepository basicProfileRepository;
+  late MatchPreferenceRepository matchPreferenceRepository;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +47,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           children: [
             SizedBox(height: 24),
             PhotoAndNameWidget(
-              user: widget.user,
+              user: widget.user!,
               basicProfileRepository: basicProfileRepository,
+              matchPreferenceRepository: matchPreferenceRepository,
             ),
             SizedBox(
               height: 16,

@@ -1,20 +1,33 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:piassa_application/blocs/searchBloc/searchBloc.dart';
+import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
+import 'package:piassa_application/blocs/searchBloc/searchState.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/models/userMatch.dart';
+import 'package:piassa_application/repositories/searchRepository.dart';
 import 'package:piassa_application/screens/homeScreen/widgets/fullPhotoWidget.dart';
 import 'package:scrolling_page_indicator/scrolling_page_indicator.dart';
 
 class Home extends StatefulWidget {
+  SearchRepository searchRepository;
+
+  Home({required this.searchRepository});
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   CardController? controller;
-
+  late SearchBloc searchBloc;
   List itemsTemp = [];
   int itemLength = 0;
+  List<UserMatch> matchLoaded = [];
 
   PageController? _pageController;
 
@@ -142,26 +155,71 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+    searchBloc = SearchBloc(searchRepository: widget.searchRepository);
+    searchBloc.add(LoadUserEvent());
+    print('3333333333333333333');
     setState(() {
       itemsTemp = explore_json;
-      itemLength = explore_json.length;
+      // itemLength = explore_json.length;
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(kWhite),
-      body: getBody(),
+      body: BlocProvider<SearchBloc>(
+        create: (_) => searchBloc,
+        child: BlocListener<SearchBloc, SearchState>(
+          listener: (context, state) {
+            print(state);
+
+            if (state is LoadUserFailState) {
+              Center(
+                child: Text('Load Failed'),
+              );
+            }
+          },
+          child: BlocBuilder<SearchBloc, SearchState>(
+            builder: (context, state) {
+              print(state);
+
+              if (state is InitialSearchState) {
+                return Center(
+                    child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(klightPink))));
+              } else if (state is SearchLoadingState) {
+                return Center(
+                    child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(klightPink))));
+              } else if (state is LoadedUserState) {
+                // setState(() {
+                // print('~~~${json.encode(state.userMatchLoaded[0])}');
+                itemLength = state.userMatchLoaded.length;
+                matchLoaded = state.userMatchLoaded;
+
+                // });
+                print('IN BLOC BUILDER: ${state.userMatchLoaded}');
+                return getBody(context, matchLoaded);
+              } else if (state is LoadUserFailState) {
+                return Container();
+              }
+              return Container();
+            },
+          ),
+        ),
+      ),
       // bottomSheet: getBottomSheet(),
     );
   }
 
-  Widget getBody() {
+  Widget getBody(BuildContext context, matchRecommendations) {
     var size = MediaQuery.of(context).size;
-
+    print(itemLength);
+    // print(json.encode(matchRecommendations[0]));
     return Padding(
       padding: const EdgeInsets.only(bottom: 1, top: 16),
       child: Container(
@@ -189,7 +247,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   PageView(
                     controller: _pageController =
                         PageController(initialPage: 0),
-                    children: _userProfile(size, index),
+                    children: _userProfile(size, index, matchRecommendations),
                     scrollDirection: Axis.vertical,
                   ),
                   // Container(
@@ -197,7 +255,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   //   height: size.height,
                   //   decoration: BoxDecoration(
                   //     image: DecorationImage(
-                  //         image: NetworkImage(itemsTemp[index]['img']),
+                  //         image: NetworkImage(itemsTemp[index]['img']),te
                   //         fit: BoxFit.cover),
                   //   ),
                   // ),
@@ -227,7 +285,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     Row(
                                       children: [
                                         Text(
-                                          itemsTemp[index]['name'],
+                                          matchRecommendations[index].fullName,
+                                          // itemsTemp[index]['name'],
                                           style: TextStyle(
                                               color: Color(kWhite),
                                               fontSize: 24,
@@ -237,7 +296,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           width: 10,
                                         ),
                                         Text(
-                                          itemsTemp[index]['age'],
+                                          '',
+                                          // itemsTemp[index]['age'],
                                           style: TextStyle(
                                             color: Color(kWhite),
                                             fontSize: 22,
@@ -250,67 +310,69 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: List.generate(
-                                            itemsTemp[index]['likes'].length,
-                                            (indexLikes) {
-                                          if (indexLikes == 0) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    // border: Border.all(
-                                                    //     color: Color(kWhite),
-                                                    //     width: 2),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    color: Color(kWhite)
-                                                        .withOpacity(0.2)),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 3,
-                                                          bottom: 3,
-                                                          left: 10,
-                                                          right: 10),
-                                                  child: Text(
-                                                    itemsTemp[index]['likes']
-                                                        [indexLikes],
-                                                    style: TextStyle(
-                                                        color: Color(kWhite)),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          return Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 8),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                  color: Color(kWhite)
-                                                      .withOpacity(0.2)),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 3,
-                                                    bottom: 3,
-                                                    left: 10,
-                                                    right: 10),
-                                                child: Text(
-                                                  itemsTemp[index]['likes']
-                                                      [indexLikes],
-                                                  style: TextStyle(
-                                                      color: Color(kWhite)),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                      ),
+                                      // child: Row(
+                                      //   children: List.generate(
+                                      //       itemsTemp[index]['likes'].length,
+                                      //       (indexLikes) {
+                                      //     if (indexLikes == 0) {
+                                      //       return Padding(
+                                      //         padding: const EdgeInsets.only(
+                                      //             right: 8),
+                                      //         child: Container(
+                                      //           decoration: BoxDecoration(
+                                      //               // border: Border.all(
+                                      //               //     color: Color(kWhite),
+                                      //               //     width: 2),
+                                      //               borderRadius:
+                                      //                   BorderRadius.circular(
+                                      //                       30),
+                                      //               color: Color(kWhite)
+                                      //                   .withOpacity(0.2)),
+                                      //           child: Padding(
+                                      //             padding:
+                                      //                 const EdgeInsets.only(
+                                      //                     top: 3,
+                                      //                     bottom: 3,
+                                      //                     left: 10,
+                                      //                     right: 10),
+                                      //             child: Text(
+                                      //               '',
+                                      //               // itemsTemp[index]['likes']
+                                      //               // [indexLikes],
+                                      //               style: TextStyle(
+                                      //                   color: Color(kWhite)),
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //       );
+                                      //     }
+                                      //     return Padding(
+                                      //       padding:
+                                      //           const EdgeInsets.only(right: 8),
+                                      //       child: Container(
+                                      //         decoration: BoxDecoration(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(30),
+                                      //             color: Color(kWhite)
+                                      //                 .withOpacity(0.2)),
+                                      //         child: Padding(
+                                      //           padding: const EdgeInsets.only(
+                                      //               top: 3,
+                                      //               bottom: 3,
+                                      //               left: 10,
+                                      //               right: 10),
+                                      //           child: Text(
+                                      //             '',
+                                      //             // itemsTemp[index]['likes']
+                                      //             // [indexLikes],
+                                      //             style: TextStyle(
+                                      //                 color: Color(kWhite)),
+                                      //           ),
+                                      //         ),
+                                      //       ),
+                                      //     );
+                                      //   }),
+                                      // ),
                                     )
                                   ],
                                 ),
@@ -333,19 +395,36 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             } else if (align.x > 0) {
               //Card is RIGHT swiping
             }
-            // print(itemsTemp.length);
           },
           swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
             /// Get orientation & index of swiped card!
-            if (index == (itemsTemp.length - 1)) {
+            print('#######');
+            print(matchRecommendations!.length);
+            print('INDEX: $index');
+            if (index == (matchRecommendations.length - 1)) {
               setState(() {
-                itemLength = itemsTemp.length - 1;
+                itemLength = matchRecommendations.length - 1;
               });
+              print(matchRecommendations[index].id);
+              if (orientation == CardSwipeOrientation.LEFT) {
+                passUserFunction(matchRecommendations[index].id);
+              } else if (orientation == CardSwipeOrientation.RIGHT) {
+                selectUserFunction(matchRecommendations[index].id);
+              }
             }
+            print('INDEX222: $index');
           },
         ),
       ),
     );
+  }
+
+  void passUserFunction(indx) {
+    searchBloc.add(PassUserEvent(indx));
+  }
+
+  void selectUserFunction(indx) {
+    searchBloc.add(SelectUserEvent(indx));
   }
 
   Widget getBottomSheet() {
@@ -387,11 +466,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   List<Widget> _userProfile(
-    Size size,
-    int index,
-  ) {
+      Size size, int index, List<UserMatch> matchRecommendations) {
     List<Widget> _returnWidgetList = [];
-    for (int i = 0; i < itemsTemp[index]['userImages'].length; i++) {
+    // print(json.encode(matchRecommendations[index]));
+    print('000000000${matchRecommendations[index].fullName}');
+    // print('LIST: ${matchRecommendations[index].userImages.length}');
+    for (int i = 0; i < matchRecommendations[index].userImages.length; i++) {
       Widget _userWidget = Stack(
         children: [
           GestureDetector(
@@ -401,8 +481,25 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               color: Colors.white,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(0.0),
-                  child: Image.network(itemsTemp[index]['userImages'][i],
-                      fit: BoxFit.cover)
+                  child: matchRecommendations[index]
+                              .userImages[i]
+                              .verificationStatus ==
+                          'VERIFIED'
+                      ? ExtendedImage.network(
+                          matchRecommendations[index].userImages[i].filePath,
+                          // width: ScreenUtil.instance.setWidth(400),
+                          // height: ScreenUtil.instance.setWidth(400),
+                          fit: BoxFit.fill,
+                          cache: true,
+                          // border: Border.all(color: Colors.red, width: 1.0),
+                          // shape: boxShape,
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          //cancelToken: cancellationToken,
+                        )
+// Image.network(
+//                           matchRecommendations[index].userImages[i].filePath,
+//                           fit: BoxFit.cover)
+                      : Container()
                   // CachedNetworkImage(
                   //   imageUrl: itemsTemp[index]['userImages'][i],
                   //   placeholder: (context, url) => Container(
@@ -420,11 +517,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
             ),
             onVerticalDragUpdate: (dragUpdateDetails) {
+              List<String> imgList = [];
+              for (var i = 0;
+                  i < matchRecommendations[index].userImages.length;
+                  i++) {
+                imgList.add(matchRecommendations[index].userImages[i].filePath);
+              }
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => FullPhoto(
-                            imageUrlList: itemsTemp[index]['userImages'],
+                            imageUrlList: imgList,
                             initIndex: i,
                           )));
             },
@@ -453,7 +556,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 dotSelectedSize: 10,
                 dotSpacing: 16,
                 controller: _pageController,
-                itemCount: itemsTemp[index]['userImages'].length,
+                itemCount: matchRecommendations[index].userImages.length,
                 orientation: Axis.vertical),
           ),
         ],

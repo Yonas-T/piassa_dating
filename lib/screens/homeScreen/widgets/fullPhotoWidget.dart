@@ -91,7 +91,9 @@ class _FullPhoto extends State<FullPhoto> {
                             ? 0
                             : event.cumulativeBytesLoaded /
                                 event.expectedTotalBytes!.toDouble(),
+                        valueColor: AlwaysStoppedAnimation<Color>(Color(klightPink)),
                       ),
+                      
                     ),
                   ),
                   backgroundDecoration: BoxDecoration(

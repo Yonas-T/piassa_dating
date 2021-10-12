@@ -1,6 +1,8 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:piassa_application/constants/constants.dart';
-import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/models/userImage.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/screens/homeScreen/widgets/photoWidget.dart';
 import 'package:piassa_application/screens/homeScreen/widgets/userGender.dart';
 
@@ -9,7 +11,7 @@ class SingleMatchesListWidget extends StatefulWidget {
   var photoHeight;
   var photoWidth;
   var clipRadius;
-  Peoples userData;
+  UserMatch userData;
   var containerHeight;
   var containerWidth;
   var userId;
@@ -20,6 +22,20 @@ class SingleMatchesListWidget extends StatefulWidget {
 }
 
 class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
+  String? profileImgLink;
+
+  @override
+  void initState() {
+    List<UserImage> imgs = widget.userData.userImages;
+    for (var img in imgs) {
+      if (img.fileType == 'PROFILE' && img.verificationStatus == 'VERIFIED') {
+        setState(() {
+          profileImgLink = img.filePath;
+        });
+      }
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -34,9 +50,20 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                 height: size.height * 0.35,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  child: PhotoWidget(
-                    photoLink: 'widget.userData.profilePictureURL',
-                  ),
+                  child: ExtendedImage.network(
+                          profileImgLink!,
+                          // width: ScreenUtil.instance.setWidth(400),
+                          // height: ScreenUtil.instance.setWidth(400),
+                          fit: BoxFit.fill,
+                          cache: true,
+                          // border: Border.all(color: Colors.red, width: 1.0),
+                          // shape: boxShape,
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          //cancelToken: cancellationToken,
+                        )
+                  //  PhotoWidget(
+                  //   photoLink: '$profileImgLink',
+                  // ),
                 ),
               ),
             ),
@@ -76,7 +103,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                           userGender(widget.userData.gender),
                           Expanded(
                             child: Text(
-                              " " + 'widget.userData.name' + " ,22 ",
+                              " " + '${widget.userData.fullName}',
                               // +
                               // (DateTime.now().year - userData.age.toDate().year)
                               //     .toString(),

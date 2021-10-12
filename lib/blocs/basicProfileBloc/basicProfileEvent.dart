@@ -44,21 +44,3 @@ class ProceedButtonPressed extends BasicProfileEvent {
       ];
 }
 
-class SubmitButtonPressed extends BasicProfileEvent {
-  final int ageStart;
-  final int ageEnd;
-  final String religion;
-  final String educationLevel;
-  final double searchRadius;
-
-  SubmitButtonPressed(
-      {required this.ageStart,
-      required this.ageEnd,
-      required this.religion,
-      required this.educationLevel,
-      required this.searchRadius});
-
-  @override
-  List<Object> get props =>
-      [ageStart, ageEnd, religion, educationLevel, searchRadius];
-}

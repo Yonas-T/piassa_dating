@@ -12,6 +12,7 @@ import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/homeScreen/homeScreen.dart';
 import 'package:piassa_application/screens/likesListingScreen/likesListingScreen.dart';
@@ -22,20 +23,34 @@ import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signUpScreen/signUpScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 
-class Tabs extends StatefulWidget {
-  final User user;
-  final userId;
-  final AuthRepository userRepository;
+class Tabs extends StatelessWidget {
+  AuthRepository? userRepository;
 
-  const Tabs({this.userId, 
-  required this.user, 
-  required this.userRepository});
+  final User? user;
 
+  Tabs({required this.user, required this.userRepository});
   @override
-  _TabsState createState() => _TabsState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AuthBloc(userRepository: userRepository),
+      child: TabsChild(user: user, userRepository: userRepository),
+    );
+  }
 }
 
-class _TabsState extends State<Tabs> {
+class TabsChild extends StatefulWidget {
+  final User? user;
+  final userId;
+  final AuthRepository? userRepository;
+
+  const TabsChild(
+      {this.userId, required this.user, required this.userRepository});
+
+  @override
+  _TabsChildState createState() => _TabsChildState();
+}
+
+class _TabsChildState extends State<TabsChild> {
   List<Widget> _pages = [];
   List<String> _titles = ['Profile', 'Search', 'Matches'];
   late int _selectedPageIndex;
@@ -57,12 +72,10 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
     _pages = [
-      MyProfileScreen(
-        user: widget.user, 
-        userRepository: widget.userRepository),
+      MyProfileScreen(user: widget.user, userRepository: widget.userRepository),
       HomePageParent(
-        // user: widget.user, 
-        userRepository: widget.userRepository),
+          // user: widget.user,
+          userRepository: widget.userRepository),
       MatchesListingScreen()
     ];
     return Theme(

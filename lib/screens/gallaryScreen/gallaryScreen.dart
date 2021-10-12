@@ -4,35 +4,61 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:piassa_application/blocs/imageUploadBloc/imageUploadBloc.dart';
+import 'package:piassa_application/blocs/imageUploadBloc/imageUploadEvent.dart';
+import 'package:piassa_application/blocs/imageUploadBloc/imageUploadState.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/uploadImageRepository.dart';
+import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
+import 'package:piassa_application/services/uploadImageApiProvider.dart';
+import 'package:piassa_application/utils/sheredPref.dart';
 
-class GallaryScreen extends StatefulWidget {
-  final String? title;
-
-  // final User user;
+class GallaryScreen extends StatelessWidget {
+  UploadImageRepository imageUploadRepository = UploadImageRepository();
   final BasicProfileRepository basicProfileRepository;
 
-  const GallaryScreen(
+  GallaryScreen({required this.basicProfileRepository});
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          ImageUploadBloc(imageUploadRepository: imageUploadRepository),
+      child: GallaryScreenChild(
+        imageUploadRepository: imageUploadRepository,
+      ),
+    );
+  }
+}
+
+class GallaryScreenChild extends StatefulWidget {
+  // final User user;
+  final UploadImageRepository imageUploadRepository;
+
+  const GallaryScreenChild(
       {Key? key,
-      this.title,
       // required this.user,
-      required this.basicProfileRepository})
+      required this.imageUploadRepository})
       : super(key: key);
 
   @override
-  _GallaryScreenState createState() => _GallaryScreenState();
+  _GallaryScreenChildState createState() => _GallaryScreenChildState();
 }
 
-class _GallaryScreenState extends State<GallaryScreen> {
-  List<XFile>? _imageFileList;
-  late AuthRepository userRepository;
-  late User user;
+class _GallaryScreenChildState extends State<GallaryScreenChild> {
+  List<XFile>? _imageFileList = [];
+  List<XFile>? listToUpload = [];
+  // var _imageFileMap = Map<String, XFile>();
+  XFile? _cameraFile;
+  AuthRepository? userRepository;
+  User? user;
+  bool keyValue = true;
 
   set _imageFile(XFile? value) {
     _imageFileList = value == null ? null : [value];
@@ -58,46 +84,61 @@ class _GallaryScreenState extends State<GallaryScreen> {
     //       source: source, maxDuration: const Duration(seconds: 10));
     // await _playVideo(file);
     // } else
-    if (isMultiImage) {
-      await _displayPickImageDialog(context!, (
-          // double? maxWidth, double? maxHeight, int? quality
-          ) async {
-        try {
-          final pickedFileList = await _picker.pickMultiImage(
-              // maxWidth: maxWidth,
-              // maxHeight: maxHeight,
-              // imageQuality: quality,
-              );
-          setState(() {
-            _imageFileList = pickedFileList;
-          });
-        } catch (e) {
-          setState(() {
-            _pickImageError = e;
-          });
+    // if (isMultiImage) {
+    //   await _displayPickImageDialog(context!, () async {
+    //     try {
+    //       final pickedFileList = await _picker.pickMultiImage();
+    //       setState(() {
+    //         _imageFileList = pickedFileList;
+    //       });
+    //     } catch (e) {
+    //       setState(() {
+    //         _pickImageError = e;
+    //       });
+    //     }
+    //   });
+    // } else {
+    await _displayPickImageDialog(context!, () async {
+      try {
+        final pickedFile = await _picker.pickImage(
+          source: source,
+          // preferredCameraDevice: source == ImageSource.camera? CameraDevice.front: CameraDevice.rear
+        );
+
+        if (source == ImageSource.camera) {
+          if (pickedFile!.path.isNotEmpty) {
+            setState(() {
+              _imageFileList!.add(pickedFile);
+
+              // _cameraFile = pickedFile;
+            });
+          }
+        } else {
+          if (pickedFile!.path.isNotEmpty && _imageFileList!.length < 4) {
+            var i = 1;
+            setState(() {
+              print(pickedFile.path);
+              // keyValue
+              // ? _imageFileMap['PROFILE'] = pickedFile
+              //  _imageFileMap['GALLERY$i'] = pickedFile;
+              // keyValue = false;
+              i++;
+              print(keyValue);
+              _imageFileList!.add(pickedFile);
+            });
+          }
         }
-      });
-    } else {
-      await _displayPickImageDialog(context!, (
-          // double? maxWidth, double? maxHeight, int? quality
-          ) async {
-        try {
-          final pickedFile = await _picker.pickImage(
-            source: source,
-            // maxWidth: maxWidth,
-            // maxHeight: maxHeight,
-            // imageQuality: quality,
-          );
-          setState(() {
-            _imageFile = pickedFile;
-          });
-        } catch (e) {
-          setState(() {
-            _pickImageError = e;
-          });
-        }
-      });
-    }
+
+        // setState(() {
+        //   _imageFile = pickedFile;
+        // });
+      } catch (e) {
+        setState(() {
+          _pickImageError = e;
+        });
+      }
+    });
+    // }
   }
 
   // @override
@@ -123,103 +164,133 @@ class _GallaryScreenState extends State<GallaryScreen> {
     if (retrieveError != null) {
       return retrieveError;
     }
-    if (_imageFileList != null) {
-      return Semantics(
-          child: ListView.builder(
-            key: UniqueKey(),
-            itemBuilder: (context, index) {
-              // Why network for web?
-              // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
-              return Container(
-                height: MediaQuery.of(context).size.height,
-                // label: 'image_picker_._picked_image',
-                child: kIsWeb
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                              ),
-                              SizedBox(height: 16),
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                              ),
-                              SizedBox(height: 16),
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                              ),
-                              SizedBox(height: 16),
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                              ),
-                              SizedBox(height: 16),
-                              Image.file(
-                                File(_imageFileList![index].path),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-              );
-            },
-            itemCount: _imageFileList!.length,
+    if (_cameraFile != null || _imageFileList != null) {
+      return ListView(
+        children: [
+          SizedBox(height: 4),
+          Text(
+            '    Upload Photos',
+            style: TextStyle(fontSize: kNormalFont),
           ),
-          label: 'image_picker_._picked_images');
+          SizedBox(height: 4),
+          _imageFileList!.length != 0
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: _imageFileList!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    // String key = _imageFileMap.keys.elementAt(index);
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.file(
+                        File(_imageFileList![index].path),
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  })
+              : GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8),
+                  itemCount: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      color: Colors.grey[300],
+                    );
+                  }),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '    Selfie for Verification',
+                style: TextStyle(fontSize: kNormalFont),
+              ),
+              _cameraFile != null
+                  ? Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.file(
+                            File(_cameraFile!.path),
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                          ),
+                        ),
+                        Container()
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                          width: MediaQuery.of(context).size.width * 0.49,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          color: Colors.grey[300],
+                        ),
+                        Container()
+                      ],
+                    ),
+            ],
+          ),
+          SizedBox(height: 16),
+        ],
+      );
     } else if (_pickImageError != null) {
       return Text(
         'Pick image error: $_pickImageError',
         textAlign: TextAlign.center,
       );
     } else {
-      return const Text(
-        'You have not yet picked an image.',
-        textAlign: TextAlign.center,
+      return ListView(
+        children: [
+          SizedBox(height: 4),
+          Text(
+            '    Upload Photos',
+            style: TextStyle(fontSize: kNormalFont),
+          ),
+          SizedBox(height: 4),
+          GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, crossAxisSpacing: 8, mainAxisSpacing: 8),
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  color: Colors.grey[300],
+                );
+              }),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 4),
+              Text(
+                '    Selfie for Verification',
+                style: TextStyle(fontSize: kNormalFont),
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    width: MediaQuery.of(context).size.width * 0.49,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    color: Colors.grey[300],
+                  ),
+                  Container()
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+        ],
       );
     }
   }
@@ -255,7 +326,9 @@ class _GallaryScreenState extends State<GallaryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_imageFileList);
     return Scaffold(
+      backgroundColor: Color(kWhite),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Padding(
@@ -268,11 +341,8 @@ class _GallaryScreenState extends State<GallaryScreen> {
                     color: Color(klightPink), shape: BoxShape.circle),
                 child: IconButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return Tabs(
-                            user: user, userRepository: userRepository);
-                      }));
+                      BlocProvider.of<ImageUploadBloc>(context)
+                          .add(UploadImageButtonPressed(file: _imageFileList!));
                     },
                     icon: Icon(
                       Icons.check,
@@ -290,36 +360,63 @@ class _GallaryScreenState extends State<GallaryScreen> {
           ),
         ),
       ),
-      body: Center(
-        child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
-            ? FutureBuilder<void>(
-                future: retrieveLostData(),
-                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return const Text(
-                        'You have not yet picked an image.',
-                        textAlign: TextAlign.center,
-                      );
-                    case ConnectionState.done:
-                      return _handlePreview();
-                    default:
-                      if (snapshot.hasError) {
-                        return Text(
-                          'Pick image/video error: ${snapshot.error}}',
-                          textAlign: TextAlign.center,
-                        );
-                      } else {
-                        return const Text(
-                          'You have not yet picked an image.',
-                          textAlign: TextAlign.center,
-                        );
-                      }
-                  }
-                },
-              )
-            : _handlePreview(),
+      body: BlocListener<ImageUploadBloc, ImageUploadState>(
+        listener: (context, state) {
+          print(state);
+          if (state is ImageUploadSuccessState) {
+            navigateToAllDoneScreen(context
+                // , state.user
+                );
+            SetSharedPrefValue().setSignupValue('HasImageValue');
+            
+          }
+        },
+        child: BlocBuilder<ImageUploadBloc, ImageUploadState>(
+            builder: (context, state) {
+          if (state is ImageUploadInitialState) {
+            return Container(
+              child: defaultTargetPlatform == TargetPlatform.android
+                  ? FutureBuilder<void>(
+                      future: retrieveLostData(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<void> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                            return const Text(
+                              'You have not yet picked an image.',
+                              textAlign: TextAlign.center,
+                            );
+                          case ConnectionState.done:
+                            return _handlePreview();
+                          default:
+                            if (snapshot.hasError) {
+                              return Text(
+                                'Pick image/video error: ${snapshot.error}}',
+                                textAlign: TextAlign.center,
+                              );
+                            } else {
+                              return const Text(
+                                'You have not yet picked an image.',
+                                textAlign: TextAlign.center,
+                              );
+                            }
+                        }
+                      },
+                    )
+                  : _handlePreview(),
+            );
+          } else if (state is ImageUploadLoadingState) {
+            return Center(child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Color(klightPink))));
+          } else if (state is ImageUploadFailState) {
+            print(state.message);
+            return Text(state.message);
+          }
+          return Container();
+        }),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -329,8 +426,7 @@ class _GallaryScreenState extends State<GallaryScreen> {
           //   label: 'image_picker_._from_gallery',
           //   child: FloatingActionButton(
           //     onPressed: () {
-          //       isVideo = false;
-          //       _onImageButtonPressed(ImageSource.gallery, context: context);
+          //       UploadImageApiProvider().uploadFile(_imageFileList, 'PROFILE');
           //     },
           //     heroTag: 'image0',
           //     tooltip: 'Pick Image from gallery',
@@ -376,6 +472,15 @@ class _GallaryScreenState extends State<GallaryScreen> {
         ],
       ),
     );
+  }
+
+  void navigateToAllDoneScreen(BuildContext context
+      // , Peoples user
+      ) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return AllDoneScreen(user: user, userRepository: userRepository);
+      // Tabs(user: user, userRepository: userRepository);
+    }));
   }
 
   Text? _getRetrieveErrorWidget() {

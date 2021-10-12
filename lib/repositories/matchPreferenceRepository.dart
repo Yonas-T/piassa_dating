@@ -9,20 +9,11 @@ class MatchPreferenceRepository {
   Future<Preference> fetchMyPreference() =>
       matchPreferenceProvider.fetchMyPreference();
 
-  Future<Preference> patchMyPreference() =>
-      matchPreferenceProvider.patchMyPreference();
+  Future<Preference> patchMyPreference(ageStart, ageEnd, religion, educationLevel, searchRadius) =>
+      matchPreferenceProvider.patchMyPreference(ageStart, ageEnd, religion, educationLevel, searchRadius);
 
   Future<Preference> postMyPreference(
           ageStart, ageEnd, religion, educationLevel, searchRadius) =>
-      matchPreferenceProvider.postMyPreference(
-        ageStart,
-        ageEnd,
-        religion,
-        educationLevel,
-        searchRadius,
-      );
+      matchPreferenceProvider.postMyPreference(ageStart, ageEnd, religion, educationLevel, searchRadius);
 
-  // Future<Peoples> choosePeople() async {
-  //   searchApiProvider.choosePeople();
-  // }
 }

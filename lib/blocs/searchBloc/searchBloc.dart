@@ -1,9 +1,12 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
 import 'package:piassa_application/blocs/searchBloc/searchState.dart';
+import 'package:piassa_application/models/education.dart';
+import 'package:piassa_application/models/lifeStyle.dart';
 import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/models/preference.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/repositories/searchRepository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
@@ -21,81 +24,50 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchEvent event,
   ) async* {
     if (event is SelectUserEvent) {
-      yield* _mapSelectToState(
-          currentPeoplesId: '', name: '', photoUrl: '', selectedPeoplesId: '');
+      yield* _mapSelectToState(recommendedId: event.recommendedId);
     }
     if (event is PassUserEvent) {
-      yield* _mapPassToState(
-        currentPeoplesId: event.currentPeopleId,
-        selectedPeoplesId: event.selectedPeopleId,
-      );
+      yield* _mapPassToState(recommendedId: event.recommendedId);
     }
     if (event is LoadUserEvent) {
-      yield* _mapLoadUserToState(currentPeoplesId: event.peopleId);
+      yield* _mapLoadUserToState();
     }
   }
 
   Stream<SearchState> _mapSelectToState(
-      {required String currentPeoplesId,
-      required String selectedPeoplesId,
-      required String name,
-      required String photoUrl}) async* {
-    yield LoadingState();
+      {required String recommendedId}) async* {
+    yield SearchLoadingState();
 
-    // Peoples user = await _searchRepository.chooseUser(
-    //     currentPeoplesId, selectedPeoplesId, name, photoUrl);
+    
+    List<UserMatch> _matchRecommendations = await _searchRepository.fetchPeoplesToSearchFor();
+    print('MATCHRECOM:${_matchRecommendations.length}');
+    _matchRecommendations.removeWhere((item) => item.id == recommendedId);
+    print('MATCHRECOM-1:${_matchRecommendations.length}');
 
-    // Peoples currentUser =
-    //     await _searchRepository.getUserInterests(currentUserId);
-    // Peoples user = Peoples(
-    //     name: 'name',
-    //     id: 'id',
-    //     gender: 'male',
-    //     time: 'time',
-    //     location: GeoPoint(10, 10),
-    //     profilePictureURL: 'profilePictureURL',
-    //     lastMessage: 'lastMessage');
-    // Peoples currentUser = Peoples(name: 'name', gender: 'male', location: GeoPoint(10, 10), id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
-    // yield LoadUserState(user, currentUser);
+    String selectRecommended =
+        await _searchRepository.choosePeople(recommendedId);
+    yield LoadedUserState(_matchRecommendations);
   }
 
-  Stream<SearchState> _mapPassToState(
-      {required String currentPeoplesId,
-      required String selectedPeoplesId}) async* {
-    yield LoadingState();
-    // Peoples user =
-    //     await _searchRepository.passUser(currentPeoplesId, selectedPeoplesId);
-    // Peoples currentUser =
-    //     await _searchRepository.getUserInterests(currentPeoplesId);
-    // Peoples user = Peoples(
-    //     name: 'name',
-    //     id: 'id',
-    //     time: 'time',
-    //     gender: 'male',
-    //     location: GeoPoint(10, 10),
-    //     profilePictureURL: 'profilePictureURL',
-    //     lastMessage: 'lastMessage');
-    // Peoples currentUser = Peoples(name: 'name', location: GeoPoint(10, 10), gender: 'male', id: 'id', time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
+  Stream<SearchState> _mapPassToState({required String recommendedId}) async* {
+    yield SearchLoadingState();
+    List<UserMatch> _matchRecommendations =
+        await _searchRepository.fetchPeoplesToSearchFor();
+        print('MATCHRECOM:${_matchRecommendations.length}');
+    _matchRecommendations.removeWhere((item) => item.id == recommendedId);
+    print('MATCHRECOM-1:${_matchRecommendations.length}');
+    
+    String passRecommended =
+        await _searchRepository.choosePeople(recommendedId);
 
-    // yield LoadUserState(user, currentUser);
+    yield LoadedUserState(_matchRecommendations);
   }
 
-  Stream<SearchState> _mapLoadUserToState(
-      {required String currentPeoplesId}) async* {
-    yield LoadingState();
-    // Peoples user = await _searchRepository.getUser(currentPeoplesId);
-    // Peoples currentUser =
-    //     await _searchRepository.getUserInterests(currentPeoplesId);
-    // Peoples user = Peoples(
-    //     name: 'name',
-    //     id: 'id',
-    //     time: 'time',
-    //     gender: 'male',
-    //     location: GeoPoint(10, 10),
-    //     profilePictureURL: 'profilePictureURL',
-    //     lastMessage: 'lastMessage');
-    // Peoples currentUser = Peoples(name: 'name', gender: 'male', id: 'id', location: GeoPoint(10, 10),time: 'time', profilePictureURL: 'profilePictureURL', lastMessage: 'lastMessage');
-
-    // yield LoadUserState(user, currentUser);
+  Stream<SearchState> _mapLoadUserToState() async* {
+    yield InitialSearchState();
+    List<UserMatch> _matchRecommendations =
+        await _searchRepository.fetchPeoplesToSearchFor();
+    print('IN BLOC RECOMM: $_matchRecommendations');
+    yield LoadedUserState(_matchRecommendations);
   }
 }

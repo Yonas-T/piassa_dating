@@ -1,49 +1,90 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piassa_application/blocs/matchListBloc/matchListBloc.dart';
+import 'package:piassa_application/blocs/matchListBloc/matchListBloc.dart';
+import 'package:piassa_application/blocs/matchListBloc/matchListEvent.dart';
+import 'package:piassa_application/blocs/matchListBloc/matchListState.dart';
+import 'package:piassa_application/blocs/matchQueueBloc/matchQueueBloc.dart';
+import 'package:piassa_application/blocs/matchQueueBloc/matchQueueEvent.dart';
+import 'package:piassa_application/blocs/matchQueueBloc/matchQueueState.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/models/userImage.dart';
+import 'package:piassa_application/models/userMatch.dart';
+import 'package:piassa_application/repositories/matchListRepository.dart';
 import 'package:piassa_application/screens/chatScreen/chatScreen.dart';
 import 'package:piassa_application/screens/itsAMatchScreen/itsAMatchScreen.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/matchSearchBarWidget.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/singleMatchesListWidget.dart';
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 
-class MatchesListingScreen extends StatefulWidget {
+class MatchesListingScreen extends StatelessWidget {
+  MatchListRepository matchListRepository = MatchListRepository();
+
   @override
-  _MatchesListingScreenState createState() => _MatchesListingScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          MatchQueueBloc(matchListRepository: matchListRepository),
+      child:
+          MatchesListingChildScreen(matchListRepository: matchListRepository),
+    );
+  }
 }
 
-class _MatchesListingScreenState extends State<MatchesListingScreen> {
-  List<Peoples> _matchesList = [];
+class MatchesListingChildScreen extends StatefulWidget {
+  MatchListRepository matchListRepository;
+  MatchesListingChildScreen({required this.matchListRepository});
+
+  @override
+  _MatchesListingChildScreenState createState() =>
+      _MatchesListingChildScreenState();
+}
+
+class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
   bool _isLiked = false;
+  late MatchQueueBloc matchQueueBloc;
+  late MatchListBloc matchListBloc;
+  String profileImg = '';
 
   @override
   void initState() {
     _isLiked = false;
-    _matchesList.add(Peoples(
-        userName: 'Test Person',
-        fullName: '1',
-        gender: '10:00',
-        email: 'female',
-        latitude: GeoPoint(10, 10).latitude,
-        longitude: GeoPoint(10, 10).longitude,
-        birthDay: '12/12/12',
-        nationality: 'Ethiopian',
-        headline: 'asdfgh',
-        height: 1.7));
-    _matchesList.add(Peoples(
-        userName: 'Test Person',
-        fullName: '1',
-        gender: '10:00',
-        email: 'female',
-        latitude: GeoPoint(10, 10).latitude,
-        longitude: GeoPoint(10, 10).longitude,
-        birthDay: '12/12/12',
-        nationality: 'Ethiopian',
-        headline: 'asdfgh',
-        height: 1.7));
+    matchQueueBloc =
+        MatchQueueBloc(matchListRepository: widget.matchListRepository);
+    matchListBloc =
+        MatchListBloc(matchListRepository: widget.matchListRepository);
+    matchQueueBloc.add(LoadMatchQueue());
+
+    matchListBloc.add(LoadMatchedList());
+    // _matchesList.add(Peoples(
+    //     userName: 'Test Person',
+    //     fullName: '1',
+    //     gender: '10:00',
+    //     email: 'female',
+    //     latitude: GeoPoint(10, 10).latitude,
+    //     longitude: GeoPoint(10, 10).longitude,
+    //     birthDay: '12/12/12',
+    //     nationality: 'Ethiopian',
+    //     headline: 'asdfgh',
+    //     height: 1.7));
+    // _matchesList.add(Peoples(
+    //     userName: 'Test Person',
+    //     fullName: '1',
+    //     gender: '10:00',
+    //     email: 'female',
+    //     latitude: GeoPoint(10, 10).latitude,
+    //     longitude: GeoPoint(10, 10).longitude,
+    //     birthDay: '12/12/12',
+    //     nationality: 'Ethiopian',
+    //     headline: 'asdfgh',
+    //     height: 1.7));
     super.initState();
   }
 
@@ -69,65 +110,183 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
                 ),
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * .14,
-              padding: EdgeInsets.only(left: 20),
-              child: ListView.builder(
-                  // shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _matchesList.length,
-                  itemBuilder: (context, i) {
-                    return Container(
-                      padding: EdgeInsets.only(left: 4, right: 4),
-                      child: CircleAvatar(
-                        radius: 44,
-                        backgroundColor: Color(kDarkGrey),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            '_matchesList[i].profilePictureURL',
-                          ),
-                          radius: 40,
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Card(
-                              shape: CircleBorder(),
-                              elevation: 6,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _isLiked = true;
+            BlocProvider(
+              create: (_) => matchQueueBloc,
+              child: BlocListener<MatchQueueBloc, MatchQueueState>(
+                listener: (context, state) {
+                  print(state);
 
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return ItsAMatchScreen();
-                                    }));
-                                  });
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 8.0,
-                                  child: !_isLiked
-                                      ? Icon(
-                                          Icons.favorite,
-                                          size: 10.0,
-                                          color: Colors.red,
-                                        )
-                                      : Icon(
-                                          Icons.check,
-                                          size: 10.0,
-                                          color: Colors.green,
-                                        ),
-                                  // ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                  if (state is MatchQueueFailState) {
+                    Container(
+                      height: 100,
+                      child: Center(
+                        child: Text('Load Failed'),
                       ),
                     );
-                  }),
+                  }
+                },
+                child: BlocBuilder<MatchQueueBloc, MatchQueueState>(
+                    builder: (context, state) {
+                  if (state is InitialMatchQueueState) {
+                    return Center(
+                      child: Container(
+                        height: 100,
+                      ),
+                    );
+                  } else if (state is MatchQueueLoadingState) {
+                    return Center(
+                      child: Container(
+                        height: 100,
+                      ),
+                    );
+                  } else if (state is LoadedMatchQueueState) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * .14,
+                      padding: EdgeInsets.only(left: 20),
+                      child: state.matchQueue.length == 0
+                          ? Container(
+                              height: 100,
+                              width: MediaQuery.of(context).size.width,
+                            )
+                          : ListView.builder(
+                              // shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: state.matchQueue.length,
+                              itemBuilder: (context, i) {
+                                List<UserImage> images =
+                                    state.matchQueue[i].userImages;
+                                // log('Profile IMg: ${json.encode(state.matchQueue[i])}');
+                                for (var img in images) {
+                                  if (img.fileType == 'PROFILE' &&
+                                      img.fileType == 'VERIFIED') {
+                                    setState(() {
+                                      profileImg = img.filePath;
+                                    });
+                                    print('Profile IMg: $images');
+                                  }
+                                }
+
+                                return Container(
+                                  padding: EdgeInsets.only(left: 4, right: 4),
+                                  child: CircleAvatar(
+                                    radius: 44,
+                                    backgroundColor: Color(kDarkGrey),
+                                    child: CircleAvatar(
+                                      backgroundColor: Color(kWhite),
+                                      backgroundImage: NetworkImage(
+                                        '$profileImg',
+                                      ),
+                                      radius: 40,
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Card(
+                                          shape: CircleBorder(),
+                                          elevation: 6,
+                                          child: InkWell(
+                                            onTap: () {
+                                              matchQueueBloc.add(LikeMatchQueue(
+                                                  likedId:
+                                                      state.matchQueue[i].id));
+                                              setState(() {
+                                                _isLiked = true;
+                                                state.matchQueue.length--;
+                                                // Navigator.of(context).push(
+                                                //     MaterialPageRoute(
+                                                //         builder: (context) {
+                                                //   return ItsAMatchScreen();
+                                                // }));
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 12.0,
+                                              child: !_isLiked
+                                                  ? Icon(
+                                                      Icons.favorite,
+                                                      size: 14.0,
+                                                      color: Colors.red,
+                                                    )
+                                                  : Icon(
+                                                      Icons.check,
+                                                      size: 10.0,
+                                                      color: Colors.green,
+                                                    ),
+                                              // ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                    );
+                  }
+                  return Container();
+                }),
+              ),
             ),
+
+            // Container(
+            //   height: MediaQuery.of(context).size.height * .14,
+            //   padding: EdgeInsets.only(left: 20),
+            //   child: ListView.builder(
+            //       // shrinkWrap: true,
+            //       scrollDirection: Axis.horizontal,
+            //       physics: NeverScrollableScrollPhysics(),
+            //       itemCount: _matchesList.length,
+            //       itemBuilder: (context, i) {
+            //         return Container(
+            //           padding: EdgeInsets.only(left: 4, right: 4),
+            //           child: CircleAvatar(
+            //             radius: 44,
+            //             backgroundColor: Color(kDarkGrey),
+            //             child: CircleAvatar(
+            //               backgroundImage: NetworkImage(
+            //                 '_matchesList[i].profilePictureURL',
+            //               ),
+            //               radius: 40,
+            //               child: Align(
+            //                 alignment: Alignment.bottomRight,
+            //                 child: Card(
+            //                   shape: CircleBorder(),
+            //                   elevation: 6,
+            //                   child: InkWell(
+            //                     onTap: () {
+            //                       setState(() {
+            //                         _isLiked = true;
+
+            //                         Navigator.of(context).push(
+            //                             MaterialPageRoute(builder: (context) {
+            //                           return ItsAMatchScreen();
+            //                         }));
+            //                       });
+            //                     },
+            //                     child: CircleAvatar(
+            //                       backgroundColor: Colors.white,
+            //                       radius: 8.0,
+            //                       child: !_isLiked
+            //                           ? Icon(
+            //                               Icons.favorite,
+            //                               size: 10.0,
+            //                               color: Colors.red,
+            //                             )
+            //                           : Icon(
+            //                               Icons.check,
+            //                               size: 10.0,
+            //                               color: Colors.green,
+            //                             ),
+            //                       // ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         );
+            //       }),
+            // ),
             SizedBox(height: 4),
             Container(
               padding: EdgeInsets.only(left: 8, right: 8),
@@ -147,41 +306,113 @@ class _MatchesListingScreenState extends State<MatchesListingScreen> {
               ),
             ),
             SizedBox(height: 4),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-                childAspectRatio: 0.8,
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                children: _matchesList.map((value) {
-                  return InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return ChatScreen(
-                                'Helina',
-                                'Female / 5km / 44m',
-                                'I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',
-                                "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg");
-                          }));
-                        },
-                        child: SingleMatchesListWidget(
-                          userData: value,
-                        ),
+            BlocProvider(
+              create: (_) => matchListBloc,
+              child: BlocListener<MatchListBloc, MatchListState>(
+                listener: (context, state) {
+                  print(state);
+
+                  if (state is MatchQueueFailState) {
+                    Container(
+                      height: 100,
+                      child: Center(
+                        child: Text('Load Failed'),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }
+                },
+                child: BlocBuilder<MatchListBloc, MatchListState>(
+                    builder: (context, state) {
+                  if (state is InitialMatchListState) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Color(klightPink))),
+                    );
+                  } else if (state is LoadedMatchListState) {
+                    return Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 4,
+                        mainAxisSpacing: 4,
+                        childAspectRatio: 0.8,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
+                        children: state.matchList.map((value) {
+                          return InkWell(
+                            onTap: () {},
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return ChatScreen(
+                                        'Helina',
+                                        'Female / 5km / 44m',
+                                        'I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',
+                                        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg");
+                                  }));
+                                },
+                                child: SingleMatchesListWidget(
+                                  userData: value,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  } else if (state is MatchListLoadingState) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Color(klightPink))),
+                    );
+                  }
+                  return Container();
+                }),
               ),
             ),
+            // Expanded(
+            //   child: GridView.count(
+            //     crossAxisCount: 2,
+            //     crossAxisSpacing: 4,
+            //     mainAxisSpacing: 4,
+            //     childAspectRatio: 0.8,
+            //     scrollDirection: Axis.vertical,
+            //     physics: BouncingScrollPhysics(),
+            //     children: _matchesList.map((value) {
+            //       return InkWell(
+            //         onTap: () {},
+            //         child: Container(
+            //           width: MediaQuery.of(context).size.width * 0.45,
+            //           height: MediaQuery.of(context).size.height * 0.35,
+            //           alignment: Alignment.center,
+            //           child: InkWell(
+            //             onTap: () {
+            //               Navigator.of(context)
+            //                   .push(MaterialPageRoute(builder: (context) {
+            //                 return ChatScreen(
+            //                     'Helina',
+            //                     'Female / 5km / 44m',
+            //                     'I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',
+            //                     "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg");
+            //               }));
+            //             },
+            //             child: SingleMatchesListWidget(
+            //               userData: value,
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     }).toList(),
+            //   ),
+            // ),
           ],
         ),
       ),

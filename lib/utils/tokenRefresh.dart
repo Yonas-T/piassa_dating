@@ -11,17 +11,17 @@ class TokenRefresh {
   DateTime? _expiryDate;
   String? _userId;
 
-  String? get token {
-    if (_expiryDate != null &&
-        _expiryDate!.isAfter(DateTime.now()) &&
-        _token != null &&
-        _refreshToken != null) {
-      // print(token);
-      return _token;
-    }
-    refreshSession();
-    return null;
-  }
+  // String? get token {
+  //   if (_expiryDate != null &&
+  //       _expiryDate!.isAfter(DateTime.now()) &&
+  //       _token != null &&
+  //       _refreshToken != null) {
+  //     // print(token);
+  //     return _token;
+  //   }
+  //   refreshSession(token);
+  //   return null;
+  // }
 
   Future<String> refreshSession() async {
     const WEB_API_KEY = 'AIzaSyDNczMIfz0WbjMO-NKaBlfOvffonwLJSJc';

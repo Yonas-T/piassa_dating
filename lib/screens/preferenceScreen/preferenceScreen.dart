@@ -16,8 +16,8 @@ class PreferenceScreen extends StatefulWidget {
 }
 
 class _PreferenceScreenState extends State<PreferenceScreen> {
-  RangeLabels labels = RangeLabels('1', "100");
-  RangeValues values = RangeValues(1, 100);
+  RangeLabels labels = RangeLabels('18', "60");
+  RangeValues values = RangeValues(18, 60);
   int divisions = 5;
   List strLabels = [];
   int _currentScore = 0;
@@ -26,7 +26,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
   int eduIndex = 0;
   late String _selectedUniversity;
 
-  List<String> _universities = ['Orthodox', 'Muslim', 'Protestant'];
+  List<String> _universities = ['Orthodox', 'Muslim', 'Protestant', 'Other'];
 
   LinearGradient gradient = LinearGradient(colors: <Color>[
     Color(kPrimaryPink),
@@ -35,7 +35,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
   @override
   void initState() {
-    _selectedUniversity = _universities[0];
+    _selectedUniversity = 'Religion';
     super.initState();
   }
 

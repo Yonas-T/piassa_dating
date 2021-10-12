@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 class SigninBloc extends Bloc<SigninEvent, SigninState> {
-  late AuthRepository userRepository;
+  AuthRepository? userRepository;
 
-  SigninBloc({required AuthRepository userRepository}) : super(SigninInitial()) {
+  SigninBloc({required AuthRepository? userRepository}) : super(SigninInitial()) {
     this.userRepository = userRepository;
   }
 
@@ -20,7 +20,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     if (event is SigninButtonPressed) {
       yield SigninLoading();
       try {
-        var user = await userRepository.signUpUserWithEmailPass(
+        var user = await userRepository!.signUpUserWithEmailPass(
             event.email, event.password);
         print("BLoC : ${user!.email}");
         yield SigninSuccessful(user);

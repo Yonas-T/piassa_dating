@@ -12,21 +12,29 @@ import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/stepProgressWidget.dart';
+import 'package:piassa_application/utils/helper.dart';
+import 'package:piassa_application/utils/sheredPref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupQuestionsScreen extends StatelessWidget {
   final BasicProfileRepository basicProfileRepository;
+  final MatchPreferenceRepository matchPreferenceRepository;
   final User user;
   SignupQuestionsScreen(
-      {required this.basicProfileRepository, required this.user});
+      {required this.matchPreferenceRepository,
+      required this.basicProfileRepository,
+      required this.user});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          BasicProfileBloc(basicProfileRepository: basicProfileRepository),
+      create: (context) => BasicProfileBloc(
+          basicProfileRepository: basicProfileRepository,
+          matchPreferenceRepository: matchPreferenceRepository),
       child: SignupQuestionsScreenChild(
         basicProfileRepository: basicProfileRepository,
         user: user,
@@ -74,25 +82,23 @@ class _SignupQuestionsScreenChildState
       longitude: 0.0,
       latitude: 0.0);
   FocusNode passfocus = new FocusNode();
-
+  bool isLoading = false;
   List<String> _countries = ['Ethiopia', 'US', 'UK'];
   List<String> _gender = ['Male', 'Female'];
   List<Widget> pageViewList = [];
 
-  int _curPage = 1;
-
   StepProgressWidget _getStepProgress() {
     return StepProgressWidget(
-      curStep: _curPage,
+      curStep: 1,
     );
   }
 
-  changePageView(i) {
-    setState(() {
-      _curPage = i + 1;
-    });
-    print('page view 2 $_curPage');
-  }
+  // changePageView(i) {
+  //   setState(() {
+  //     _curPage = i + 1;
+  //   });
+  //   print('page view 2 $_curPage');
+  // }
 
   getPosition() async {
     await Geolocator.getCurrentPosition().then((value) {
@@ -144,6 +150,7 @@ class _SignupQuestionsScreenChildState
             controller: nameCntrl,
             decoration: InputDecoration(
               errorStyle: TextStyle(color: Colors.white),
+              errorText: validateName(nameCntrl.text),
               filled: true,
               fillColor: Color(kWhite).withOpacity(0.5),
               border: OutlineInputBorder(
@@ -165,7 +172,8 @@ class _SignupQuestionsScreenChildState
           TextField(
             controller: emailCntrl,
             decoration: InputDecoration(
-              errorStyle: TextStyle(color: Colors.white),
+              errorStyle: TextStyle(color: Colors.red),
+              errorText: validateEmail(emailCntrl.text),
               filled: true,
               fillColor: Color(kWhite).withOpacity(0.5),
               border: OutlineInputBorder(
@@ -415,12 +423,12 @@ class _SignupQuestionsScreenChildState
           ),
         ],
       ),
-      Container(
-        child: SecondStepperPageWidget(
-          user: widget.user,
-          basicProfileRepository: widget.basicProfileRepository,
-        ),
-      )
+      // Container(
+      //   child: SecondStepperPageWidget(
+      //     user: widget.user,
+      //     basicProfileRepository: widget.basicProfileRepository,
+      //   ),
+      // )
     ];
 
     return Scaffold(
@@ -444,7 +452,7 @@ class _SignupQuestionsScreenChildState
                     ))),
             colorVal: Color(kWhite),
             leadingIcon: Container(),
-            title: Text('Preference',
+            title: Text('Profile',
                 style:
                     TextStyle(fontSize: kTitleBoldFont, color: Color(kBlack))),
           ),
@@ -452,18 +460,17 @@ class _SignupQuestionsScreenChildState
       ),
       body: BlocListener<BasicProfileBloc, BasicProfileState>(
           listener: (context, state) {
-            if (state is BasicProfileSuccessState) {
-              navigateToGallaryScreen(context
-                  // , state.user
-                  );
-            } else if (state is BasicProfileProceedState) {
-              print(state);
-              changePageView(1);
-              // setState(() {
-              //   pageViewIndex = 1;
-              // });
-              _pgController.nextPage(
-                  duration: Duration(milliseconds: 1000), curve: Curves.easeIn);
+            print(state);
+            if (state is BasicProfileProceedState) {
+              navigateToSecondStepperScreen(context);
+              SetSharedPrefValue().setSignupValue('HasBasicProfileValue');
+              // print(state);
+              // changePageView(1);
+              // // setState(() {
+              // //   pageViewIndex = 1;
+              // // });
+              // _pgController.nextPage(
+              //     duration: Duration(milliseconds: 1000), curve: Curves.easeIn);
             }
           },
           child: Container(
@@ -477,10 +484,13 @@ class _SignupQuestionsScreenChildState
                   if (state is BasicProfileInitialState) {
                     return Container();
                   } else if (state is BasicProfileLoadingState) {
-                    return CircularProgressIndicator();
+                    isLoading = true;
                   } else if (state is BasicProfileFailState) {
                     print(state.message);
-                    return Text(state.message);
+                    return Container(
+                      child: Text(state.message),
+                    );
+                    // isLoading = false;
                   }
                   return Container();
                 }),
@@ -488,17 +498,332 @@ class _SignupQuestionsScreenChildState
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 16, top: 8.0, right: 16, bottom: 8),
-                    child: PageView.builder(
-                      controller: _pgController,
-                      itemCount: pageViewList.length,
-                      itemBuilder: (context, pageViewIndex) {
-                        return pageViewList[pageViewIndex];
-                      },
-                      physics: NeverScrollableScrollPhysics(),
-                      // onPageChanged: (i) {
-                      //   changePageView(i);
-                      // },
+                    child: ListView(
+                      children: [
+                        TextField(
+                          controller: nameCntrl,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.5),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            hintText: "Full name",
+                            hintStyle: TextStyle(
+                                color: Color(kDarkGrey), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                        SizedBox(height: 16),
+                        TextField(
+                          controller: emailCntrl,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.5),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            hintText: "email",
+                            hintStyle: TextStyle(
+                                color: Color(kDarkGrey), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        SizedBox(height: 32),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  color: Color(kLightGrey), width: 1)),
+                          child: ExpansionTile(
+                            key: GlobalKey(),
+                            title: Text(
+                              _selectedCountry,
+                              style: TextStyle(
+                                  fontSize: kNormalFont, color: Color(kBlack)),
+                            ),
+                            iconColor: Color(klightPink),
+                            collapsedIconColor: Color(klightPink),
+                            children: <Widget>[
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: _countries.length,
+                                  itemBuilder: (context, i) {
+                                    return Container(
+                                      padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                      alignment: Alignment.centerLeft,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            basicProfileData.nationality =
+                                                _countries[i];
+                                            _selectedCountry = _countries[i];
+                                          });
+                                        },
+                                        child: Text(
+                                          _countries[i],
+                                          style: TextStyle(
+                                              fontSize: kNormalFont,
+                                              color: Color(kBlack)),
+                                        ),
+                                      ),
+                                    );
+                                  })
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 32),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  color: Color(kLightGrey), width: 1)),
+                          child: ExpansionTile(
+                            key: GlobalKey(),
+                            title: Text(
+                              _selectedGender,
+                              style: TextStyle(
+                                  fontSize: kNormalFont, color: Color(kBlack)),
+                            ),
+                            iconColor: Color(klightPink),
+                            collapsedIconColor: Color(klightPink),
+                            children: <Widget>[
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: _gender.length,
+                                  itemBuilder: (context, i) {
+                                    return Container(
+                                      padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                      alignment: Alignment.centerLeft,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            basicProfileData.gender =
+                                                _gender[i];
+                                            _selectedGender = _gender[i];
+                                          });
+                                        },
+                                        child: Text(
+                                          _gender[i],
+                                          style: TextStyle(
+                                              fontSize: kNormalFont,
+                                              color: Color(kBlack)),
+                                        ),
+                                      ),
+                                    );
+                                  })
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 32),
+                        GestureDetector(
+                          onTap: () {
+                            // FocusScope.of(context).requestFocus(FocusNode());
+                            DatePicker.showDatePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime(1975, 1, 1),
+                                maxTime: DateTime(2019, 12, 31),
+                                theme: DatePickerTheme(
+                                    // headerColor: Colors.black,
+                                    backgroundColor: Color(kWhite),
+                                    itemStyle: TextStyle(
+                                        color: Color(kBlack),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                    doneStyle: TextStyle(
+                                        color: Color(kBlack),
+                                        fontSize: 16)), onChanged: (date) {
+                              // _dateController.text =
+                              //     date.toString().substring(0, 10);
+                            }, onConfirm: (date) {
+                              // FocusScope.of(context)
+                              //     .requestFocus(FocusNode());
+                              dateCntrl.text = date.toString().substring(0, 10);
+                              FocusScope.of(context).requestFocus(passfocus);
+
+                              // print('confirm $date');
+                            },
+                                currentTime: DateTime.utc(2005, 8, 15),
+                                locale: LocaleType.en);
+                          },
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              controller: dateCntrl,
+
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(kWhite).withOpacity(0.5),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    borderSide: BorderSide(
+                                        color: Color(kLightGrey), width: 1)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    borderSide: BorderSide(
+                                        color: Color(kLightGrey), width: 1)),
+                                // focusedBorder: UnderlineInputBorder(
+                                //   borderSide: BorderSide(color: kPrimaryNavy.withOpacity(0.4)),
+                                // ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    borderSide: BorderSide(
+                                        color: Color(kLightGrey), width: 1)),
+                                hintText: 'Date of Birth',
+                                // '${('Date of birth'.tr().toString())}',
+                                hintStyle: TextStyle(
+                                    color: Color(kLightGrey),
+                                    fontSize: kNormalFont),
+
+                                contentPadding: EdgeInsets.only(left: 16),
+                              ),
+                              // keyboardType: TextInputType.phone,
+                              onSaved: (value) {
+                                // print(value);
+                                basicProfileData.birthDay = value!;
+                              },
+                              // maxLength: 8,
+                              // maxLengthEnforced: false,
+                              validator: (String? arg) {
+                                if (arg!.length == 0)
+                                  return 'Please provide a valid date.';
+                                else
+                                  return null;
+                              },
+                              // TextInputFormatters are applied in sequence.
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 32),
+                        TextField(
+                          controller: heightCntrl,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.red),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.5),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            hintText: "Height",
+                            hintStyle: TextStyle(
+                                color: Color(kDarkGrey), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                        SizedBox(height: 16),
+                        TextField(
+                          controller: headlineCntrl,
+                          minLines: 3,
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.5),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                    color: Color(kLightGrey), width: 1)),
+                            hintText: "Tell us something about you",
+                            hintStyle: TextStyle(
+                                color: Color(kDarkGrey), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                        SizedBox(height: 16),
+                        isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color(klightPink))),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color(kLightGrey), width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4)),
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                height: kButtonHeight,
+                                child: TextButton(
+                                    onPressed: () {
+                                      print(' not passed function');
+                                      _onProceedButtonPressed();
+                                      print('passed function');
+                                      FocusScope.of(context).unfocus();
+                                      // changePageView(1);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        primary: Color(kWhite),
+                                        padding: EdgeInsets.all(8),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(4))),
+                                    child: Text(
+                                      'Proceed',
+                                      style: TextStyle(
+                                          fontSize: kNormalFont,
+                                          color: Color(kBlack)),
+                                    )),
+                              ),
+                        SizedBox(
+                          height: 48,
+                        ),
+                      ],
                     ),
+
+                    // PageView.builder(
+                    //   controller: _pgController,
+                    //   itemCount: pageViewList.length,
+                    //   itemBuilder: (context, pageViewIndex) {
+                    //     return pageViewList[pageViewIndex];
+                    //   },
+                    //   physics: NeverScrollableScrollPhysics(),
+                    //   // onPageChanged: (i) {
+                    //   //   changePageView(i);
+                    //   // },
+                    // ),
                   ),
                 ),
               ],
@@ -507,12 +832,12 @@ class _SignupQuestionsScreenChildState
     );
   }
 
-  void navigateToGallaryScreen(BuildContext context
+  void navigateToSecondStepperScreen(BuildContext context
       // , Peoples user
       ) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return GallaryScreen(
-          // user: widget.user,
+      return SecondStepperPageWidget(
+          user: widget.user,
           basicProfileRepository: widget.basicProfileRepository);
       // Tabs(user: user, userRepository: userRepository);
     }));

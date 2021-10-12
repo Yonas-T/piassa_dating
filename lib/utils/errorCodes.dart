@@ -10,7 +10,6 @@ class ErrorCodes {
   static const String ERROR_OPERATION_NOT_ALLOWED = "ERROR_OPERATION_NOT_ALLOWED";
   static const String ERROR_CODE_WEAK_PASSWORD = "ERROR_CODE_WEAK_PASSWORD";
 
-
 }
 
 class ErrorMessages {

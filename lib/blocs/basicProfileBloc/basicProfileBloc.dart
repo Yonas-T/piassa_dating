@@ -13,9 +13,10 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
   Peoples? basicProfileToProceed;
   Preference? preferencetoSubmit;
 
-  BasicProfileBloc({required BasicProfileRepository basicProfileRepository})
+  BasicProfileBloc({required BasicProfileRepository basicProfileRepository, required MatchPreferenceRepository matchPreferenceRepository})
       : super(BasicProfileInitialState()) {
     this.basicProfileRepository = basicProfileRepository;
+    this.matchPreferenceRepository = matchPreferenceRepository;
   }
 
   @override
@@ -56,41 +57,6 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
         print(userBasicProfile.userName);
         print('AFTER BLOC');
         yield BasicProfileProceedState(userBasicProfile);
-      } catch (e) {
-        yield BasicProfileFailState(e.toString());
-      }
-    }
-    if (event is SubmitButtonPressed) {
-      yield BasicProfileLoadingState();
-      try {
-        // var userBasicProfile = await basicProfileRepository.postBasicProfile(
-        //     basicProfileToProceed.userName,
-        //     basicProfileToProceed.fullName,
-        //     basicProfileToProceed.gender,
-        //     basicProfileToProceed.email,
-        //     basicProfileToProceed.height,
-        //     basicProfileToProceed.birthDay,
-        //     basicProfileToProceed.nationality,
-        //     basicProfileToProceed.headline,
-        //     basicProfileToProceed.latitude,
-        //     basicProfileToProceed.longitude);
-        // print('BASIC PROFILE: $userBasicProfile');
-        preferencetoSubmit = Preference(
-            ageStart: event.ageStart,
-            ageEnd: event.ageEnd,
-            religion: event.religion,
-            educationLevel: event.educationLevel,
-            searchRadius: event.searchRadius);
-
-        var userMatchPreference = await matchPreferenceRepository!
-            .postMyPreference(
-                preferencetoSubmit!.ageStart,
-                preferencetoSubmit!.ageEnd,
-                preferencetoSubmit!.religion,
-                preferencetoSubmit!.educationLevel,
-                preferencetoSubmit!.searchRadius);
-        print('MATCH PREF: $userMatchPreference');
-        yield BasicProfileSuccessState();
       } catch (e) {
         yield BasicProfileFailState(e.toString());
       }

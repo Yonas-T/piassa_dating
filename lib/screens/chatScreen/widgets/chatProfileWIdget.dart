@@ -9,18 +9,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/screens/homeScreen/widgets/fullPhotoWidget.dart';
 
-
 class UserProfile extends StatefulWidget {
-  UserProfile(this.userData,this.parentClassType);
+  UserProfile(this.userData, this.parentClassType);
 
   UserData userData;
   ParentClassType parentClassType;
 
-  @override State createState() => new _UserProfile();
+  @override
+  State createState() => new _UserProfile();
 }
 
-class _UserProfile extends State<UserProfile> with userProfileCommon{
-
+class _UserProfile extends State<UserProfile> with userProfileCommon {
   List<Choice> choices = <Choice>[
     const Choice(title: 'Edit', icon: Icons.edit),
     const Choice(title: 'Delete', icon: Icons.delete_outline),
@@ -28,8 +27,13 @@ class _UserProfile extends State<UserProfile> with userProfileCommon{
 
   void _select(Choice choice) {
     if (choice.title == 'Edit') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(widget.userData.name,widget.userData.intro,widget.userData.userImages.first)),);
-    }else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditProfile(widget.userData.name,
+                widget.userData.intro, widget.userData.userImages.first)),
+      );
+    } else {
       _showDialog();
     }
   }
@@ -41,85 +45,106 @@ class _UserProfile extends State<UserProfile> with userProfileCommon{
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.userData.name,style: TextStyle(color: Colors.black),),
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            iconTheme: IconThemeData(
-              color: Colors.black, //change your color here
-            ),
-            actions: <Widget>[
-              widget.userData.name == myProfileName ?
-              PopupMenuButton<Choice>(
-                onSelected: _select,
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(choice.icon),
-                          Text(' ${choice.title}'),
-                        ],
-                      ),
-                    );
-                  }).toList();
-                },
-              ) : Container(),
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.only(top:8.0,bottom:8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                        child: Container(
-                          height: size.height,
-                          width: size.width-14,
-                          color: Colors.white,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25.0),
-                            child:
-                            CachedNetworkImage(
-                              imageUrl: widget.userData.userImages.first,
-                              placeholder: (context, url) => Container(
-                                transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: MediaQuery.of(context).size.height*0.77,
-                                  child: Center(child: new CircularProgressIndicator())),
+            appBar: AppBar(
+              title: Text(
+                widget.userData.name,
+                style: TextStyle(color: Colors.black),
+              ),
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              iconTheme: IconThemeData(
+                color: Colors.black, //change your color here
+              ),
+              actions: <Widget>[
+                widget.userData.name == myProfileName
+                    ? PopupMenuButton<Choice>(
+                        onSelected: _select,
+                        itemBuilder: (BuildContext context) {
+                          return choices.map((Choice choice) {
+                            return PopupMenuItem<Choice>(
+                              value: choice,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(choice.icon),
+                                  Text(' ${choice.title}'),
+                                ],
                               ),
-                              errorWidget: (context, url, error) => new Icon(Icons.error),
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height*0.77,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FullPhoto(imageUrlList: widget.userData.userImages,initIndex: 0,))),
-                      ),
-                      Positioned(
-                        bottom: 4,
-                        left: 4,
-                        child: userInformation(widget.userData,size)
-                      ),
-                    ],
-                  ),
-                ),
-                 widget.parentClassType == ParentClassType.Lounge ? Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0,8,12,8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: bottomIconDataList.map(bottomButtonWidget).toList(),
-                  ),
-                ) : Container()
+                            );
+                          }).toList();
+                        },
+                      )
+                    : Container(),
               ],
             ),
-          )
-        ),
+            body: Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          child: Container(
+                            height: size.height,
+                            width: size.width - 14,
+                            color: Colors.white,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25.0),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.userData.userImages.first,
+                                placeholder: (context, url) => Container(
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  child: Container(
+                                      width: double.infinity,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.77,
+                                      child: Center(
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Color(klightPink))))),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.77,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FullPhoto(
+                                        imageUrlList:
+                                            widget.userData.userImages,
+                                        initIndex: 0,
+                                      ))),
+                        ),
+                        Positioned(
+                            bottom: 4,
+                            left: 4,
+                            child: userInformation(widget.userData, size)),
+                      ],
+                    ),
+                  ),
+                  widget.parentClassType == ParentClassType.Lounge
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(12.0, 8, 12, 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: bottomIconDataList
+                                .map(bottomButtonWidget)
+                                .toList(),
+                          ),
+                        )
+                      : Container()
+                ],
+              ),
+            )),
       ),
     );
   }
@@ -135,13 +160,19 @@ class _UserProfile extends State<UserProfile> with userProfileCommon{
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new MaterialButton(
-              child: new Text("No", style: TextStyle(color: Colors.grey),),
+              child: new Text(
+                "No",
+                style: TextStyle(color: Colors.grey),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             new MaterialButton(
-              child: new Text("Yes",style: TextStyle(color: Colors.blue),),
+              child: new Text(
+                "Yes",
+                style: TextStyle(color: Colors.blue),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -153,11 +184,8 @@ class _UserProfile extends State<UserProfile> with userProfileCommon{
   }
 }
 
-
 class EditProfile extends StatefulWidget {
-  EditProfile(this.userName,
-      this.userIntro,
-      this.userThumbnail);
+  EditProfile(this.userName, this.userIntro, this.userThumbnail);
 
   String userName;
   String userIntro;
@@ -171,14 +199,16 @@ enum GenderEnum { man, woman }
 class _EditProfile extends State<EditProfile> {
   GenderEnum _userGender = GenderEnum.man;
   String _selectDateString = '1996-06-11';
-  List<File> _imageList = List<File>.generate(4,(file) => File(''));
+  List<File> _imageList = List<File>.generate(4, (file) => File(''));
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime(DateTime.now().year-22, DateTime.now().month),
-        firstDate: DateTime(DateTime.now().year-60, DateTime.now().month, DateTime.now().day),
-        lastDate: DateTime(DateTime.now().year-18, DateTime.now().month, DateTime.now().day));
+        initialDate: DateTime(DateTime.now().year - 22, DateTime.now().month),
+        firstDate: DateTime(
+            DateTime.now().year - 60, DateTime.now().month, DateTime.now().day),
+        lastDate: DateTime(DateTime.now().year - 18, DateTime.now().month,
+            DateTime.now().day));
     if (picked != null && picked != DateTime.now())
       setState(() {
         _selectDateString = "${picked.toLocal()}".split(' ')[0];
@@ -190,50 +220,55 @@ class _EditProfile extends State<EditProfile> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile',style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change
-        ),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(image:NetworkImage('https://i.pinimg.com/564x/40/97/a9/4097a9be2792b98cd3c1ed69088ec42f.jpg'),
-              fit: BoxFit.cover)
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                _userForm(),
-                _userPhotos(size),
-                _userIntro()
-              ],
-            ),
+        appBar: AppBar(
+          title: Text(
+            'Edit Profile',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          iconTheme: IconThemeData(
+            color: Colors.black, //change
           ),
         ),
-      )
-    );
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                      'https://i.pinimg.com/564x/40/97/a9/4097a9be2792b98cd3c1ed69088ec42f.jpg'),
+                  fit: BoxFit.cover)),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _userForm(),
+                  _userPhotos(size),
+                  _userIntro()
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 
   Widget _userIntro() {
     return Padding(
-      padding: const EdgeInsets.only(top:8.0,bottom:28.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 28.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left:18.0,top:6.0),
+            padding: const EdgeInsets.only(left: 18.0, top: 6.0),
             child: Align(
               alignment: Alignment.topLeft,
-              child: Text('Introduce',
-                style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+              child: Text(
+                'Introduce',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Padding(
@@ -241,19 +276,16 @@ class _EditProfile extends State<EditProfile> {
             child: Container(
                 width: 380,
                 height: 200,
-                child: Card(child:
-                Padding(
-                  padding: const EdgeInsets.only(left:16.0,right:16.0,top:8.0,bottom:8.0),
+                child: Card(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Type about you'
-                    ),
-                  controller: TextEditingController(text: widget.userIntro),
+                        border: InputBorder.none, hintText: 'Type about you'),
+                    controller: TextEditingController(text: widget.userIntro),
                   ),
-                )
-                )
-            ),
+                ))),
           ),
         ],
       ),
@@ -262,16 +294,18 @@ class _EditProfile extends State<EditProfile> {
 
   Widget _userPhotos(Size size) {
     return Padding(
-      padding: const EdgeInsets.only(top:28.0,bottom:28.0),
+      padding: const EdgeInsets.only(top: 28.0, bottom: 28.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left:18.0,top: 6.0),
+            padding: const EdgeInsets.only(left: 18.0, top: 6.0),
             child: Align(
               alignment: Alignment.topLeft,
-              child: Text('Your photos',
-                style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+              child: Text(
+                'Your photos',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Container(
@@ -281,32 +315,36 @@ class _EditProfile extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: new GestureDetector(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(25.0),
                       child: Container(
                         width: size.width * 0.4,
                         height: size.width * 0.5,
-                        child:Card(
-                            child:Image.network(widget.userThumbnail,fit: BoxFit.fill,)
-                        ),),
+                        child: Card(
+                            child: Image.network(
+                          widget.userThumbnail,
+                          fit: BoxFit.fill,
+                        )),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: new GestureDetector(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(25.0),
                       child: Container(
                         width: size.width * 0.4,
                         height: size.width * 0.5,
-                        child:Card(
-                            child: Image.network('https://cdn.pixabay.com/photo/2016/03/27/17/40/black-and-white-1283231_1280.jpg',fit: BoxFit.fill,)
-                        ),),
+                        child: Card(
+                            child: Image.network(
+                          'https://cdn.pixabay.com/photo/2016/03/27/17/40/black-and-white-1283231_1280.jpg',
+                          fit: BoxFit.fill,
+                        )),
+                      ),
                     ),
                   ),
                 ),
@@ -319,38 +357,42 @@ class _EditProfile extends State<EditProfile> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(25.0),
                     child: Container(
                       width: size.width * 0.4,
                       height: size.width * 0.5,
-                      child:Card(
+                      child: Card(
                           child: (_imageList[2].path != '')
-                              ? Image.file(_imageList[2],fit: BoxFit.fill,)
+                              ? Image.file(
+                                  _imageList[2],
+                                  fit: BoxFit.fill,
+                                )
                               : Icon(Icons.add_photo_alternate,
-                              size: 110,color: Colors.grey[700])
-                      ),),
+                                  size: 110, color: Colors.grey[700])),
+                    ),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(25.0),
                     child: Container(
                       width: size.width * 0.4,
                       height: size.width * 0.5,
-                      child:Card(
+                      child: Card(
                           child: (_imageList[3].path != '')
-                              ? Image.file(_imageList[3],fit: BoxFit.fill,)
+                              ? Image.file(
+                                  _imageList[3],
+                                  fit: BoxFit.fill,
+                                )
                               : Icon(Icons.add_photo_alternate,
-                              size: 110,color: Colors.grey[700])
-                      ),),
+                                  size: 110, color: Colors.grey[700])),
+                    ),
                   ),
                 ),
               ),
@@ -363,14 +405,16 @@ class _EditProfile extends State<EditProfile> {
 
   Widget _userForm() {
     return Padding(
-      padding: const EdgeInsets.only(left:18.0,top: 6.0),
+      padding: const EdgeInsets.only(left: 18.0, top: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Personal Information',
-            style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+          Text(
+            'Personal Information',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          ),
           Padding(
-            padding: const EdgeInsets.only(left:8.0,top: 10),
+            padding: const EdgeInsets.only(left: 8.0, top: 10),
             child: Column(
               children: <Widget>[
                 SizedBox(
@@ -378,14 +422,13 @@ class _EditProfile extends State<EditProfile> {
                   child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        icon:Icon(Icons.account_circle),
+                        icon: Icon(Icons.account_circle),
                         labelText: 'Name',
-                        hintText: 'Type Name'
-                    ),
+                        hintText: 'Type Name'),
                     validator: (String? value) {
                       if (value!.trim().isEmpty) {
                         return 'Name is required';
-                      }else {
+                      } else {
                         return null;
                       }
                     },
@@ -395,7 +438,10 @@ class _EditProfile extends State<EditProfile> {
                 Divider(),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.wc,color: Colors.grey,),
+                    Icon(
+                      Icons.wc,
+                      color: Colors.grey,
+                    ),
                     Radio(
                       value: GenderEnum.man,
                       groupValue: _userGender,
@@ -413,7 +459,9 @@ class _EditProfile extends State<EditProfile> {
                       },
                       child: Text('Man'),
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Radio(
                       value: GenderEnum.woman,
                       groupValue: _userGender,
@@ -436,12 +484,14 @@ class _EditProfile extends State<EditProfile> {
                 Divider(),
                 SizedBox(
                   width: 360,
-                  child:
-                  Row(
+                  child: Row(
                     children: <Widget>[
-                      Icon(Icons.cake,color: Colors.grey,),
+                      Icon(
+                        Icons.cake,
+                        color: Colors.grey,
+                      ),
                       Padding(
-                        padding: const EdgeInsets.only(left:14.0),
+                        padding: const EdgeInsets.only(left: 14.0),
                         child: Container(
                           width: 260,
                           child: ElevatedButton(
@@ -465,10 +515,9 @@ class _EditProfile extends State<EditProfile> {
 }
 
 mixin userProfileCommon {
-  
   CardController cardController = CardController();
 
-  Widget userInformation(UserData userData,Size size) {
+  Widget userInformation(UserData userData, Size size) {
     return Container(
       padding: const EdgeInsets.all(12),
       child: Column(
@@ -486,79 +535,94 @@ mixin userProfileCommon {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontSize: 36,
-                      shadows: [ Shadow(blurRadius: 1.0,color: Colors.black,offset: Offset(0.6,0.6))]
-                  ),
+                      shadows: [
+                        Shadow(
+                            blurRadius: 1.0,
+                            color: Colors.black,
+                            offset: Offset(0.6, 0.6))
+                      ]),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left:8.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
                   userData.information,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26,
-                    shadows: [ Shadow(blurRadius: 1.0,color: Colors.black,offset: Offset(0.6,0.6))]
-                  ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                      shadows: [
+                        Shadow(
+                            blurRadius: 1.0,
+                            color: Colors.black,
+                            offset: Offset(0.6, 0.6))
+                      ]),
                 ),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0,right: 12),
+            padding: const EdgeInsets.only(bottom: 8.0, right: 12),
             child: Container(
-              width: size.width- 20,
+              width: size.width - 20,
               child: Text(
                 userData.intro,
                 softWrap: true,
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white,
-                  shadows: [ Shadow(blurRadius: 1.0,color: Colors.black,offset: Offset(0.6,0.6))]
-                ),
+                style: TextStyle(fontSize: 22, color: Colors.white, shadows: [
+                  Shadow(
+                      blurRadius: 1.0,
+                      color: Colors.black,
+                      offset: Offset(0.6, 0.6))
+                ]),
               ),
             ),
           ),
-          Wrap(children: userData.interesting.map(interestingWidget).toList(),),
+          Wrap(
+            children: userData.interesting.map(interestingWidget).toList(),
+          ),
         ],
       ),
     );
   }
 
-  Widget interestingWidget(String interesting){
+  Widget interestingWidget(String interesting) {
     return Padding(
-      padding: const EdgeInsets.only(right:8.0,bottom: 4.0),
+      padding: const EdgeInsets.only(right: 8.0, bottom: 4.0),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[700]
-        ),
+            borderRadius: BorderRadius.circular(10), color: Colors.grey[700]),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(6,4,6,4),
-          child: Text(interesting,style: TextStyle(color: Colors.white),),
+          padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+          child: Text(
+            interesting,
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
   }
 
-  Widget bottomButtonWidget(BottomButtonData data){
+  Widget bottomButtonWidget(BottomButtonData data) {
     return Flexible(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: new RawMaterialButton(
           onPressed: () {
-            if(data.iconData == FontAwesomeIcons.times){
+            if (data.iconData == FontAwesomeIcons.times) {
               cardController.triggerLeft();
-            }else if(data.iconData == FontAwesomeIcons.solidHeart){
+            } else if (data.iconData == FontAwesomeIcons.solidHeart) {
               cardController.triggerRight();
-            }else if(data.iconData == FontAwesomeIcons.solidStar){
+            } else if (data.iconData == FontAwesomeIcons.solidStar) {
               cardController.triggerUp();
             }
           },
           child: new FaIcon(
             data.iconData,
             color: data.iconColor,
-            size: (data.iconData == FontAwesomeIcons.times || data.iconData == FontAwesomeIcons.solidHeart) ? 32.0 : 20,
+            size: (data.iconData == FontAwesomeIcons.times ||
+                    data.iconData == FontAwesomeIcons.solidHeart)
+                ? 32.0
+                : 20,
           ),
           shape: new CircleBorder(),
           elevation: 1.0,
@@ -570,19 +634,19 @@ mixin userProfileCommon {
   }
 }
 
-enum ParentClassType{
+enum ParentClassType {
   Lounge,
   Chat,
   EditProfile,
 }
 
-class BottomButtonData{
+class BottomButtonData {
   IconData iconData;
   Color iconColor;
   BottomButtonData(this.iconData, this.iconColor);
 }
 
-class UserData{
+class UserData {
   String name;
   String information;
   String intro;
@@ -600,16 +664,18 @@ class Choice {
   final IconData icon;
 }
 
-const chat1Image = 'https://images.pexels.com/photos/1308881/pexels-photo-1308881.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
-const chat2Image = 'https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
-const myProfileImage = 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+const chat1Image =
+    'https://images.pexels.com/photos/1308881/pexels-photo-1308881.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+const chat2Image =
+    'https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+const myProfileImage =
+    'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
 const myProfileName = 'James';
 
-
 List<BottomButtonData> bottomIconDataList = [
-  BottomButtonData(FontAwesomeIcons.redoAlt,Color(klightPink)),
-  BottomButtonData(FontAwesomeIcons.times,Color(klightPink)),
-  BottomButtonData(FontAwesomeIcons.solidStar,Color(klightPink)),
-  BottomButtonData(FontAwesomeIcons.solidHeart,Color(klightPink)),
-  BottomButtonData(FontAwesomeIcons.bolt,Color(klightPink)),
+  BottomButtonData(FontAwesomeIcons.redoAlt, Color(klightPink)),
+  BottomButtonData(FontAwesomeIcons.times, Color(klightPink)),
+  BottomButtonData(FontAwesomeIcons.solidStar, Color(klightPink)),
+  BottomButtonData(FontAwesomeIcons.solidHeart, Color(klightPink)),
+  BottomButtonData(FontAwesomeIcons.bolt, Color(klightPink)),
 ];

@@ -4,15 +4,17 @@ import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
+import 'package:piassa_application/services/matchListApiProvider.dart';
 
 class PhotoAndNameWidget extends StatefulWidget {
   final User user;
 
   final BasicProfileRepository basicProfileRepository;
-  const PhotoAndNameWidget({
-    required this.user,
-     required this.basicProfileRepository});
+  final MatchPreferenceRepository matchPreferenceRepository;
+  const PhotoAndNameWidget(
+      {required this.user, required this.basicProfileRepository, required this.matchPreferenceRepository});
 
   @override
   _PhotoAndNameWidgetState createState() => _PhotoAndNameWidgetState();
@@ -28,8 +30,10 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return SignupQuestionsScreen(
-                  user: widget.user, 
-                  basicProfileRepository: widget.basicProfileRepository);
+                user: widget.user,
+                basicProfileRepository: widget.basicProfileRepository,
+                matchPreferenceRepository: widget.matchPreferenceRepository,
+              );
             }));
           },
           child: CircleAvatar(
