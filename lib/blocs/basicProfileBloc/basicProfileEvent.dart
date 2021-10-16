@@ -44,3 +44,8 @@ class ProceedButtonPressed extends BasicProfileEvent {
       ];
 }
 
+class LoadBasicProfileEvent extends BasicProfileEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

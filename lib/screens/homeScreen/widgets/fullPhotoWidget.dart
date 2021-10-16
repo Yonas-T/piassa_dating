@@ -3,14 +3,19 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/models/profile.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/screens/profileScreen/widgets/infoTextWidget.dart';
 import 'package:scrolling_page_indicator/scrolling_page_indicator.dart';
 
 class FullPhoto extends StatefulWidget {
   final List<String> imageUrlList;
   final int initIndex;
+  UserMatch matchRecommendation;
 
-  FullPhoto({required this.imageUrlList, required this.initIndex});
+  FullPhoto(
+      {required this.imageUrlList,
+      required this.initIndex,
+      required this.matchRecommendation});
   @override
   State createState() => new _FullPhoto();
 }
@@ -38,13 +43,14 @@ class _FullPhoto extends State<FullPhoto> {
             'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg',
         bio: 'I am an easy going person.'));
 
-        for (String imageUrl in widget.imageUrlList) {
+    for (String imageUrl in widget.imageUrlList) {
       if (imageUrl != "") {
         imageListStrings.add(imageUrl);
       }
+      print(widget.matchRecommendation);
 
-    super.initState();
-  }
+      super.initState();
+    }
 
     _pageController = PageController(initialPage: widget.initIndex);
 
@@ -91,9 +97,9 @@ class _FullPhoto extends State<FullPhoto> {
                             ? 0
                             : event.cumulativeBytesLoaded /
                                 event.expectedTotalBytes!.toDouble(),
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(klightPink)),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(klightPink)),
                       ),
-                      
                     ),
                   ),
                   backgroundDecoration: BoxDecoration(
@@ -103,18 +109,18 @@ class _FullPhoto extends State<FullPhoto> {
                   pageController: _pageController,
                 ),
                 Positioned(
-            right: 12,
-            top: 30,
-            child: ScrollingPageIndicator(
-                dotColor: Colors.white,
-                dotSelectedColor: Color(klightPink),
-                dotSize: 6,
-                dotSelectedSize: 10,
-                dotSpacing: 16,
-                controller: _pageController,
-                itemCount: imageListStrings.length,
-                orientation: Axis.vertical),
-          ),
+                  right: 12,
+                  top: 30,
+                  child: ScrollingPageIndicator(
+                      dotColor: Colors.white,
+                      dotSelectedColor: Color(klightPink),
+                      dotSize: 6,
+                      dotSelectedSize: 10,
+                      dotSpacing: 16,
+                      controller: _pageController,
+                      itemCount: imageListStrings.length,
+                      orientation: Axis.vertical),
+                ),
                 // Container(
                 //   padding: const EdgeInsets.all(20.0),
                 //   child: Text(
@@ -138,7 +144,8 @@ class _FullPhoto extends State<FullPhoto> {
                           topRight: Radius.circular(10)),
                     ),
                     child: SingleChildScrollView(
-                      child: InfoTextWidget(myProfile: _profile[0],),
+                      child: InfoTextWidget(
+                          recommended: widget.matchRecommendation),
                     ),
                   ),
                 )

@@ -285,7 +285,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     Row(
                                       children: [
                                         Text(
-                                          matchRecommendations[index].fullName,
+                                          '${matchRecommendations[index].fullName}, ',
                                           // itemsTemp[index]['name'],
                                           style: TextStyle(
                                               color: Color(kWhite),
@@ -296,8 +296,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           width: 10,
                                         ),
                                         Text(
-                                          '',
-                                          // itemsTemp[index]['age'],
+                                          (DateTime.now().year - DateTime.parse(matchRecommendations[index].birthDay).year).toString(),
                                           style: TextStyle(
                                             color: Color(kWhite),
                                             fontSize: 22,
@@ -306,7 +305,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 12,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text('Addis Ababa', style: TextStyle(fontSize: kNormalFont, color: Color(kWhite))),
+                                      ],
                                     ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -527,6 +531,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FullPhoto(
+                            matchRecommendation: matchRecommendations[index],
                             imageUrlList: imgList,
                             initIndex: i,
                           )));

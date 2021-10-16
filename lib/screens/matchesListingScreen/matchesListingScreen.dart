@@ -171,7 +171,7 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
                                   padding: EdgeInsets.only(left: 4, right: 4),
                                   child: CircleAvatar(
                                     radius: 44,
-                                    backgroundColor: Color(kDarkGrey),
+                                    backgroundColor: Color(klightPink),
                                     child: CircleAvatar(
                                       backgroundColor: Color(kWhite),
                                       backgroundImage: NetworkImage(

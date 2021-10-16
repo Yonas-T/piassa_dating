@@ -14,7 +14,9 @@ class PhotoAndNameWidget extends StatefulWidget {
   final BasicProfileRepository basicProfileRepository;
   final MatchPreferenceRepository matchPreferenceRepository;
   const PhotoAndNameWidget(
-      {required this.user, required this.basicProfileRepository, required this.matchPreferenceRepository});
+      {required this.user,
+      required this.basicProfileRepository,
+      required this.matchPreferenceRepository});
 
   @override
   _PhotoAndNameWidgetState createState() => _PhotoAndNameWidgetState();
@@ -26,22 +28,27 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return SignupQuestionsScreen(
-                user: widget.user,
-                basicProfileRepository: widget.basicProfileRepository,
-                matchPreferenceRepository: widget.matchPreferenceRepository,
-              );
-            }));
-          },
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg'),
-            radius: 64,
-            child: Align(
-              alignment: Alignment.bottomRight,
+        CircleAvatar(
+          backgroundColor: Color(kWhite),
+          backgroundImage: NetworkImage(
+              'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg'),
+          radius: 64,
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  print('pressed');
+                  return SignupQuestionsScreen(
+                    toEdit: true,
+                    user: widget.user,
+                    basicProfileRepository: widget.basicProfileRepository,
+                    matchPreferenceRepository:
+                        widget.matchPreferenceRepository,
+                  );
+                }));
+              },
               child: Card(
                 shape: CircleBorder(),
                 elevation: 4,

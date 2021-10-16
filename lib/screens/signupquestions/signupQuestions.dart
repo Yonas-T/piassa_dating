@@ -16,18 +16,21 @@ import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/stepProgressWidget.dart';
+import 'package:piassa_application/services/basicProfileApiProvider.dart';
 import 'package:piassa_application/utils/helper.dart';
 import 'package:piassa_application/utils/sheredPref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupQuestionsScreen extends StatelessWidget {
+  bool toEdit;
   final BasicProfileRepository basicProfileRepository;
   final MatchPreferenceRepository matchPreferenceRepository;
   final User user;
   SignupQuestionsScreen(
       {required this.matchPreferenceRepository,
       required this.basicProfileRepository,
-      required this.user});
+      required this.user,
+      required this.toEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class SignupQuestionsScreen extends StatelessWidget {
           basicProfileRepository: basicProfileRepository,
           matchPreferenceRepository: matchPreferenceRepository),
       child: SignupQuestionsScreenChild(
+        toEditChild: toEdit,
         basicProfileRepository: basicProfileRepository,
         user: user,
       ),
@@ -44,11 +48,15 @@ class SignupQuestionsScreen extends StatelessWidget {
 }
 
 class SignupQuestionsScreenChild extends StatefulWidget {
+  final bool toEditChild;
   final User user;
   final BasicProfileRepository basicProfileRepository;
 
   const SignupQuestionsScreenChild(
-      {Key? key, required this.user, required this.basicProfileRepository})
+      {Key? key,
+      required this.user,
+      required this.basicProfileRepository,
+      required this.toEditChild})
       : super(key: key);
 
   @override
@@ -58,8 +66,6 @@ class SignupQuestionsScreenChild extends StatefulWidget {
 
 class _SignupQuestionsScreenChildState
     extends State<SignupQuestionsScreenChild> {
-  TextEditingController jobCntrl = TextEditingController();
-  TextEditingController companyCntrl = TextEditingController();
   TextEditingController nameCntrl = TextEditingController();
   TextEditingController emailCntrl = TextEditingController();
   TextEditingController heightCntrl = TextEditingController();
@@ -69,6 +75,10 @@ class _SignupQuestionsScreenChildState
   late String _selectedCountry;
   late String _selectedGender;
   late int pageViewIndex;
+  late String emailData;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  BasicProfileRepository basicProfileRepository = BasicProfileRepository();
+  
 
   Peoples basicProfileData = Peoples(
       userName: '',
@@ -86,6 +96,7 @@ class _SignupQuestionsScreenChildState
   List<String> _countries = ['Ethiopia', 'US', 'UK'];
   List<String> _gender = ['Male', 'Female'];
   List<Widget> pageViewList = [];
+  Peoples? _profileData;
 
   StepProgressWidget _getStepProgress() {
     return StepProgressWidget(
@@ -107,8 +118,32 @@ class _SignupQuestionsScreenChildState
     });
   }
 
+  Future profileValue() async {
+    _profileData = await BasicProfileApiProvider().fetchBasicProfile();
+    print('PROFILEdATA: $_profileData');
+  }
+
   @override
   void initState() {
+    profileValue().then((value) {
+      if (widget.toEditChild) {
+      print('in edit mode');
+      _selectedCountry = _profileData!.nationality;
+      _selectedGender = _profileData!.gender;
+      nameCntrl.text = _profileData!.fullName;
+      emailCntrl.text = _profileData!.email;
+      heightCntrl.text = _profileData!.height.toString();
+      headlineCntrl.text = _profileData!.headline;
+      dateCntrl.text = _profileData!.birthDay;
+    }
+    });
+    if (auth.currentUser!.email!.isNotEmpty) {
+      emailData = auth.currentUser!.email!;
+      emailCntrl.text = auth.currentUser!.email!;
+    }
+
+    
+
     pageViewIndex = 0;
     _selectedCountry = 'Nationality';
     _selectedGender = 'Gender';
@@ -118,10 +153,10 @@ class _SignupQuestionsScreenChildState
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+  // Random _rnd = Random();
 
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  // String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+  //     length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   PageController _pgController = PageController(initialPage: 0, keepPage: true);
 
@@ -139,7 +174,7 @@ class _SignupQuestionsScreenChildState
             longitude: basicProfileData.longitude,
             latitude: basicProfileData.latitude,
             nationality: basicProfileData.nationality,
-            userName: getRandomString(28)),
+            userName: auth.currentUser!.uid),
       );
     }
 
@@ -171,6 +206,9 @@ class _SignupQuestionsScreenChildState
           SizedBox(height: 16),
           TextField(
             controller: emailCntrl,
+            readOnly: true,
+            // enabled: false,
+            // enableInteractiveSelection: false,
             decoration: InputDecoration(
               errorStyle: TextStyle(color: Colors.red),
               errorText: validateEmail(emailCntrl.text),

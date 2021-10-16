@@ -124,6 +124,7 @@ class LoginPage extends StatelessWidget {
                             padding: EdgeInsets.all(5.0),
                             child: TextFormField(
                               controller: emailCntrlr,
+                              style: TextStyle(color: Color(kWhite)),
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(color: Colors.white),
                                 filled: true,
@@ -153,6 +154,7 @@ class LoginPage extends StatelessWidget {
                             padding: EdgeInsets.all(5.0),
                             child: TextFormField(
                               controller: passCntrlr,
+                              style: TextStyle(color: Color(kWhite)),
                               obscureText: true,
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(color: Colors.white),
@@ -428,6 +430,7 @@ class LoginPage extends StatelessWidget {
   void navigateToSignupQuestionsScreen(BuildContext context, User user) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return SignupQuestionsScreen(
+        toEdit: false,
         user: user,
         basicProfileRepository: basicProfileRepository,
         matchPreferenceRepository: matchPreferenceRepository,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -121,7 +122,7 @@ class AuthRepository {
       //     prefs.setString('token', idToken!);
       //   });
       // });
-       SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', authresult.credential!.token.toString());
       print(authresult.user);
       return authresult.user;
@@ -202,16 +203,16 @@ class AuthRepository {
             }
           }
         });
-          final User? user = userCred.user;
+        final User? user = userCred.user;
 
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', userCred.credential!.token.toString());
-      
-          assert(user!.email != null);
-          assert(user!.displayName != null);
-          assert(!user!.isAnonymous);
-          currentUser = firebaseAuth.currentUser!;
-          assert(user!.uid == currentUser.uid);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', userCred.credential!.token.toString());
+
+        assert(user!.email != null);
+        assert(user!.displayName != null);
+        assert(!user!.isAnonymous);
+        currentUser = firebaseAuth.currentUser!;
+        assert(user!.uid == currentUser.uid);
         print('current user: $currentUser');
         return currentUser;
       }
@@ -270,18 +271,17 @@ class AuthRepository {
       print('3333333333333333');
       print(credential.token);
 
-      final userCred =
-          await firebaseAuth.signInWithCredential(credential);
+      final userCred = await firebaseAuth.signInWithCredential(credential);
       final User? user = userCred.user;
-        assert(user!.email != null);
-        assert(user!.displayName != null);
-        assert(!user!.isAnonymous);
-        currentUser = firebaseAuth.currentUser!;
-        assert(user!.uid == currentUser.uid);
+      assert(user!.email != null);
+      assert(user!.displayName != null);
+      assert(!user!.isAnonymous);
+      currentUser = firebaseAuth.currentUser!;
+      assert(user!.uid == currentUser.uid);
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', userCred.credential!.token.toString());
-
+      log(userCred.credential!.token.toString());
       return currentUser;
     } on PlatformException catch (e) {
       String authError = "";
@@ -324,6 +324,7 @@ class AuthRepository {
 
   // sign out
   Future<void> signOut() async {
+
     await FirebaseAuth.instance.signOut();
     await _googleSignIn.signOut();
     await fbLogin.logOut();

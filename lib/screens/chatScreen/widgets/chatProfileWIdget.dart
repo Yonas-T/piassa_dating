@@ -115,14 +115,14 @@ class _UserProfile extends State<UserProfile> with userProfileCommon {
                               ),
                             ),
                           ),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FullPhoto(
-                                        imageUrlList:
-                                            widget.userData.userImages,
-                                        initIndex: 0,
-                                      ))),
+                          // onTap: () => Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => FullPhoto(
+                          //               imageUrlList:
+                          //                   widget.userData.userImages,
+                          //               initIndex: 0,
+                          //             ))),
                         ),
                         Positioned(
                             bottom: 4,

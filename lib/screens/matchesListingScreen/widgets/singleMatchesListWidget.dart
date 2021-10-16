@@ -101,7 +101,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                       ),
                       Row(
                         children: <Widget>[
-                          userGender(widget.userData.gender),
+                          // userGender(widget.userData.gender),
                           Expanded(
                             child: Text(
                               " " + '${widget.userData.fullName}',
@@ -110,7 +110,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                               //     .toString(),
                               style: TextStyle(
                                   color: Color(kWhite),
-                                  fontSize: 10),
+                                  fontSize: kNormalFont),
                             ),
                           )
                         ],
@@ -125,7 +125,7 @@ class _SingleMatchesListWidgetState extends State<SingleMatchesListWidget> {
                           ),
                           Text(
                             "Addis Ababa",
-                            style: TextStyle(color: Color(kWhite), fontSize: kExtraSmallFont)
+                            style: TextStyle(color: Color(kWhite), fontSize: kSmallFont)
                           )
                         ],
                       ),

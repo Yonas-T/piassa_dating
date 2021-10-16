@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InfoTextWidget(myProfile: _profile[0]),
+                  // InfoTextWidget(myProfile: _profile[0]),
                   // Container(
                   //   height: 120,
                   //   padding: EdgeInsets.all(24),

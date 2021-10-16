@@ -9,7 +9,6 @@ class AppStartedEvent extends AuthEvent {
 }
 
 
-
 class LogOutEvent extends AuthEvent {
   @override
   // TODO: implement props

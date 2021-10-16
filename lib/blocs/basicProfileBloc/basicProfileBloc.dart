@@ -13,7 +13,9 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
   Peoples? basicProfileToProceed;
   Preference? preferencetoSubmit;
 
-  BasicProfileBloc({required BasicProfileRepository basicProfileRepository, required MatchPreferenceRepository matchPreferenceRepository})
+  BasicProfileBloc(
+      {required BasicProfileRepository basicProfileRepository,
+      required MatchPreferenceRepository matchPreferenceRepository})
       : super(BasicProfileInitialState()) {
     this.basicProfileRepository = basicProfileRepository;
     this.matchPreferenceRepository = matchPreferenceRepository;
@@ -57,6 +59,16 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
         print(userBasicProfile.userName);
         print('AFTER BLOC');
         yield BasicProfileProceedState(userBasicProfile);
+      } catch (e) {
+        yield BasicProfileFailState(e.toString());
+      }
+    }
+    if (event is LoadBasicProfileEvent) {
+      yield BasicProfileLoadingState();
+      try {
+        var basicProfileFetched = basicProfileRepository!.fetchBasicProfile();
+        
+        yield BasicProfileSuccessState();
       } catch (e) {
         yield BasicProfileFailState(e.toString());
       }

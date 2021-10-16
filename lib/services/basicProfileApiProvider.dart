@@ -24,7 +24,7 @@ class BasicProfileApiProvider {
           'X-Authorization-Firebase': '$value'
         },
       );
-      print(response.body.toString());
+      print('Profile Fetched: ${response.body.toString()}');
 
       if (response.statusCode == 200) {
         return Peoples.fromJson(json.decode(response.body));

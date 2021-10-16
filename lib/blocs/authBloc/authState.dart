@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:piassa_application/models/peoples.dart';
 
 abstract class AuthState extends Equatable {}
 
@@ -21,6 +22,16 @@ class AuthenticatedState extends AuthState {
   List<Object> get props => [];
 }
 
+class HasProfileState extends AuthState {
+
+  Peoples user;
+
+  HasProfileState(this.user);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
 class UnauthenticatedState extends AuthState {
   String message;
 

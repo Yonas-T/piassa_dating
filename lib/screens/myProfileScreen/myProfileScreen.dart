@@ -27,8 +27,8 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
-  late BasicProfileRepository basicProfileRepository;
-  late MatchPreferenceRepository matchPreferenceRepository;
+  BasicProfileRepository  basicProfileRepository = BasicProfileRepository();
+  MatchPreferenceRepository matchPreferenceRepository = MatchPreferenceRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

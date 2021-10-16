@@ -38,6 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailCntrl = TextEditingController();
   TextEditingController phoneCntrl = TextEditingController();
   TextEditingController nameCntrl = TextEditingController();
+  TextEditingController passConfirmCntrlr = TextEditingController();
 
   TextEditingController passCntrlr = TextEditingController();
 
@@ -48,6 +49,8 @@ class _SignUpPageState extends State<SignUpPage> {
   late String _selectedCountry;
 
   List<String> _countries = ['Ethiopia', 'USA', 'UK'];
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -103,199 +106,249 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 32,
               ),
               Expanded(
-                child: ListView(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        controller: nameCntrl,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Color(kWhite).withOpacity(0.4),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          hintText: "Full name",
-                          hintStyle: TextStyle(
-                              color: Color(kWhite), fontSize: kNormalFont),
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          controller: nameCntrl,
+                          style: TextStyle(color: Color(kWhite)),
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.4),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "Full name",
+                            hintStyle: TextStyle(
+                                color: Color(kWhite), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.text,
                         ),
-                        keyboardType: TextInputType.text,
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        controller: emailCntrl,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Color(kWhite).withOpacity(0.4),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          hintText: "E-mail",
-                          hintStyle: TextStyle(
-                              color: Color(kWhite), fontSize: kNormalFont),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          controller: emailCntrl,
+                          style: TextStyle(color: Color(kWhite)),
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.4),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "E-mail",
+                            hintStyle: TextStyle(
+                                color: Color(kWhite), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                        keyboardType: TextInputType.emailAddress,
                       ),
-                    ),
-                    Container(
-                        child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(accentColor: Color(kWhite)),
-                      child: Card(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        color: Color(kWhite).withOpacity(0.4),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: ExpansionTile(
-                            // backgroundColor: Color(kWhite).withOpacity(0.4),
-                            title: Text(
-                              _selectedCountry,
-                              style: TextStyle(
-                                  fontSize: kNormalFont, color: Color(kWhite)),
+                      Container(
+                          child: Theme(
+                        data: Theme.of(context)
+                            .copyWith(accentColor: Color(kWhite)),
+                        child: Card(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          color: Color(kWhite).withOpacity(0.4),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: ExpansionTile(
+                              // backgroundColor: Color(kWhite).withOpacity(0.4),
+                              title: Text(
+                                _selectedCountry,
+                                style: TextStyle(
+                                    fontSize: kNormalFont,
+                                    color: Color(kWhite)),
+                              ),
+                              children: <Widget>[
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: _countries.length,
+                                    itemBuilder: (context, i) {
+                                      return Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(16, 8, 8, 8),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          _countries[i],
+                                          style: TextStyle(
+                                              fontSize: kNormalFont,
+                                              color: Color(kWhite)),
+                                        ),
+                                      );
+                                    })
+                              ],
                             ),
-                            children: <Widget>[
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: _countries.length,
-                                  itemBuilder: (context, i) {
-                                    return Container(
-                                      padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        _countries[i],
-                                        style: TextStyle(
-                                            fontSize: kNormalFont,
-                                            color: Color(kWhite)),
-                                      ),
-                                    );
-                                  })
-                            ],
                           ),
                         ),
-                      ),
-                    )),
-                    Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        controller: phoneCntrl,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Color(kWhite).withOpacity(0.4),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          hintText: "Phone number",
-                          hintStyle: TextStyle(
-                              color: Color(kWhite), fontSize: kNormalFont),
+                      )),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          controller: phoneCntrl,
+                          style: TextStyle(color: Color(kWhite)),
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.4),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "Phone number",
+                            hintStyle: TextStyle(
+                                color: Color(kWhite), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.phone,
                         ),
-                        keyboardType: TextInputType.phone,
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        controller: passCntrlr,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Color(kWhite).withOpacity(0.4),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          hintText: "Password",
-                          hintStyle: TextStyle(
-                              color: Color(kWhite), fontSize: kNormalFont),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          controller: passCntrlr,
+                          validator: (val) {
+                            if (val!.isEmpty) return 'Empty';
+                            return null;
+                          },
+                          style: TextStyle(color: Color(kWhite)),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.4),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "Password",
+                            hintStyle: TextStyle(
+                                color: Color(kWhite), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.visiblePassword,
                         ),
-                        keyboardType: TextInputType.visiblePassword,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                // bottom: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: kButtonHeight,
-                      child: TextButton(
-                        child: Text("Login",
-                            style: TextStyle(
-                                fontSize: kNormalFont, color: Color(kWhite))),
-                        onPressed: () {
-                          navigateToLoginPage(context);
-                        },
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          controller: passConfirmCntrlr,
+                          validator: (val) {
+                            if (val!.isEmpty) return 'Empty';
+                            if (val != passCntrlr.text)
+                              return 'Password Does not Match';
+                            return null;
+                          },
+                          style: TextStyle(color: Color(kWhite)),
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(color: Colors.white),
+                            filled: true,
+                            fillColor: Color(kWhite).withOpacity(0.4),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            hintText: "Confirm Password",
+                            hintStyle: TextStyle(
+                                color: Color(kWhite), fontSize: kNormalFont),
+                          ),
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: kButtonHeight,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Color(kWhite),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16))),
-                        child: Text("Register",
-                            style: TextStyle(
-                                fontSize: kNormalFont,
-                                color: Color(kPrimaryPink))),
-                        onPressed: () {
-                          userSigninBloc.add(SigninButtonPressed(
-                              email: emailCntrl.text,
-                              password: passCntrlr.text));
-                        },
+                      Container(
+                        // bottom: 0,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            // Container(
+                            //   width: MediaQuery.of(context).size.width,
+                            //   height: kButtonHeight,
+                            //   child: TextButton(
+                            //     child: Text("Login",
+                            //         style: TextStyle(
+                            //             fontSize: kNormalFont,
+                            //             color: Color(kWhite))),
+                            //     onPressed: () {
+                            //       navigateToLoginPage(context);
+                            //     },
+                            //   ),
+                            // ),
+                            SizedBox(height: 16),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: kButtonHeight,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(kWhite),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(4))),
+                                child: Text("Register",
+                                    style: TextStyle(
+                                        fontSize: kNormalFont,
+                                        color: Color(kPrimaryPink))),
+                                onPressed: () {
+                                  userSigninBloc.add(SigninButtonPressed(
+                                      email: emailCntrl.text,
+                                      password: passCntrlr.text));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -315,17 +368,16 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget buildLoadingUi() {
     return Center(
       child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))
-      ),
+          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
     );
   }
 
   void navigateToHomeScreen(BuildContext context, User user) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return HomePageParent(
-        // user: user, 
+        // user: user,
         userRepository: widget.userRepository,
-        );
+      );
     }));
   }
 

@@ -65,7 +65,7 @@ class _SecondStepperPageWidgetChildState
   int divisions = 5;
   List strLabels = [];
   int _currentScore = 0;
-  List _educationLevel = ['Diploma', 'Degree', 'Masters'];
+  List _educationLevel = ['High School Diploma', 'Advanced Diploma', 'Bachelors Degree', 'Masters Degree', 'Doctorate', 'Other'];
   String selectedEducationLevel = '';
   int eduIndex = 0;
   late String _selectedReligion;

@@ -2,10 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/models/profile.dart';
+import 'package:piassa_application/models/userMatch.dart';
 
-class InfoTextWidget extends StatelessWidget {
-  final Profile myProfile;
-  InfoTextWidget({required this.myProfile});
+class InfoTextWidget extends StatefulWidget {
+  final UserMatch recommended;
+  InfoTextWidget({required this.recommended});
+
+  @override
+  _InfoTextWidgetState createState() => _InfoTextWidgetState();
+}
+
+class _InfoTextWidgetState extends State<InfoTextWidget> {
+  late int age;
+
+  @override
+  void initState() {
+    var bDay = DateTime.parse(widget.recommended.birthDay).year;
+    var now = DateTime.now().year;
+    age = now - bDay;
+    print(widget.recommended.education.profession.englishValue);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,59 +34,59 @@ class InfoTextWidget extends StatelessWidget {
         children: [
           SizedBox(height: 12),
           Text(
-            '${myProfile.name}, ${myProfile.age}',
-            style: TextStyle(fontSize: kTitleFont, color: Color(kWhite)),
+            '${widget.recommended.fullName}, $age',
+            style: TextStyle(fontSize: kTitleFont, color: Color(kBlack)),
           ),
           SizedBox(height: 16),
           Row(
             children: [
               Text(
-                myProfile.city,
-                style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                'Addis Ababa',
+                style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
               ),
               SizedBox(width: 12),
               Container(
                 height: 2,
                 width: 10,
-                color: Color(kWhite),
+                color: Color(kBlack),
               ),
               SizedBox(width: 12),
               Text(
-                myProfile.height,
-                style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                widget.recommended.height.toString(),
+                style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
               ),
             ],
           ),
           SizedBox(height: 36),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
                 children: [
                   Icon(
                     FontAwesomeIcons.graduationCap,
-                    color: Color(kWhite),
+                    color: Color(kBlack),
                   ),
                   SizedBox(width: 12),
                   Text(
-                    myProfile.education,
+                    widget.recommended.education.profession.englishValue,
                     style:
-                        TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                        TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
                 ],
               ),
-              SizedBox(width: 20),
+              // SizedBox(width: 20),
               Row(
                 children: [
                   Icon(
                     FontAwesomeIcons.suitcase,
-                    color: Color(kWhite),
+                    color: Color(kBlack),
                   ),
                   SizedBox(width: 12),
                   Text(
-                    myProfile.occupation,
+                    widget.recommended.education.profession.englishValue,
                     style:
-                        TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                        TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
                 ],
               ),
@@ -76,34 +94,34 @@ class InfoTextWidget extends StatelessWidget {
           ),
           SizedBox(height: 36),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
                 children: [
                   Icon(
                     FontAwesomeIcons.building,
-                    color: Color(kWhite),
+                    color: Color(kBlack),
                   ),
                   SizedBox(width: 12),
                   Text(
-                    myProfile.religion,
+                    'Religion',
                     style:
-                        TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                        TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
                 ],
               ),
-              SizedBox(width: 20),
+              SizedBox(width: 40),
               Row(
                 children: [
                   Icon(
                     FontAwesomeIcons.dumbbell,
-                    color: Color(kWhite),
+                    color: Color(kBlack),
                   ),
                   SizedBox(width: 12),
                   Text(
-                    myProfile.sport,
+                    '${widget.recommended.lifeStyle.physicalExercise.toString()} per week',
                     style:
-                        TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                        TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
                 ],
               ),
@@ -112,13 +130,13 @@ class InfoTextWidget extends StatelessWidget {
                 children: [
                   Icon(
                     FontAwesomeIcons.glassMartini,
-                    color: Color(kWhite),
+                    color: Color(kBlack),
                   ),
                   SizedBox(width: 12),
                   Text(
-                    myProfile.drink,
+                    '${widget.recommended.lifeStyle.drinking.toString()} per week',
                     style:
-                        TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+                        TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
                 ],
               ),
@@ -126,8 +144,8 @@ class InfoTextWidget extends StatelessWidget {
           ),
           SizedBox(height: 48),
           Text(
-            myProfile.bio,
-            style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+            widget.recommended.headline,
+            style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
           )
         ],
       ),

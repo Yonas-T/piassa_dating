@@ -3,8 +3,11 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:piassa_application/blocs/basicProfileBloc/basicProfileBloc.dart';
+import 'package:piassa_application/blocs/basicProfileBloc/basicProfileEvent.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
 import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
@@ -90,6 +93,8 @@ class _ApppState extends State<Appp> {
   BasicProfileRepository basicProfileRepository = BasicProfileRepository();
   MatchPreferenceRepository matchPreferenceRepository =
       MatchPreferenceRepository();
+  late BasicProfileBloc basicProfileBloc;
+  Peoples? profileData;
 
   checkValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -109,11 +114,24 @@ class _ApppState extends State<Appp> {
         userTemp = userTempAll;
       }
     });
+    if (isSignedIn) {
+      profileValue();
+    }
     print('===========$isSignedIn');
+  }
+
+  profileValue() async {
+    profileData = await basicProfileRepository.fetchBasicProfile();
+    print('PROFILEdATA: $profileData');
   }
 
   @override
   void initState() {
+    // basicProfileBloc = BasicProfileBloc(
+    //     basicProfileRepository: basicProfileRepository,
+    //     matchPreferenceRepository: matchPreferenceRepository);
+    // basicProfileBloc.add(LoadBasicProfileEvent());
+
     checkValue();
     authval();
     super.initState();
@@ -133,12 +151,13 @@ class _ApppState extends State<Appp> {
                   // userId: state.user.uid,
                   userRepository: widget.userRepository,
                 )
-              : value == null
+              : value == null && profileData == null
                   ? SignupQuestionsScreen(
+                      toEdit: false,
                       matchPreferenceRepository: matchPreferenceRepository,
                       basicProfileRepository: basicProfileRepository,
                       user: userTemp)
-                  : value == 'HasImageValue'
+                  : value == 'HasImageValue' 
                       ? AllDoneScreen(
                           user: user, userRepository: widget.userRepository)
                       : value == 'HasPreferenceValue'
@@ -150,6 +169,7 @@ class _ApppState extends State<Appp> {
                                       basicProfileRepository,
                                   user: userTemp)
                               : SignupQuestionsScreen(
+                                toEdit: false,
                                   matchPreferenceRepository:
                                       matchPreferenceRepository,
                                   basicProfileRepository:
@@ -188,11 +208,12 @@ class SplashScreenPage extends StatelessWidget {
     );
   }
 }
-class MyHttpOverrides extends HttpOverrides{
+
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
-
