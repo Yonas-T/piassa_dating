@@ -4,24 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/blocs/authBloc/authBloc.dart';
 import 'package:piassa_application/blocs/authBloc/authEvent.dart';
-import 'package:piassa_application/blocs/homePageBloc/homePageBloc.dart';
-import 'package:piassa_application/blocs/homePageBloc/homePageEvent.dart';
-import 'package:piassa_application/blocs/homePageBloc/homePageState.dart';
-import 'package:piassa_application/blocs/loginBloc/loginBloc.dart';
+
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
-import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
-import 'package:piassa_application/repositories/basicProfileRepository.dart';
-import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/homeScreen/homeScreen.dart';
-import 'package:piassa_application/screens/likesListingScreen/likesListingScreen.dart';
 import 'package:piassa_application/screens/matchesListingScreen/matchesListingScreen.dart';
 import 'package:piassa_application/screens/myProfileScreen/myProfileScreen.dart';
-import 'package:piassa_application/screens/profileInfoScreen/profileInfoScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signUpScreen/signUpScreen.dart';
-import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 
 class Tabs extends StatelessWidget {
   AuthRepository? userRepository;

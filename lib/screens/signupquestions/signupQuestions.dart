@@ -875,6 +875,7 @@ class _SignupQuestionsScreenChildState
       ) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return SecondStepperPageWidget(
+          toEdit: false,
           user: widget.user,
           basicProfileRepository: widget.basicProfileRepository);
       // Tabs(user: user, userRepository: userRepository);

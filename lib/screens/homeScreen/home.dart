@@ -175,11 +175,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           listener: (context, state) {
             print(state);
 
-            if (state is LoadUserFailState) {
-              Center(
-                child: Text('Load Failed'),
-              );
-            }
+            // if (state is LoadUserFailState) {
+            //   Center(
+            //     child: Text('Load Failed'),
+            //   );
+            // }
           },
           child: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
@@ -205,7 +205,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 print('IN BLOC BUILDER: ${state.userMatchLoaded}');
                 return getBody(context, matchLoaded);
               } else if (state is LoadUserFailState) {
-                return Container();
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Unable to Load Recommendations. Try to check your connection!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: kNormalFont,
+                        color: Color(kBlack)
+                      ),
+                    ),
+                  ),
+                );
               }
               return Container();
             },
@@ -296,7 +308,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           width: 10,
                                         ),
                                         Text(
-                                          (DateTime.now().year - DateTime.parse(matchRecommendations[index].birthDay).year).toString(),
+                                          (DateTime.now().year -
+                                                  DateTime.parse(
+                                                          matchRecommendations[
+                                                                  index]
+                                                              .birthDay)
+                                                      .year)
+                                              .toString(),
                                           style: TextStyle(
                                             color: Color(kWhite),
                                             fontSize: 22,
@@ -309,7 +327,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                     Row(
                                       children: [
-                                        Text('Addis Ababa', style: TextStyle(fontSize: kNormalFont, color: Color(kWhite))),
+                                        Text('Addis Ababa',
+                                            style: TextStyle(
+                                                fontSize: kNormalFont,
+                                                color: Color(kWhite))),
                                       ],
                                     ),
                                     SingleChildScrollView(

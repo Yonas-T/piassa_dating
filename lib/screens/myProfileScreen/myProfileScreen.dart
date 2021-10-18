@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
-import 'package:piassa_application/generalWidgets/appBar.dart';
-import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
@@ -14,7 +12,7 @@ import 'package:piassa_application/screens/myProfileScreen/widgets/paymentPackag
 import 'package:piassa_application/screens/myProfileScreen/widgets/photoAndNameWidget.dart';
 import 'package:piassa_application/screens/myProfileScreen/widgets/profileDetailTileWidget.dart';
 import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
-import 'package:piassa_application/services/matchPreferenceApiProvider.dart';
+import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 
 class MyProfileScreen extends StatefulWidget {
   final User? user;
@@ -27,8 +25,12 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
-  BasicProfileRepository  basicProfileRepository = BasicProfileRepository();
-  MatchPreferenceRepository matchPreferenceRepository = MatchPreferenceRepository();
+  BasicProfileRepository basicProfileRepository = BasicProfileRepository();
+  MatchPreferenceRepository matchPreferenceRepository =
+      MatchPreferenceRepository();
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             PhotoAndNameWidget(
               user: widget.user!,
               basicProfileRepository: basicProfileRepository,
-              matchPreferenceRepository: matchPreferenceRepository,
+              matchPreferenceRepository: matchPreferenceRepository
             ),
             SizedBox(
               height: 16,
@@ -62,7 +64,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return PreferenceScreen();
+                        return SecondStepperPageWidget(toEdit: true, basicProfileRepository: basicProfileRepository, user: widget.user!);
                       }));
                     },
                     child: ProfileDetailTileWidget(

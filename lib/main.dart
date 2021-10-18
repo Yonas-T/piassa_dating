@@ -165,6 +165,7 @@ class _ApppState extends State<Appp> {
                               basicProfileRepository: basicProfileRepository)
                           : value == 'HasBasicProfileValue'
                               ? SecondStepperPageWidget(
+                                  toEdit: false,
                                   basicProfileRepository:
                                       basicProfileRepository,
                                   user: userTemp)

@@ -16,12 +16,12 @@ class PreferenceScreen extends StatefulWidget {
 }
 
 class _PreferenceScreenState extends State<PreferenceScreen> {
-  RangeLabels labels = RangeLabels('18', "60");
-  RangeValues values = RangeValues(18, 60);
+  RangeLabels labels = RangeLabels('18', "70");
+  RangeValues values = RangeValues(18, 70);
   int divisions = 5;
   List strLabels = [];
   int _currentScore = 0;
-  List _educationLevel = ['Diploma', 'Degree', 'Masters'];
+  List _educationLevel = ['High School Diploma', 'Advanced Diploma', 'Bachelors Degree', 'Masters Degree', 'Doctorate', 'Other'];
   String selectedEducationLevel = '';
   int eduIndex = 0;
   late String _selectedUniversity;

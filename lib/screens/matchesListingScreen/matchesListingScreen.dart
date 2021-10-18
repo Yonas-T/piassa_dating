@@ -130,13 +130,26 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
                   if (state is InitialMatchQueueState) {
                     return Center(
                       child: Container(
-                        height: 100,
+                        height: MediaQuery.of(context).size.height * .14,
                       ),
                     );
                   } else if (state is MatchQueueLoadingState) {
                     return Center(
                       child: Container(
-                        height: 100,
+                        height: MediaQuery.of(context).size.height * .14,
+                      ),
+                    );
+                  } else if (state is MatchQueueFailState) {
+                    return Center(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * .14,
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Unable to Load your matche queue. Try to check your connection!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: kNormalFont, color: Color(kBlack)),
+                        ),
                       ),
                     );
                   } else if (state is LoadedMatchQueueState) {
@@ -326,9 +339,20 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
                   if (state is InitialMatchListState) {
                     return Center(
                       child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      Color(klightPink))),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(klightPink))),
+                    );
+                  } else if (state is MatchListFailState) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+                        child: Text(
+                          'Unable to Load your matches. Try to check your connection!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: kNormalFont, color: Color(kBlack)),
+                        ),
+                      ),
                     );
                   } else if (state is LoadedMatchListState) {
                     return Expanded(
@@ -369,9 +393,8 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
                   } else if (state is MatchListLoadingState) {
                     return Center(
                       child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      Color(klightPink))),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(klightPink))),
                     );
                   }
                   return Container();

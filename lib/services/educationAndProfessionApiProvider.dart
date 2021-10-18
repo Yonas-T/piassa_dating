@@ -8,11 +8,11 @@ import 'package:piassa_application/utils/tokenRefresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-class BasicProfileApiProvider {
+class EducationAndProfessionApiProvider {
   // Client client = Client();
   final _baseUrl = 'https://api.piassadating.com';
   FirebaseAuth auth = FirebaseAuth.instance;
-  var idGenerate = Uuid();
+
 
   Future<Peoples> fetchBasicProfile() async {
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
@@ -35,23 +35,17 @@ class BasicProfileApiProvider {
     return cc;
   }
 
-  Future<Peoples> postBasicProfile(userName, fullName, gender, email, height,
-      birthDay, nationality, headline, longitude, latitude) async {
+  Future<Peoples> postBasicProfile(education, profession, jobTitle, company) async {
+// educationLevel, universityId, professionId, jobTitle, company
+    // Map<String, dynamic> postJson = {
+    //   "educationLevel": educationLevel,
+    //   "universityId": universityId,
+    //   "professionId": professionId,
+    //   "jobTitle": jobTitle,
+    //   "company": company
+    // };
 
-    Map<String, dynamic> postJson = {
-      "userName": auth.currentUser!.uid,
-      "email": email,
-      "fullName": fullName,
-      "gender": gender,
-      "height": height,
-      "birthDay": birthDay,
-      "nationality": nationality,
-      "headline": headline,
-      "latitude": latitude,
-      "longitude": longitude
-    };
-
-    print(postJson);
+    // print(postJson);
     // var tk = '';
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       log(value);
@@ -62,23 +56,19 @@ class BasicProfileApiProvider {
           'Accept': 'application/json',
           'X-Authorization-Firebase': '$value'
         },
-        body: json.encode(postJson),
+        // body: json.encode(postJson),
       );
       print(response.body);
       print(response.statusCode);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Peoples.fromJson({
-          "userName": auth.currentUser!.uid,
-          "email": email,
-          "fullName": fullName,
-          "gender": gender,
-          "height": height,
-          "birthDay": birthDay,
-          "nationality": nationality,
-          "headline": headline,
-          "latitude": latitude,
-          "longitude": longitude
+          "educationLevel": 'educationLevel',
+          "universityId": 'universityId',
+          "professionId": 'professionId',
+          "jobTitle": jobTitle,
+          "company": company,
+        
         });
       } else {
         throw Exception('Failed to load');
@@ -124,28 +114,4 @@ class BasicProfileApiProvider {
   }
 }
 
-class DataJson {
-  String? token;
-  String? refreshToken;
 
-  DataJson({required this.token, required this.refreshToken});
-
-  DataJson.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    refreshToken = json['refresh_token'];
-  }
-}
-
-class DataToken {
-  late String token;
-  late String refreshToken;
-  late String userId;
-  late String expiryDate;
-
-  DataToken.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    refreshToken = json['refresh_token'];
-    userId = json['userId'];
-    expiryDate = json['expiryDate'];
-  }
-}

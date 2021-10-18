@@ -77,6 +77,9 @@ class LoginPage extends StatelessWidget {
                     if (state is LoginSuccessState) {
                       navigateToSignupQuestionsScreen(context, state.user);
                     }
+                    if (state is LoginFailState) {
+                      Text('Can\'t Login, Try Again');
+                    }
                   },
                   child: BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {

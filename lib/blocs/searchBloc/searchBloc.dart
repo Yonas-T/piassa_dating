@@ -36,38 +36,49 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Stream<SearchState> _mapSelectToState(
       {required String recommendedId}) async* {
+    try {
+      List<UserMatch> _matchRecommendations =
+          await _searchRepository.fetchPeoplesToSearchFor();
+      print('MATCHRECOM:${_matchRecommendations.length}');
+      _matchRecommendations.removeWhere((item) => item.id == recommendedId);
+      print('MATCHRECOM-1:${_matchRecommendations.length}');
+
+      String selectRecommended =
+          await _searchRepository.choosePeople(recommendedId);
+      yield LoadedUserState(_matchRecommendations);
+    } catch (e) {
+      yield LoadUserFailState(e.toString());
+    }
     yield SearchLoadingState();
-
-    
-    List<UserMatch> _matchRecommendations = await _searchRepository.fetchPeoplesToSearchFor();
-    print('MATCHRECOM:${_matchRecommendations.length}');
-    _matchRecommendations.removeWhere((item) => item.id == recommendedId);
-    print('MATCHRECOM-1:${_matchRecommendations.length}');
-
-    String selectRecommended =
-        await _searchRepository.choosePeople(recommendedId);
-    yield LoadedUserState(_matchRecommendations);
   }
 
   Stream<SearchState> _mapPassToState({required String recommendedId}) async* {
-    yield SearchLoadingState();
-    List<UserMatch> _matchRecommendations =
-        await _searchRepository.fetchPeoplesToSearchFor();
-        print('MATCHRECOM:${_matchRecommendations.length}');
-    _matchRecommendations.removeWhere((item) => item.id == recommendedId);
-    print('MATCHRECOM-1:${_matchRecommendations.length}');
-    
-    String passRecommended =
-        await _searchRepository.choosePeople(recommendedId);
+    try {
+      yield SearchLoadingState();
+      List<UserMatch> _matchRecommendations =
+          await _searchRepository.fetchPeoplesToSearchFor();
+      print('MATCHRECOM:${_matchRecommendations.length}');
+      _matchRecommendations.removeWhere((item) => item.id == recommendedId);
+      print('MATCHRECOM-1:${_matchRecommendations.length}');
 
-    yield LoadedUserState(_matchRecommendations);
+      String passRecommended =
+          await _searchRepository.choosePeople(recommendedId);
+
+      yield LoadedUserState(_matchRecommendations);
+    } catch (e) {
+      yield LoadUserFailState(e.toString());
+    }
   }
 
   Stream<SearchState> _mapLoadUserToState() async* {
     yield InitialSearchState();
-    List<UserMatch> _matchRecommendations =
-        await _searchRepository.fetchPeoplesToSearchFor();
-    print('IN BLOC RECOMM: $_matchRecommendations');
-    yield LoadedUserState(_matchRecommendations);
+    try {
+      List<UserMatch> _matchRecommendations =
+          await _searchRepository.fetchPeoplesToSearchFor();
+      print('IN BLOC RECOMM: $_matchRecommendations');
+      yield LoadedUserState(_matchRecommendations);
+    } catch (e) {
+      yield LoadUserFailState(e.toString());
+    }
   }
 }
