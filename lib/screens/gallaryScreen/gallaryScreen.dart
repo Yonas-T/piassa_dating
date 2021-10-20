@@ -183,50 +183,108 @@ class _GallaryScreenChildState extends State<GallaryScreenChild> {
       return retrieveError;
     }
     if (edit) {
-      return ListView(
-        children: [
-          SizedBox(height: 4),
-          Text(
-            '    Uploaded Photos',
-            style: TextStyle(fontSize: kNormalFont),
-          ),
-          SizedBox(height: 4),
-          GridView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: profileImages.length,
-              itemBuilder: (BuildContext context, int index) {
-                // String key = _imageFileMap.keys.elementAt(index);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onLongPress: () async {
-                      _showDialog(
-                          myProfile!.userImages[index].id,
-                          myProfile!.userImages[index].filePath,
-                          myProfile!.userImages[index].fileType,
-                          myProfile!.userImages[index]);
-                    },
-                    child: Image.network(
-                      profileImages[index].filePath,
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Center(
-                            child: Text(
-                          'Image Not Found',
-                          style: TextStyle(color: Colors.red),
-                        ));
+      if (_cameraFile != null || _imageFileList != null) {
+        List newList = List.from(profileImages)..addAll(_imageFileList!);
+        return ListView(
+          children: [
+            SizedBox(height: 4),
+            Text(
+              '    Upload Photos',
+              style: TextStyle(fontSize: kNormalFont),
+            ),
+            SizedBox(height: 4),
+            _imageFileList!.length != 0
+                ? GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemCount: profileImages.length + _imageFileList!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      // String key = _imageFileMap.keys.elementAt(index);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: index < profileImages.length ? Image.network(
+                          profileImages[index].filePath,
+                          errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Center(
+                              child: Text(
+                            'Image Not Found',
+                            style: TextStyle(color: Colors.red),
+                          ));
+                        },
+                          fit: BoxFit.cover,
+                        ) : Image.file(
+                          File(_imageFileList![index-profileImages.length].path),
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    })
+                : GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8),
+                    itemCount: 4 + profileImages.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        color: Colors.grey[300],
+                      );
+                    }),
+            SizedBox(height: 16),
+          ],
+        );
+      } else {
+        return ListView(
+          children: [
+            SizedBox(height: 4),
+            Text(
+              '    Uploaded Photos',
+              style: TextStyle(fontSize: kNormalFont),
+            ),
+            SizedBox(height: 4),
+            GridView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: profileImages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  // String key = _imageFileMap.keys.elementAt(index);
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onLongPress: () async {
+                        _showDialog(
+                            myProfile!.userImages[index].id,
+                            myProfile!.userImages[index].filePath,
+                            myProfile!.userImages[index].fileType,
+                            myProfile!.userImages[index]);
                       },
+                      child: Image.network(
+                        profileImages[index].filePath,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Center(
+                              child: Text(
+                            'Image Not Found',
+                            style: TextStyle(color: Colors.red),
+                          ));
+                        },
+                      ),
                     ),
-                  ),
-                );
-              }),
-          SizedBox(height: 16),
-        ],
-      );
+                  );
+                }),
+            SizedBox(height: 16),
+          ],
+        );
+      }
     } else {
       if (_cameraFile != null || _imageFileList != null) {
         return ListView(
