@@ -6,6 +6,7 @@ import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
+import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
 import 'package:piassa_application/services/matchListApiProvider.dart';
 import 'package:piassa_application/services/myProfileApiProvider.dart';
@@ -57,7 +58,7 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
               CircleAvatar(
                 backgroundColor: Color(kWhite),
                 backgroundImage:
-                    NetworkImage(myProfile!.userImages[1].filePath),
+                    NetworkImage(myProfile!.userImages[2].filePath),
                 radius: 64,
                 child: InkWell(
                   onTap: () {
@@ -65,13 +66,7 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       print('pressed');
-                      return SignupQuestionsScreen(
-                        toEdit: true,
-                        user: widget.user,
-                        basicProfileRepository: widget.basicProfileRepository,
-                        matchPreferenceRepository:
-                            widget.matchPreferenceRepository,
-                      );
+                      return GallaryScreen(toEdit: true, basicProfileRepository: widget.basicProfileRepository);
                     }));
                   },
                   child: Align(
@@ -97,8 +92,36 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
               ),
               SizedBox(height: 4),
               Text(
-                'Name',
+                myProfile!.fullName,
                 style: TextStyle(fontSize: kLargeFont, color: Color(kBlack)),
+              ),
+              SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      print('pressed');
+                      return SignupQuestionsScreen(
+                        toEdit: true,
+                        user: widget.user,
+                        basicProfileRepository: widget.basicProfileRepository,
+                        matchPreferenceRepository:
+                            widget.matchPreferenceRepository,
+                      );
+                    }));
+                      },
+                      child: Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                          color: Color(kPrimaryPink),
+                          fontSize: kNormalFont,
+                        ),
+                      ),
+                    ),
+                ],
               )
             ],
           );

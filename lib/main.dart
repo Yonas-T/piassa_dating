@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
@@ -112,6 +113,7 @@ class _ApppState extends State<Appp> {
       isSignedIn = isSignedInAll;
       if (userTempAll != null) {
         userTemp = userTempAll;
+        log('TEMPO USER: $userTemp');
       }
     });
     if (isSignedIn) {
@@ -131,57 +133,66 @@ class _ApppState extends State<Appp> {
     //     basicProfileRepository: basicProfileRepository,
     //     matchPreferenceRepository: matchPreferenceRepository);
     // basicProfileBloc.add(LoadBasicProfileEvent());
-
+    isLoading = true;
     checkValue();
     authval();
+    setState(() {
+      isLoading = false;
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        print(state);
-        if (state is AuthInitialState) {
-          return Container();
-        } else if (isSignedIn) {
-          return value == 'HasAllValue'
-              ? Tabs(
-                  user: userTemp,
-                  // userId: state.user.uid,
-                  userRepository: widget.userRepository,
-                )
-              : value == null && profileData == null
-                  ? SignupQuestionsScreen(
-                      toEdit: false,
-                      matchPreferenceRepository: matchPreferenceRepository,
-                      basicProfileRepository: basicProfileRepository,
-                      user: userTemp)
-                  : value == 'HasImageValue' 
-                      ? AllDoneScreen(
-                          user: user, userRepository: widget.userRepository)
-                      : value == 'HasPreferenceValue'
-                          ? GallaryScreen(
-                              basicProfileRepository: basicProfileRepository)
-                          : value == 'HasBasicProfileValue'
-                              ? SecondStepperPageWidget(
-                                  toEdit: false,
-                                  basicProfileRepository:
-                                      basicProfileRepository,
-                                  user: userTemp)
-                              : SignupQuestionsScreen(
-                                toEdit: false,
-                                  matchPreferenceRepository:
-                                      matchPreferenceRepository,
-                                  basicProfileRepository:
-                                      basicProfileRepository,
-                                  user: userTemp);
-        } else if (state is UnauthenticatedState) {
-          return LoginPageParent(userRepository: widget.userRepository);
-        }
-        return Container();
-      },
-    );
+    return isLoading
+        ? CircularProgressIndicator()
+        : BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              print(state);
+              if (state is AuthInitialState) {
+                return Container();
+              } else if (isSignedIn) {
+                return value == 'HasAllValue'
+                    ? Tabs(
+                        user: userTemp,
+                        // userId: state.user.uid,
+                        userRepository: widget.userRepository,
+                      )
+                    : value == null && profileData == null
+                        ? SignupQuestionsScreen(
+                            toEdit: false,
+                            matchPreferenceRepository:
+                                matchPreferenceRepository,
+                            basicProfileRepository: basicProfileRepository,
+                            user: userTemp)
+                        : value == 'HasImageValue'
+                            ? AllDoneScreen(
+                                user: user,
+                                userRepository: widget.userRepository)
+                            : value == 'HasPreferenceValue'
+                                ? GallaryScreen(
+                                    toEdit: false,
+                                    basicProfileRepository:
+                                        basicProfileRepository)
+                                : value == 'HasBasicProfileValue'
+                                    ? SecondStepperPageWidget(
+                                        toEdit: false,
+                                        basicProfileRepository:
+                                            basicProfileRepository,
+                                        user: userTemp)
+                                    : SignupQuestionsScreen(
+                                        toEdit: false,
+                                        matchPreferenceRepository:
+                                            matchPreferenceRepository,
+                                        basicProfileRepository:
+                                            basicProfileRepository,
+                                        user: userTemp);
+              } else if (state is UnauthenticatedState) {
+                return LoginPageParent(userRepository: widget.userRepository);
+              }
+              return Container();
+            },
+          );
   }
 }
 

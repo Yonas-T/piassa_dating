@@ -539,6 +539,7 @@ class _SecondStepperPageWidgetChildState
       ) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return GallaryScreen(
+        toEdit: false,
         basicProfileRepository: widget.basicProfileRepository,
       );
       // Tabs(user: user, userRepository: userRepository);

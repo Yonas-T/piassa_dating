@@ -44,7 +44,7 @@ class MatchPreferenceApiProvider {
     };
     print('POSTJSON: $postJson');
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
-      log(value);
+      // log(value);
       final response = await http.post(
         Uri.parse('$_baseUrl/api/match-preferences'),
         headers: <String, String>{

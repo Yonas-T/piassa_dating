@@ -8,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:piassa_application/models/images.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:path/path.dart' as Path;
+import 'package:piassa_application/models/userImage.dart';
+import 'package:piassa_application/models/userMatch.dart';
+import 'package:piassa_application/services/myProfileApiProvider.dart';
 
 class UploadImageApiProvider {
   final _baseUrl = 'https://api.piassadating.com';
@@ -68,11 +71,9 @@ class UploadImageApiProvider {
 
         if (response.statusCode == 200) {
           return Images.fromJson(
-            {
-              "filePath": _uploadedFileURL[i], "fileType": ftype[i]
-            }
-            // json.decode(response.body)
-            );
+              {"filePath": _uploadedFileURL[i], "fileType": ftype[i]}
+              // json.decode(response.body)
+              );
         } else {
           throw Exception('Failed to load');
         }
@@ -81,7 +82,7 @@ class UploadImageApiProvider {
     return cc;
   }
 
-  Future<Peoples> uploadImageLink(uploadedFile) async {
+  Future<Images> uploadImageLink(uploadedFile) async {
     // uploadedFile.forEach((key, value) async{
     //   response = await client.post(
     //     Uri.parse('$_baseUrl/api/upload-files'),
@@ -115,12 +116,40 @@ class UploadImageApiProvider {
         );
 
         if (response.statusCode == 200) {
-          return Peoples.fromJson(json.decode(response.body));
+          return Images.fromJson(json.decode(response.body));
         } else {
           throw Exception('Failed to load');
         }
       });
     }
+    return cc;
+  }
+
+  Future<UserImage> deleteMyImage(fileId, filePath, fileType) async {
+    var cc;
+    
+    cc = auth.currentUser!.getIdToken(true).then((value) async {
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/api/upload-files/$fileId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'X-Authorization-Firebase': '$value'
+        },
+        body: json.encode(
+          {"filePath": filePath, "fileType": fileType},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return UserImage.fromJson(
+          {"filePath": filePath, "fileType": fileType}
+        );
+        // UserImage.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
+    });
     return cc;
   }
 }

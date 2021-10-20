@@ -230,6 +230,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Widget getBody(BuildContext context, matchRecommendations) {
     var size = MediaQuery.of(context).size;
+    
     print(itemLength);
     // print(json.encode(matchRecommendations[0]));
     return Padding(

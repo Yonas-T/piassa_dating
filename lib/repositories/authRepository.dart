@@ -281,7 +281,7 @@ class AuthRepository {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', userCred.credential!.token.toString());
-      log(userCred.credential!.token.toString());
+      // log(userCred.credential!.token.toString());
       return currentUser;
     } on PlatformException catch (e) {
       String authError = "";

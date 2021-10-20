@@ -14,6 +14,7 @@ class MyProfileApiProvider {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<UserMatch> fetchMyProfile() async {
+    print(auth.currentUser);
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       var myId = auth.currentUser!.uid;
       final response = await http.get(

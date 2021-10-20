@@ -61,6 +61,7 @@ class _TabsChildState extends State<TabsChild> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user);
     authBloc = BlocProvider.of<AuthBloc>(context);
     _pages = [
       MyProfileScreen(user: widget.user, userRepository: widget.userRepository),

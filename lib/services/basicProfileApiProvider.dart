@@ -54,7 +54,7 @@ class BasicProfileApiProvider {
     print(postJson);
     // var tk = '';
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
-      log(value);
+      // log(value);
       final response = await http.post(
         Uri.parse('$_baseUrl/api/register'),
         headers: {

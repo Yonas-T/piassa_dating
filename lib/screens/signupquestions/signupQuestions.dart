@@ -489,7 +489,13 @@ class _SignupQuestionsScreenChildState
                       size: 14,
                     ))),
             colorVal: Color(kWhite),
-            leadingIcon: Container(),
+            leadingIcon: widget.toEditChild
+                ? IconButton(
+                    icon: Icon(Icons.arrow_back,
+                        color: Color(klightPink), size: 30),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                : Container(),
             title: Text('Profile',
                 style:
                     TextStyle(fontSize: kTitleBoldFont, color: Color(kBlack))),
@@ -515,7 +521,7 @@ class _SignupQuestionsScreenChildState
             // padding: EdgeInsets.all(8),
             child: Column(
               children: [
-                Container(height: 15.0, child: _getStepProgress()),
+                widget.toEditChild ? Container(height: 15.0,) :Container(height: 15.0, child: _getStepProgress()),
                 SizedBox(height: 24),
                 BlocBuilder<BasicProfileBloc, BasicProfileState>(
                     builder: (context, state) {
