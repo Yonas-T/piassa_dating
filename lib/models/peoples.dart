@@ -1,5 +1,5 @@
-
 class Peoples {
+  String? id;
   String userName;
   String fullName;
   String gender;
@@ -12,7 +12,8 @@ class Peoples {
   double latitude;
 
   Peoples(
-      {required this.userName,
+      {this.id,
+      required this.userName,
       required this.fullName,
       required this.gender,
       required this.email,
@@ -25,6 +26,7 @@ class Peoples {
 
   factory Peoples.fromJson(Map<String, dynamic> parsedJson) {
     return new Peoples(
+        id: parsedJson['id'],
         userName: parsedJson['userName'],
         fullName: parsedJson['fullName'],
         gender: parsedJson['gender'],

@@ -295,33 +295,36 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 // width: size.width * 0.72,
                                 child: Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '${matchRecommendations[index].fullName}, ',
-                                          // itemsTemp[index]['name'],
-                                          style: TextStyle(
-                                              color: Color(kWhite),
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          (DateTime.now().year -
-                                                  DateTime.parse(
-                                                          matchRecommendations[
-                                                                  index]
-                                                              .birthDay)
-                                                      .year)
-                                              .toString(),
-                                          style: TextStyle(
-                                            color: Color(kWhite),
-                                            fontSize: 22,
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            '${matchRecommendations[index].fullName}, ',
+                                            // itemsTemp[index]['name'],
+                                            style: TextStyle(
+                                                color: Color(kWhite),
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            (DateTime.now().year -
+                                                    DateTime.parse(
+                                                            matchRecommendations[
+                                                                    index]
+                                                                .birthDay)
+                                                        .year)
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Color(kWhite),
+                                              fontSize: 22,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 12,

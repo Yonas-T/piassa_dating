@@ -47,3 +47,21 @@ class MoveMaker {
     return data;
   }
 }
+
+class PostMoveMaker {
+  String moveMakerId;
+  String answer;
+
+  PostMoveMaker({required this.moveMakerId, required this.answer});
+
+  factory PostMoveMaker.fromJson(Map<String, dynamic> json) {
+    return PostMoveMaker(moveMakerId: json['moveMakerId'], answer: json['answer']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['moveMakerId'] = this.moveMakerId;
+    data['answer'] = this.answer;
+    return data;
+  }
+}

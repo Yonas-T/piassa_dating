@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:piassa_application/models/images.dart';
@@ -140,6 +141,7 @@ class UploadImageApiProvider {
           {"filePath": filePath, "fileType": fileType},
         ),
       );
+      FirebaseStorage.instance.refFromURL(filePath).delete();
 
       if (response.statusCode == 200) {
         return UserImage.fromJson(

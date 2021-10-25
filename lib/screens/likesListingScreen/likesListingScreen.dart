@@ -18,6 +18,7 @@ class _LikesListingScreenState extends State<LikesListingScreen> {
   @override
   void initState() {
     _likesList.add(Peoples(
+        id: '1',
         userName: 'Test Person',
         fullName: '1',
         gender: '10:00',
@@ -29,6 +30,7 @@ class _LikesListingScreenState extends State<LikesListingScreen> {
         headline: 'asdfgh',
         height: 1.7));
     _likesList.add(Peoples(
+        id: '2',
         userName: 'Test Person',
         fullName: '1',
         gender: '10:00',

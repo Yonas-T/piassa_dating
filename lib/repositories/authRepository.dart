@@ -67,8 +67,6 @@ class AuthRepository {
       // });
       print("REPO : ${authResult.user?.email}");
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', authResult.credential!.token.toString());
       return authResult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -115,6 +113,8 @@ class AuthRepository {
         email: email,
         password: password,
       );
+      print('result.user: ${authresult.user}');
+
       //     .then((value) {
       //   value.user!.getIdToken(true).then((res) async {
       //     idToken = res;
@@ -122,9 +122,6 @@ class AuthRepository {
       //     prefs.setString('token', idToken!);
       //   });
       // });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', authresult.credential!.token.toString());
-      print(authresult.user);
       return authresult.user;
     } on PlatformException catch (e) {
       String authError = "";
@@ -205,8 +202,6 @@ class AuthRepository {
         });
         final User? user = userCred.user;
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', userCred.credential!.token.toString());
 
         assert(user!.email != null);
         assert(user!.displayName != null);
@@ -279,8 +274,6 @@ class AuthRepository {
       currentUser = firebaseAuth.currentUser!;
       assert(user!.uid == currentUser.uid);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', userCred.credential!.token.toString());
       // log(userCred.credential!.token.toString());
       return currentUser;
     } on PlatformException catch (e) {
@@ -324,7 +317,6 @@ class AuthRepository {
 
   // sign out
   Future<void> signOut() async {
-
     await FirebaseAuth.instance.signOut();
     await _googleSignIn.signOut();
     await fbLogin.logOut();
@@ -337,7 +329,7 @@ class AuthRepository {
   }
 
   // get current user
-  Future<User?> getCurrentUser() async {
-    return FirebaseAuth.instance.currentUser;
+  Future<User> getCurrentUser() async {
+    return FirebaseAuth.instance.currentUser!;
   }
 }

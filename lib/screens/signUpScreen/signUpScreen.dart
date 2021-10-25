@@ -12,7 +12,7 @@ import '../loginScreen/loginScreen.dart';
 import 'package:meta/meta.dart';
 
 class SignUpPageParent extends StatelessWidget {
-  AuthRepository? userRepository;
+  AuthRepository userRepository;
 
   SignUpPageParent({required this.userRepository});
 
@@ -26,7 +26,7 @@ class SignUpPageParent extends StatelessWidget {
 }
 
 class SignUpPage extends StatefulWidget {
-  AuthRepository? userRepository;
+  AuthRepository userRepository;
 
   SignUpPage({required this.userRepository});
 

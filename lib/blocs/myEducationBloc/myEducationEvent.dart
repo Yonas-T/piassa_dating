@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class MatchPreferenceEvent extends Equatable {}
+abstract class MyEducationEvent extends Equatable {}
 
-class SubmitButtonPressed extends MatchPreferenceEvent {
+class SaveButtonPressed extends MyEducationEvent {
   // final String gender;
   bool? isEdit;
   final String id;
@@ -13,7 +13,7 @@ class SubmitButtonPressed extends MatchPreferenceEvent {
   final String educationLevel;
   final double searchRadius;
 
-  SubmitButtonPressed(
+  SaveButtonPressed(
       {this.isEdit,
         required this.id,
       // required this.gender,

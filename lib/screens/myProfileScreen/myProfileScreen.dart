@@ -15,8 +15,8 @@ import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dar
 import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 
 class MyProfileScreen extends StatefulWidget {
-  final User? user;
-  final AuthRepository? userRepository;
+  final User user;
+  final AuthRepository userRepository;
 
   const MyProfileScreen({required this.user, required this.userRepository});
 
@@ -49,7 +49,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           children: [
             SizedBox(height: 24),
             PhotoAndNameWidget(
-              user: widget.user!,
+              user: widget.user,
               basicProfileRepository: basicProfileRepository,
               matchPreferenceRepository: matchPreferenceRepository
             ),
@@ -64,7 +64,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return SecondStepperPageWidget(toEdit: true, basicProfileRepository: basicProfileRepository, user: widget.user!);
+                        return SecondStepperPageWidget(toEdit: true, basicProfileRepository: basicProfileRepository, user: widget.user);
                       }));
                     },
                     child: ProfileDetailTileWidget(

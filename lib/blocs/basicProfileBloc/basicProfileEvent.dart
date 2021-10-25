@@ -5,20 +5,23 @@ import 'package:geolocator/geolocator.dart';
 abstract class BasicProfileEvent extends Equatable {}
 
 class ProceedButtonPressed extends BasicProfileEvent {
-  final String userName,
+  final String
+      userName,
       fullName,
       gender,
       email,
       birthDay,
       nationality,
       headline;
+  String? id;
 
   final double longitude;
   final double latitude;
   final double height;
 
   ProceedButtonPressed(
-      {required this.userName,
+      {this.id,
+      required this.userName,
       required this.fullName,
       required this.gender,
       required this.email,

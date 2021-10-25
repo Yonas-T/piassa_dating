@@ -30,8 +30,8 @@ class BasicProfileBloc extends Bloc<BasicProfileEvent, BasicProfileState> {
       yield BasicProfileLoadingState();
       try {
         print('BEFORE BLOC');
-
         basicProfileToProceed = Peoples(
+          
             userName: event.userName,
             fullName: event.fullName,
             gender: event.gender,

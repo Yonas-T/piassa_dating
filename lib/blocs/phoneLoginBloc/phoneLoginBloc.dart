@@ -80,7 +80,7 @@ class PhoneLoginBloc extends Bloc<PhoneLoginEvent, PhoneLoginState> {
       _userRepository!.getCurrentUser().catchError((onError) {
         print(onError);
       }).then((user) {
-        eventStream.add(PhoneLoginCompleteEvent(user!));
+        eventStream.add(PhoneLoginCompleteEvent(user));
         eventStream.close();
       });
     };

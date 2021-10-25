@@ -81,6 +81,7 @@ class _SignupQuestionsScreenChildState
   
 
   Peoples basicProfileData = Peoples(
+      id: '1',
       userName: '',
       fullName: '',
       gender: '',
@@ -119,8 +120,11 @@ class _SignupQuestionsScreenChildState
   }
 
   Future profileValue() async {
-    _profileData = await BasicProfileApiProvider().fetchBasicProfile();
+    if (widget.toEditChild) {
+      _profileData = await BasicProfileApiProvider().fetchBasicProfile();
     print('PROFILEdATA: $_profileData');
+    }
+    
   }
 
   @override
@@ -324,7 +328,6 @@ class _SignupQuestionsScreenChildState
                       backgroundColor: Color(kWhite),
                       itemStyle: TextStyle(
                           color: Color(klightPink),
-                          fontWeight: FontWeight.bold,
                           fontSize: 18),
                       doneStyle:
                           TextStyle(color: Color(klightPink), fontSize: 16)),
@@ -696,7 +699,6 @@ class _SignupQuestionsScreenChildState
                                     backgroundColor: Color(kWhite),
                                     itemStyle: TextStyle(
                                         color: Color(kBlack),
-                                        fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                     doneStyle: TextStyle(
                                         color: Color(kBlack),

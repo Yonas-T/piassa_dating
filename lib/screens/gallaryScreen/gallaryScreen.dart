@@ -27,28 +27,33 @@ import 'package:piassa_application/utils/sheredPref.dart';
 class GallaryScreen extends StatelessWidget {
   UploadImageRepository imageUploadRepository = UploadImageRepository();
   final BasicProfileRepository basicProfileRepository;
+  final User user;
   bool toEdit;
 
-  GallaryScreen({required this.basicProfileRepository, required this.toEdit});
+  GallaryScreen({required this.basicProfileRepository, required this.toEdit, required this.user});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           ImageUploadBloc(imageUploadRepository: imageUploadRepository),
       child: GallaryScreenChild(
-          imageUploadRepository: imageUploadRepository, toEditChild: toEdit),
+          user: user,
+          imageUploadRepository: imageUploadRepository,
+          toEditChild: toEdit),
     );
   }
 }
 
 class GallaryScreenChild extends StatefulWidget {
-  // final User user;
+  final User user;
   final UploadImageRepository imageUploadRepository;
+  AuthRepository userRepository = AuthRepository();
+
   bool toEditChild;
 
   GallaryScreenChild(
       {Key? key,
-      // required this.user,
+      required this.user,
       required this.imageUploadRepository,
       required this.toEditChild})
       : super(key: key);
@@ -66,8 +71,6 @@ class _GallaryScreenChildState extends State<GallaryScreenChild> {
 
   // var _imageFileMap = Map<String, XFile>();
   XFile? _cameraFile;
-  AuthRepository? userRepository;
-  User? user;
   bool keyValue = true;
 
   set _imageFile(XFile? value) {
@@ -204,21 +207,28 @@ class _GallaryScreenChildState extends State<GallaryScreenChild> {
                       // String key = _imageFileMap.keys.elementAt(index);
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: index < profileImages.length ? Image.network(
-                          profileImages[index].filePath,
-                          errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Center(
-                              child: Text(
-                            'Image Not Found',
-                            style: TextStyle(color: Colors.red),
-                          ));
-                        },
-                          fit: BoxFit.cover,
-                        ) : Image.file(
-                          File(_imageFileList![index-profileImages.length].path),
-                          fit: BoxFit.cover,
-                        ),
+                        child: index < profileImages.length
+                            ? InkWell(
+                                child: Image.network(
+                                  profileImages[index].filePath,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return Center(
+                                        child: Text(
+                                      'Image Not Found',
+                                      style: TextStyle(color: Colors.red),
+                                    ));
+                                  },
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Image.file(
+                                File(_imageFileList![
+                                        index - (profileImages.length)]
+                                    .path),
+                                fit: BoxFit.cover,
+                              ),
                       );
                     })
                 : GridView.builder(
@@ -228,12 +238,28 @@ class _GallaryScreenChildState extends State<GallaryScreenChild> {
                             crossAxisCount: 2,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8),
-                    itemCount: 4 + profileImages.length,
+                    itemCount: _imageFileList!.length + profileImages.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        color: Colors.grey[300],
+                      return InkWell(
+                        onLongPress: () {
+                          _showDialog(
+                              myProfile!.userImages[index].id,
+                              myProfile!.userImages[index].filePath,
+                              myProfile!.userImages[index].fileType,
+                              myProfile!.userImages[index]);
+                        },
+                        child: Image.network(
+                          profileImages[index].filePath,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Center(
+                                child: Text(
+                              'Image Not Found',
+                              style: TextStyle(color: Colors.red),
+                            ));
+                          },
+                          fit: BoxFit.cover,
+                        ),
                       );
                     }),
             SizedBox(height: 16),
@@ -632,7 +658,7 @@ class _GallaryScreenChildState extends State<GallaryScreenChild> {
       // , Peoples user
       ) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return AllDoneScreen(user: user, userRepository: userRepository);
+      return AllDoneScreen(user: widget.user, userRepository: widget.userRepository);
       // Tabs(user: user, userRepository: userRepository);
     }));
   }

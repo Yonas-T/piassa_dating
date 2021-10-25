@@ -1,6 +1,6 @@
 class Preference {
   String id;
-  String gender;
+  String? gender;
   int ageStart;
   int ageEnd;
   String religion;
@@ -9,7 +9,7 @@ class Preference {
 
   Preference(
       {required this.id,
-      required this.gender,
+       this.gender,
       required this.ageStart,
       required this.ageEnd,
       required this.religion,
@@ -19,7 +19,7 @@ class Preference {
   factory Preference.fromJson(Map<String, dynamic> json) {
     return Preference(
         id: json['id'],
-        gender: json['gender'],
+        // gender: json['gender'],
         ageStart: json['ageStart'],
         ageEnd: json['ageEnd'],
         religion: json['religion'],
@@ -30,7 +30,7 @@ class Preference {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['gender'] = this.gender;
+    // data['gender'] = this.gender;
     data['ageStart'] = this.ageStart;
     data['ageEnd'] = this.ageEnd;
     data['religion'] = this.religion;

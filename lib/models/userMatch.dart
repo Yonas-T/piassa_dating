@@ -16,10 +16,10 @@ class UserMatch {
   String headline;
   double latitude;
   double longitude;
-  LifeStyle lifeStyle;
-  Education education;
+  LifeStyle? lifeStyle;
+  Education? education;
   List<UserMoveMaker> userMoveMakers;
-  Preference matchPreference;
+  Preference? matchPreference;
   List<UserImage> userImages;
   String currentSubscriptionPackage;
   String paymentHistories;
@@ -59,12 +59,12 @@ class UserMatch {
       required this.userStatus});
 
   factory UserMatch.fromJson(Map<String, dynamic> json) {
-    final movesList = json['userMoveMakers'] as List;
+    final movesList = (json['userMoveMakers'] != null ? json['userMoveMakers'] as List : null);
    List<UserMoveMaker> movemk =
-       movesList.map((i) => UserMoveMaker.fromJson(i)).toList();
-    final imagesList = json['userImages'] as List;
+       (movesList != null ? movesList.map((i) => UserMoveMaker.fromJson(i)).toList(): []);
+    final imagesList = (json['userImages'] != null ? json['userImages'] as List: null);
    List<UserImage> imgmk =
-       imagesList.map((i) => UserImage.fromJson(i)).toList();
+       (imagesList != null ? imagesList.map((i) => UserImage.fromJson(i)).toList(): []);
     
     return UserMatch(
         id: json['id'],
@@ -80,12 +80,12 @@ class UserMatch {
         longitude: json['longitude'],
         lifeStyle: (json['lifeStyle'] != null
             ? new LifeStyle.fromJson(json['lifeStyle'])
-            : null)!,
+            : null),
         education: (json['education'] != null
             ? new Education.fromJson(json['education'])
-            : null)!,
+            : null),
         userMoveMakers: movemk,
-        matchPreference: Preference.fromJson(json['matchPreference']),
+        matchPreference: (json['matchPreference'] != null ? Preference.fromJson(json['matchPreference']) : null),
         userImages: imgmk,
         currentSubscriptionPackage: json['currentSubscriptionPackage'],
         paymentHistories: json['paymentHistories'],
@@ -111,11 +111,11 @@ class UserMatch {
     data['headline'] = this.headline;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
-    data['lifeStyle'] = this.lifeStyle.toJson();
-    data['education'] = this.education.toJson();
+    data['lifeStyle'] = this.lifeStyle!.toJson();
+    data['education'] = this.education!.toJson();
     data['userMoveMakers'] =
         this.userMoveMakers.map((v) => v.toJson()).toList();
-    data['matchPreference'] = this.matchPreference.toJson();
+    data['matchPreference'] = this.matchPreference!.toJson();
     data['userImages'] = this.userImages.map((v) => v.toJson()).toList();
     data['currentSubscriptionPackage'] = this.currentSubscriptionPackage;
     data['paymentHistories'] = this.paymentHistories;

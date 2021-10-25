@@ -32,16 +32,27 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
     myProfile = await MyProfileApiProvider().fetchMyProfile();
   }
 
+  List<String> imgUrl = [];
+
   @override
   void initState() {
     gotData = false;
     print(gotData);
     getMyProfile().then((value) {
+      myProfile!.userImages.forEach((element) {
+        print(element.verificationStatus);
+        if (element.fileType == 'PROFILE' 
+        // && element.verificationStatus == 'VERIFIED'
+            ) {
+          imgUrl.add(element.filePath);
+        }
+        print(imgUrl);
+      });
       print(myProfile);
       setState(() {
         gotData = true;
       });
-    print(gotData);
+      print(gotData);
     });
     super.initState();
   }
@@ -57,8 +68,7 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
             children: [
               CircleAvatar(
                 backgroundColor: Color(kWhite),
-                backgroundImage:
-                    NetworkImage(myProfile!.userImages[2].filePath),
+                backgroundImage: NetworkImage(imgUrl[0]),
                 radius: 64,
                 child: InkWell(
                   onTap: () {
@@ -66,7 +76,11 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       print('pressed');
-                      return GallaryScreen(toEdit: true, basicProfileRepository: widget.basicProfileRepository);
+                      return GallaryScreen(
+                          toEdit: true,
+                          user: widget.user,
+                          basicProfileRepository:
+                              widget.basicProfileRepository);
                     }));
                   },
                   child: Align(
@@ -100,27 +114,27 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      print('pressed');
-                      return SignupQuestionsScreen(
-                        toEdit: true,
-                        user: widget.user,
-                        basicProfileRepository: widget.basicProfileRepository,
-                        matchPreferenceRepository:
-                            widget.matchPreferenceRepository,
-                      );
-                    }));
-                      },
-                      child: Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          color: Color(kPrimaryPink),
-                          fontSize: kNormalFont,
-                        ),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        print('pressed');
+                        return SignupQuestionsScreen(
+                          toEdit: true,
+                          user: widget.user,
+                          basicProfileRepository: widget.basicProfileRepository,
+                          matchPreferenceRepository:
+                              widget.matchPreferenceRepository,
+                        );
+                      }));
+                    },
+                    child: Text(
+                      'Edit Profile',
+                      style: TextStyle(
+                        color: Color(kPrimaryPink),
+                        fontSize: kNormalFont,
                       ),
                     ),
+                  ),
                 ],
               )
             ],

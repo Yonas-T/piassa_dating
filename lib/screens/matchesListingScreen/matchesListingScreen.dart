@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:piassa_application/blocs/matchListBloc/matchListBloc.dart';
 import 'package:piassa_application/blocs/matchListBloc/matchListBloc.dart';
 import 'package:piassa_application/blocs/matchListBloc/matchListEvent.dart';
 import 'package:piassa_application/blocs/matchListBloc/matchListState.dart';
@@ -13,16 +8,10 @@ import 'package:piassa_application/blocs/matchQueueBloc/matchQueueBloc.dart';
 import 'package:piassa_application/blocs/matchQueueBloc/matchQueueEvent.dart';
 import 'package:piassa_application/blocs/matchQueueBloc/matchQueueState.dart';
 import 'package:piassa_application/constants/constants.dart';
-import 'package:piassa_application/generalWidgets/appBar.dart';
-import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/userImage.dart';
-import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/repositories/matchListRepository.dart';
 import 'package:piassa_application/screens/chatScreen/chatScreen.dart';
-import 'package:piassa_application/screens/itsAMatchScreen/itsAMatchScreen.dart';
-import 'package:piassa_application/screens/matchesListingScreen/widgets/matchSearchBarWidget.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/singleMatchesListWidget.dart';
-import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 
 class MatchesListingScreen extends StatelessWidget {
   MatchListRepository matchListRepository = MatchListRepository();

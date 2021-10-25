@@ -30,11 +30,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         var user = await userRepository!
             .signInEmailAndPassword(event.email, event.password);
+        print('USER: $user');
+
         yield LoginSuccessState(user!);
       } catch (e) {
         yield LoginFailState(e.toString());
       }
-      
     }
   }
 }

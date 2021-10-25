@@ -1,20 +1,16 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:piassa_application/models/peoples.dart';
-import 'package:piassa_application/models/preference.dart';
-import 'package:uuid/uuid.dart';
+import 'package:piassa_application/models/LifeStyle.dart';
 
-class MatchPreferenceApiProvider {
+class LifeStyleApiProvider {
   final _baseUrl = 'https://api.piassadating.com';
   FirebaseAuth auth = FirebaseAuth.instance;
-  var idGenerate = Uuid();
 
-  Future<Preference> fetchMyPreference() async {
+  Future<LifeStyle> fetchLifeStyle() async {
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       final response = await http.get(
-        Uri.parse('$_baseUrl/api/match-preferences'),
+        Uri.parse('$_baseUrl/api/life-styles'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -24,7 +20,7 @@ class MatchPreferenceApiProvider {
       print(response.body.toString());
 
       if (response.statusCode == 200) {
-        return Preference.fromJson(json.decode(response.body));
+        return LifeStyle.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to load');
       }
@@ -32,21 +28,22 @@ class MatchPreferenceApiProvider {
     return cc;
   }
 
-  Future<Preference> postMyPreference(
-      ageStart, ageEnd, religion, educationLevel, searchRadius) async {
+  Future<LifeStyle> postLifeStyle(id, smooking, drinking, kids, religion,
+      physicalExercise, relationshipStatus) async {
     print('=============================');
     Map<dynamic, dynamic> postJson = {
-      "ageStart": ageStart,
-      "ageEnd": ageEnd,
+      "smooking": smooking,
+      "drinking": drinking,
+      "kids": kids,
       "religion": religion,
-      "educationLevel": educationLevel,
-      "searchRadius": searchRadius
+      "physicalExercise": physicalExercise,
+      "relationshipStatus": relationshipStatus
     };
     print('POSTJSON: $postJson');
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       // log(value);
       final response = await http.post(
-        Uri.parse('$_baseUrl/api/match-preferences'),
+        Uri.parse('$_baseUrl/api/life-styles'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -56,15 +53,14 @@ class MatchPreferenceApiProvider {
       );
       print(response.statusCode);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return Preference.fromJson({
-          "ageStart": ageStart,
-          "ageEnd": ageEnd,
+        return LifeStyle.fromJson({
+          "smooking": smooking,
+          "drinking": drinking,
+          "kids": kids,
           "religion": religion,
-          "educationLevel": educationLevel,
-          "searchRadius": searchRadius
-        }
-            // json.decode(response.body)
-            );
+          "physicalExercise": physicalExercise,
+          "relationshipStatus": relationshipStatus
+        });
       } else {
         throw Exception('Failed to load');
       }
@@ -72,13 +68,13 @@ class MatchPreferenceApiProvider {
     return cc;
   }
 
-  Future<Preference> patchMyPreference(
-      ageStart, ageEnd, religion, educationLevel, searchRadius) async {
+  Future<LifeStyle> patchLifeStyle(id, smooking, drinking, kids, religion,
+      physicalExercise, relationshipStatus) async {
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
       print('in api request');
 
       final response = await http.put(
-        Uri.parse('$_baseUrl/api/match-preferences'),
+        Uri.parse('$_baseUrl/api/life-styles'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -86,17 +82,18 @@ class MatchPreferenceApiProvider {
         },
         body: jsonEncode(
           {
-            'ageStart': ageStart,
-            'ageEnd': ageEnd,
-            'religion': religion,
-            'educationLevel': educationLevel,
-            'searchRadius': searchRadius
+            "smooking": smooking,
+            "drinking": drinking,
+            "kids": kids,
+            "religion": religion,
+            "physicalExercise": physicalExercise,
+            "relationshipStatus": relationshipStatus
           },
         ),
       );
       print('RESPONSE: ${response.body}');
       if (response.statusCode == 200) {
-        return Preference.fromJson(json.decode(response.body));
+        return LifeStyle.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to load');
       }

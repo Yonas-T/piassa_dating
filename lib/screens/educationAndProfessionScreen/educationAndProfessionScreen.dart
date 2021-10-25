@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
+import 'package:piassa_application/models/myEducation.dart';
 
 class EducationAndProfessionScreen extends StatefulWidget {
   @override
@@ -17,9 +18,21 @@ class _EducationAndProfessionScreenState
 
   late String _selectedUniversity;
   late String _selectedProfession;
+  MyEducation? myEducationData;
+
 
   List<String> _universities = ['AAU', 'JU', 'BDU'];
   List<String> _professions = ['Lawyer', 'Accountant', 'Engineer'];
+  List _educationLevel = [
+    'High School Diploma',
+    'Advanced Diploma',
+    'Bachelors Degree',
+    'Masters Degree',
+    'Doctorate',
+    'Other'
+  ];
+  int eduIndex = 0;
+
 
   @override
   void initState() {
@@ -61,22 +74,6 @@ class _EducationAndProfessionScreenState
           ),
         ),
       ),
-      // AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.white10,
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back, color: Color(kLightGrey).withOpacity(0.5)),
-      //     onPressed: () => Navigator.of(context).pop(),
-      //   ),
-      //   title: Text(
-      //     'Education & Profession',
-      //     style: TextStyle(
-      //       fontSize: kNormalFont,
-      //       color: Color(kDarkGrey),
-      //     ),
-      //   ),
-      // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.check, color: Color(kLightGrey).withOpacity(0.5),))],
-      // ),
       body: SafeArea(
         child: Container(
           color: Color(kWhite),
@@ -87,6 +84,54 @@ class _EducationAndProfessionScreenState
                   child: ListView(
                 children: [
                   SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Education',
+                          style: TextStyle(
+                              fontSize: kNormalFont, color: Color(kBlack)),
+                        ),
+                        Text(
+                          '${_educationLevel[eduIndex]}',
+                          style: TextStyle(
+                              fontSize: kNormalFont, color: Color(kBlack)),
+                        )
+                      ],
+                    ),
+                  ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 5,
+                      activeTrackColor: Color(klightPink),
+                      inactiveTrackColor: Colors.grey[300],
+                      thumbColor: Color(klightPink),
+                      thumbShape: RoundSliderThumbShape(
+                          elevation: 4,
+                          pressedElevation: 8,
+                          disabledThumbRadius: 12,
+                          enabledThumbRadius: 12),
+                    ),
+                    child: Slider(
+                        value: eduIndex.toDouble(),
+                        min: 0,
+                        max: _educationLevel.length - 1.toDouble(),
+                        divisions: _educationLevel.length - 1,
+                        label: '${_educationLevel[eduIndex]}',
+                        onChanged: (double newValue) {
+                          print(newValue);
+                          setState(() {
+                            eduIndex = newValue.round();
+                            myEducationData!.educationLevel =
+                                _educationLevel[eduIndex];
+                          });
+                        }),
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
                   Container(
                     child: Card(
                       elevation: 0,

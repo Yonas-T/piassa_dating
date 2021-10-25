@@ -11,6 +11,7 @@ import 'package:piassa_application/screens/forgotPasswordScreen/forgotPasswordSc
 import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/phoneLoginScreen/phoneLoginScreen.dart';
 import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
+import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 import 'package:piassa_application/utils/helper.dart';
 
 import '../../blocs/loginBloc/loginBloc.dart';
@@ -24,37 +25,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPageParent extends StatelessWidget {
-  final AuthRepository? userRepository;
+  final AuthRepository userRepository;
 
   LoginPageParent({required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(userRepository: userRepository),
-      child: LoginPage(userRepository: userRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LoginBloc(userRepository: userRepository),
+        ),
+        BlocProvider(
+          create: (context) => AuthBloc(userRepository: userRepository),
+        )
+      ],
+      child: LoginPage(),
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController emailCntrlr = TextEditingController();
   TextEditingController passCntrlr = TextEditingController();
   FocusNode passfocus = FocusNode();
   bool isLoading = false;
-
+  AuthRepository userRepository = AuthRepository();
   late LoginBloc loginBloc;
-  AuthRepository? userRepository;
+  late AuthBloc userBloc;
+
   BasicProfileRepository basicProfileRepository = BasicProfileRepository();
   MatchPreferenceRepository matchPreferenceRepository =
       MatchPreferenceRepository();
-
-  LoginPage({required this.userRepository});
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    loginBloc = LoginBloc(userRepository: userRepository);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     loginBloc = BlocProvider.of<LoginBloc>(context);
-
+    userBloc = BlocProvider.of<AuthBloc>(context);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -67,280 +86,308 @@ class LoginPage extends StatelessWidget {
               colors: <Color>[Color(kPrimaryPink), Color(kPrimaryPurple)],
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
+                height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.fromLTRB(5, 48, 5, 5),
                 child: BlocListener<LoginBloc, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccessState) {
                       navigateToSignupQuestionsScreen(context, state.user);
                     }
+
                     if (state is LoginFailState) {
                       Text('Can\'t Login, Try Again');
                     }
                   },
-                  child: BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
-                      // if (state is LoginInitialState) {
-                      //   return buildInitialUi();
-                      // } else
-                      if (state is LoginLoadingState) {
-                        isLoading = true;
-                      }
-                      // } else
-                      if (state is LoginFailState) {
-                        isLoading = false;
-                        return buildFailureUi(state.message);
-                      }
-
-                      return Container();
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  dragStartBehavior: DragStartBehavior.down,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(5.0),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                              fontSize: kExtraLargeFont, color: Color(kWhite)),
+                  child: SingleChildScrollView(
+                    dragStartBehavior: DragStartBehavior.down,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 32,
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(children: [
-                          Container(
-                            padding: EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              controller: emailCntrlr,
-                              style: TextStyle(color: Color(kWhite)),
-                              decoration: InputDecoration(
-                                errorStyle: TextStyle(color: Colors.white),
-                                filled: true,
-                                fillColor: Color(kWhite).withOpacity(0.4),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                hintText: "E-mail",
-                                hintStyle: TextStyle(
-                                    color: Color(kWhite),
-                                    fontSize: kNormalFont),
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (text) => validateEmail(text),
-                            ),
+                        Container(
+                          padding: EdgeInsets.all(5.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                fontSize: kExtraLargeFont,
+                                color: Color(kWhite)),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5.0),
-                            child: TextFormField(
-                              controller: passCntrlr,
-                              style: TextStyle(color: Color(kWhite)),
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                errorStyle: TextStyle(color: Colors.white),
-                                filled: true,
-                                fillColor: Color(kWhite).withOpacity(0.4),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide:
-                                        BorderSide(color: Colors.transparent)),
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                    color: Color(kWhite),
-                                    fontSize: kNormalFont),
-                              ),
-                              keyboardType: TextInputType.visiblePassword,
-                              validator: (text) => validatePassword(text),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          isLoading
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Color(klightPink)))
-                              : Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: kButtonHeight,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Color(kWhite),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4))),
-                                    child: Text("Login",
-                                        style: TextStyle(
-                                            fontSize: kNormalFont,
-                                            color: Color(kPrimaryPink))),
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        loginBloc.add(
-                                          LoginButtonPressed(
-                                            email: emailCntrlr.text,
-                                            password: passCntrlr.text,
-                                          ),
-                                        );
-                                        FocusScope.of(context)
-                                            .requestFocus(passfocus);
-                                      }
-                                    },
-                                  ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(children: [
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: TextFormField(
+                                controller: emailCntrlr,
+                                style: TextStyle(color: Color(kWhite)),
+                                decoration: InputDecoration(
+                                  errorStyle: TextStyle(color: Colors.white),
+                                  filled: true,
+                                  fillColor: Color(kWhite).withOpacity(0.4),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  hintText: "E-mail",
+                                  hintStyle: TextStyle(
+                                      color: Color(kWhite),
+                                      fontSize: kNormalFont),
                                 ),
-                        ]),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: kButtonHeight,
-                        child: TextButton(
-                          child: Text("Forgot Password?",
-                              style: TextStyle(
-                                  fontSize: kNormalFont, color: Color(kWhite))),
-                          onPressed: () {
-                            navigateToForgotPasswordScreen(context);
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: kButtonHeight,
-                        child: TextButton(
-                          child: Text("Don't have an account?",
-                              style: TextStyle(
-                                  fontSize: kNormalFont, color: Color(kWhite))),
-                          onPressed: () {
-                            navigateToSignUpScreen(context);
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                              height: 2,
-                              width: MediaQuery.of(context).size.width * .35,
-                              color: Color(kWhite)),
-                          Text(
-                            'Or',
-                            style: TextStyle(
-                                fontSize: kNormalFont, color: Color(kWhite)),
-                          ),
-                          Container(
-                              height: 2,
-                              width: MediaQuery.of(context).size.width * .4,
-                              color: Color(kWhite))
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       navigateToPhoneLoginScreen(context);
-                      //     },
-                      //     child: Text("Login with Phone")),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: kButtonHeight,
-                        child: ElevatedButton.icon(
-                          label: Text(
-                            'Login with Facebook',
-                            style: TextStyle(
-                              fontSize: kNormalFont,
-                              color: Color(kWhite),
-                            ),
-                          ),
-                          icon: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.facebook,
-                              color: Color(kWhite),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(kFacebookColor),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              side: BorderSide(
-                                color: Color(kFacebookColor),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (text) => validateEmail(text),
                               ),
                             ),
-                          ),
-                          onPressed: () async => loginWithFacebook(context),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: kButtonHeight,
-                        child: ElevatedButton.icon(
-                          label: Text(
-                            'Login with Google',
-                            style: TextStyle(
-                              fontSize: kNormalFont,
-                              color: Color(kWhite),
-                            ),
-                          ),
-                          icon: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.google,
-                              color: Color(kWhite),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(kGoogleColor),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0),
-                              side: BorderSide(
-                                color: Color(kGoogleColor),
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: TextFormField(
+                                controller: passCntrlr,
+                                style: TextStyle(color: Color(kWhite)),
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  errorStyle: TextStyle(color: Colors.white),
+                                  filled: true,
+                                  fillColor: Color(kWhite).withOpacity(0.4),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(
+                                      color: Color(kWhite),
+                                      fontSize: kNormalFont),
+                                ),
+                                keyboardType: TextInputType.visiblePassword,
+                                validator: (text) => validatePassword(text),
                               ),
                             ),
-                          ),
-                          onPressed: () async => loginWithGoogle(context),
+                            SizedBox(
+                              height: 32,
+                            ),
+                            BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, state) {
+                                if (state is LoginInitialState) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: kButtonHeight,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Color(kWhite),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4))),
+                                      child: Text("Login",
+                                          style: TextStyle(
+                                              fontSize: kNormalFont,
+                                              color: Color(kPrimaryPink))),
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          loginBloc.add(
+                                            LoginButtonPressed(
+                                              email: emailCntrlr.text,
+                                              password: passCntrlr.text,
+                                            ),
+                                          );
+                                          FocusScope.of(context)
+                                              .requestFocus(passfocus);
+                                        }
+                                      },
+                                    ),
+                                  );
+                                }
+                                if (state is LoginLoadingState) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Color(kWhite)),
+                                    ),
+                                  );
+                                }
+                                if (state is LoginFailState) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: kButtonHeight,
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                          primary: Color(kWhite),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4))),
+                                      child: Text(state.message + ', Retry',
+                                          style: TextStyle(
+                                              fontSize: kNormalFont,
+                                              color: Color(kWhite))),
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          loginBloc.add(
+                                            LoginButtonPressed(
+                                              email: emailCntrlr.text,
+                                              password: passCntrlr.text,
+                                            ),
+                                          );
+                                          FocusScope.of(context)
+                                              .requestFocus(passfocus);
+                                        }
+                                      },
+                                    ),
+                                  );
+                                }
+                                return Container();
+                              },
+                            ),
+                          ]),
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: kButtonHeight,
+                          child: TextButton(
+                            child: Text("Forgot Password?",
+                                style: TextStyle(
+                                    fontSize: kNormalFont,
+                                    color: Color(kWhite))),
+                            onPressed: () {
+                              navigateToForgotPasswordScreen(context);
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: kButtonHeight,
+                          child: TextButton(
+                            child: Text("Don't have an account?",
+                                style: TextStyle(
+                                    fontSize: kNormalFont,
+                                    color: Color(kWhite))),
+                            onPressed: () {
+                              navigateToSignUpScreen(context);
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                height: 2,
+                                width: MediaQuery.of(context).size.width * .35,
+                                color: Color(kWhite)),
+                            Text(
+                              'Or',
+                              style: TextStyle(
+                                  fontSize: kNormalFont, color: Color(kWhite)),
+                            ),
+                            Container(
+                                height: 2,
+                                width: MediaQuery.of(context).size.width * .4,
+                                color: Color(kWhite))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       navigateToPhoneLoginScreen(context);
+                        //     },
+                        //     child: Text("Login with Phone")),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: kButtonHeight,
+                          child: ElevatedButton.icon(
+                            label: Text(
+                              'Login with Facebook',
+                              style: TextStyle(
+                                fontSize: kNormalFont,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            icon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.facebook,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(kFacebookColor),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                side: BorderSide(
+                                  color: Color(kFacebookColor),
+                                ),
+                              ),
+                            ),
+                            onPressed: () async => loginWithFacebook(context),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: kButtonHeight,
+                          child: ElevatedButton.icon(
+                            label: Text(
+                              'Login with Google',
+                              style: TextStyle(
+                                fontSize: kNormalFont,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            icon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.google,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(kGoogleColor),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                side: BorderSide(
+                                  color: Color(kGoogleColor),
+                                ),
+                              ),
+                            ),
+                            onPressed: () async => loginWithGoogle(context),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -354,7 +401,7 @@ class LoginPage extends StatelessWidget {
   loginWithGoogle(BuildContext context) async {
     try {
       await showProgress(context, 'Logging in, Please wait...', false);
-      dynamic result = await userRepository!.signInwithGoogle();
+      dynamic result = await userRepository.signInwithGoogle();
       print('=' * 20);
       print(result);
       await hideProgress();
@@ -362,6 +409,7 @@ class LoginPage extends StatelessWidget {
         // print('=' * 20);
         // print(result);
         // MyAppState.currentUser = result;
+        // userBloc.add(AppStartedEvent());
         navigateToSignupQuestionsScreen(context, result);
         // pushAndRemoveUntil(context, HomeScreen(user: result), false);
       } else if (result != null && result is String) {
@@ -379,10 +427,11 @@ class LoginPage extends StatelessWidget {
   loginWithFacebook(BuildContext context) async {
     try {
       await showProgress(context, 'Logging in, Please wait...', false);
-      dynamic result = await userRepository!.loginWithFacebook();
+      dynamic result = await userRepository.loginWithFacebook();
       await hideProgress();
       if (result != null && result is User) {
         // MyAppState.currentUser = result;
+
         navigateToSignupQuestionsScreen(context, result);
         // pushAndRemoveUntil(context, HomeScreen(user: result), false);
       } else if (result != null && result is String) {
@@ -396,23 +445,6 @@ class LoginPage extends StatelessWidget {
       showAlertDialog(context, 'Error', 'Couldn\'t login with facebook.');
     }
   }
-
-  // Widget buildInitialUi() {
-  //   return Container(
-  //     padding: EdgeInsets.all(5.0),
-  //     child: Text(
-  //       "Login",
-  //       style: TextStyle(fontSize: kExtraLargeFont, color: Color(kWhite)),
-  //     ),
-  //   );
-  // }
-
-  // Widget buildLoadingUi() {
-  //   return Center(
-  //   child: CircularProgressIndicator(
-  //       valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
-  // );
-  // }
 
   Widget buildFailureUi(String message) {
     print(message);
@@ -430,14 +462,30 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void navigateToSignupQuestionsScreen(BuildContext context, User user) {
+  void navigateToSignupQuestionsScreen(BuildContext context, User user) async {
+    var profileData = await basicProfileRepository.fetchEntireProfile();
+
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return SignupQuestionsScreen(
-        toEdit: false,
-        user: user,
-        basicProfileRepository: basicProfileRepository,
-        matchPreferenceRepository: matchPreferenceRepository,
-      );
+      return profileData.fullName.isEmpty
+          ? SignupQuestionsScreen(
+              toEdit: false,
+              user: user,
+              basicProfileRepository: basicProfileRepository,
+              matchPreferenceRepository: matchPreferenceRepository,
+            )
+          : !profileData.haveMatchPreference
+              ? SecondStepperPageWidget(
+                  toEdit: false,
+                  basicProfileRepository: basicProfileRepository,
+                  user: user)
+              : profileData.userImages.isEmpty
+                  ? GallaryScreen(
+                      basicProfileRepository: basicProfileRepository,
+                      toEdit: false,
+                      user: user)
+                  : profileData.userImages.isNotEmpty
+                      ? Tabs(user: user, userRepository: userRepository)
+                      : Tabs(user: user, userRepository: userRepository);
 
       // Tabs(user: user, userRepository: userRepository);
     }));

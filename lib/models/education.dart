@@ -32,13 +32,7 @@ class Education {
       universityId: json['universityId'],
       userId: json['userId'],
       profession: Profession.fromJson(json['profession']),
-      //  != null
-      //     ? new Profession.fromJson(json['profession'])
-      //     : null,
       university: Profession.fromJson(json['university']),
-      // != null
-      //     ? new Profession.fromJson(json['university'])
-      //     : null
     );
   }
 

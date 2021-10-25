@@ -4,20 +4,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/blocs/authBloc/authBloc.dart';
 import 'package:piassa_application/blocs/authBloc/authEvent.dart';
+import 'package:piassa_application/blocs/authBloc/authState.dart';
 
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/screens/homeScreen/homeScreen.dart';
+import 'package:piassa_application/screens/loginScreen/loginScreen.dart';
 import 'package:piassa_application/screens/matchesListingScreen/matchesListingScreen.dart';
 import 'package:piassa_application/screens/myProfileScreen/myProfileScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signUpScreen/signUpScreen.dart';
 
 class Tabs extends StatelessWidget {
-  AuthRepository? userRepository;
+  AuthRepository userRepository;
 
-  final User? user;
+  final User user;
 
   Tabs({required this.user, required this.userRepository});
   @override
@@ -30,9 +32,9 @@ class Tabs extends StatelessWidget {
 }
 
 class TabsChild extends StatefulWidget {
-  final User? user;
+  final User user;
   final userId;
-  final AuthRepository? userRepository;
+  final AuthRepository userRepository;
 
   const TabsChild(
       {this.userId, required this.user, required this.userRepository});
@@ -85,15 +87,30 @@ class _TabsChildState extends State<TabsChild> {
               elevation: 4,
               color: Color(kWhite),
               child: _selectedPageIndex == 2
-                  ? IconButton(
-                      onPressed: () {
-                        authBloc.add(LogOutEvent());
+                  ? BlocListener<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is LogOutSuccessState) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) {
+                            return LoginPageParent(
+                                userRepository: widget.userRepository);
+                          }));
+                        }
                       },
-                      icon: Icon(
-                        Icons.logout_outlined,
-                        color: Color(kDarkGrey),
-                        size: 17,
-                      ))
+                      child: BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return IconButton(
+                              onPressed: () {
+                                authBloc.add(LogOutEvent());
+                              },
+                              icon: Icon(
+                                Icons.logout_outlined,
+                                color: Color(kDarkGrey),
+                                size: 17,
+                              ));
+                        },
+                      ),
+                    )
                   : IconButton(
                       onPressed: () {
                         Navigator.of(context)

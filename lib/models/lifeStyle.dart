@@ -1,5 +1,5 @@
 class LifeStyle {
-  String id;
+  String? id;
   int smooking;
   int drinking;
   int kids;
@@ -8,7 +8,7 @@ class LifeStyle {
   int relationshipStatus;
 
   LifeStyle(
-      {required this.id,
+      {this.id,
       required this.smooking,
       required this.drinking,
       required this.kids,

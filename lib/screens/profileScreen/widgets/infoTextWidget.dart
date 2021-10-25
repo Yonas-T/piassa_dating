@@ -20,7 +20,7 @@ class _InfoTextWidgetState extends State<InfoTextWidget> {
     var bDay = DateTime.parse(widget.recommended.birthDay).year;
     var now = DateTime.now().year;
     age = now - bDay;
-    print(widget.recommended.education.profession.englishValue);
+    print(widget.recommended.education!.profession.englishValue);
     super.initState();
   }
 
@@ -69,7 +69,7 @@ class _InfoTextWidgetState extends State<InfoTextWidget> {
                   ),
                   SizedBox(width: 12),
                   Text(
-                    widget.recommended.education.profession.englishValue,
+                    widget.recommended.education!.profession.englishValue,
                     style:
                         TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
@@ -84,7 +84,7 @@ class _InfoTextWidgetState extends State<InfoTextWidget> {
                   ),
                   SizedBox(width: 12),
                   Text(
-                    widget.recommended.education.profession.englishValue,
+                    widget.recommended.education!.profession.englishValue,
                     style:
                         TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
@@ -119,7 +119,7 @@ class _InfoTextWidgetState extends State<InfoTextWidget> {
                   ),
                   SizedBox(width: 12),
                   Text(
-                    '${widget.recommended.lifeStyle.physicalExercise.toString()} per week',
+                    '${widget.recommended.lifeStyle!.physicalExercise.toString()} per week',
                     style:
                         TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),
@@ -134,7 +134,7 @@ class _InfoTextWidgetState extends State<InfoTextWidget> {
                   ),
                   SizedBox(width: 12),
                   Text(
-                    '${widget.recommended.lifeStyle.drinking.toString()} per week',
+                    '${widget.recommended.lifeStyle!.drinking.toString()} per week',
                     style:
                         TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
                   ),

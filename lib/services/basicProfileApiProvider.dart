@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:piassa_application/models/peoples.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/utils/tokenRefresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -35,9 +36,36 @@ class BasicProfileApiProvider {
     return cc;
   }
 
+  Future<UserMatch> fetchEntireProfile() async {
+    // var vv;
+    String tok = await auth.currentUser!.getIdToken(true);
+    print('TOKEN: $tok');
+    // auth.currentUser!.getIdToken(true).then((value) async {
+    // var response;
+    var vv = await fetchBasicProfile();
+    // var vv = fetchBasicProfile().then((prof) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/api/users/${vv.id}'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'X-Authorization-Firebase': '$tok'
+      },
+    );
+    print('Profile Entire Fetched: ${response.body.toString()}');
+
+    if (response.statusCode == 200) {
+      return UserMatch.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load');
+    }
+    // });
+    // });
+    // return vv;
+  }
+
   Future<Peoples> postBasicProfile(userName, fullName, gender, email, height,
       birthDay, nationality, headline, longitude, latitude) async {
-
     Map<String, dynamic> postJson = {
       "userName": auth.currentUser!.uid,
       "email": email,
@@ -85,7 +113,6 @@ class BasicProfileApiProvider {
       }
     });
     return cc;
-
   }
 
   Future<Peoples> editBasicProfile(userName, fullName, gender, email, height,

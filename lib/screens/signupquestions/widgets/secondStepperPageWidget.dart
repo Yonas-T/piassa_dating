@@ -1,25 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:piassa_application/blocs/basicProfileBloc/basicProfileBloc.dart';
-import 'package:piassa_application/blocs/basicProfileBloc/basicProfileEvent.dart';
-import 'package:piassa_application/blocs/basicProfileBloc/basicProfileState.dart';
+
 import 'package:piassa_application/blocs/matchPreferenceBloc/matchPreferenceBloc.dart';
 import 'package:piassa_application/blocs/matchPreferenceBloc/matchPreferenceEvent.dart';
 import 'package:piassa_application/blocs/matchPreferenceBloc/matchPreferenceState.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
-import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/preference.dart';
 import 'package:piassa_application/models/userMatch.dart';
-import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
-import 'package:piassa_application/repositories/uploadImageRepository.dart';
-import 'package:piassa_application/screens/allDoneScreen/allDoneScreen.dart';
 import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/stepProgressWidget.dart';
-import 'package:piassa_application/services/basicProfileApiProvider.dart';
 import 'package:piassa_application/services/myProfileApiProvider.dart';
 import 'package:piassa_application/utils/sheredPref.dart';
 
@@ -97,44 +90,54 @@ class _SecondStepperPageWidgetChildState
   ]);
 
   Future myProfile() async {
-    _myProfile = await MyProfileApiProvider().fetchMyProfile();
+    if (widget.toEditChild) {
+      _myProfile = await MyProfileApiProvider().fetchMyProfile();
+    }
   }
 
   @override
   void initState() {
     gotData = false;
     print('Got Data: $gotData');
-    myProfile().then((value) {
-      print(_myProfile!.matchPreference);
-      print(widget.toEditChild);
-      if (widget.toEditChild) {
-        values = RangeValues(_myProfile!.matchPreference.ageStart.toDouble(),
-            _myProfile!.matchPreference.ageEnd.toDouble());
-        _distance = _myProfile!.matchPreference.searchRadius.round();
-        if (_myProfile!.matchPreference.educationLevel ==
-            'High School Diploma') {
-          eduIndex = 0;
-        } else if (_myProfile!.matchPreference.educationLevel ==
-            'Advanced Diploma') {
-          eduIndex = 1;
-        } else if (_myProfile!.matchPreference.educationLevel ==
-            'Bachelors Degree') {
-          eduIndex = 2;
-        } else if (_myProfile!.matchPreference.educationLevel ==
-            'Masters Degree') {
-          eduIndex = 3;
-        } else if (_myProfile!.matchPreference.educationLevel == 'Doctorate') {
-          eduIndex = 4;
-        } else {
-          eduIndex = 5;
+    if (widget.toEditChild) {
+      myProfile().then((value) {
+        print(_myProfile!.matchPreference);
+        print(widget.toEditChild);
+        if (widget.toEditChild) {
+          values = RangeValues(_myProfile!.matchPreference!.ageStart.toDouble(),
+              _myProfile!.matchPreference!.ageEnd.toDouble());
+          _distance = _myProfile!.matchPreference!.searchRadius.round();
+          if (_myProfile!.matchPreference!.educationLevel ==
+              'High School Diploma') {
+            eduIndex = 0;
+          } else if (_myProfile!.matchPreference!.educationLevel ==
+              'Advanced Diploma') {
+            eduIndex = 1;
+          } else if (_myProfile!.matchPreference!.educationLevel ==
+              'Bachelors Degree') {
+            eduIndex = 2;
+          } else if (_myProfile!.matchPreference!.educationLevel ==
+              'Masters Degree') {
+            eduIndex = 3;
+          } else if (_myProfile!.matchPreference!.educationLevel ==
+              'Doctorate') {
+            eduIndex = 4;
+          } else {
+            eduIndex = 5;
+          }
+          _selectedReligion = _myProfile!.matchPreference!.religion;
         }
-        _selectedReligion = _myProfile!.matchPreference.religion;
-      }
-      setState(() {
-      gotData = true;
+        setState(() {
+          gotData = true;
+        });
+        print('Got Data: $gotData');
       });
-    print('Got Data: $gotData');
-    });
+    } else {
+      setState(() {
+        gotData = true;
+      });
+    }
+
     values = RangeValues(18, 70);
     preferenceData = Preference(
         // gender: 'female',
@@ -146,7 +149,6 @@ class _SecondStepperPageWidgetChildState
         educationLevel: '',
         searchRadius: 0.0);
     _selectedReligion = 'Religion';
-    
 
     super.initState();
   }
@@ -166,15 +168,28 @@ class _SecondStepperPageWidgetChildState
       // print(preferenceData.gender);
       print(preferenceData!.searchRadius);
       print(preferenceData!.religion);
+      if (widget.toEditChild) {
+        BlocProvider.of<MatchPreferenceBloc>(context).add(SubmitButtonPressed(
+            isEdit: true,
+            id: preferenceData!.id,
+            // gender: preferenceData!.gender,
+            ageStart: preferenceData!.ageStart,
+            ageEnd: preferenceData!.ageEnd,
+            religion: preferenceData!.religion,
+            educationLevel: preferenceData!.educationLevel,
+            searchRadius: preferenceData!.searchRadius));
+      } else {
+        BlocProvider.of<MatchPreferenceBloc>(context).add(SubmitButtonPressed(
+            isEdit: false,
+            id: preferenceData!.id,
+            // gender: preferenceData!.gender,
+            ageStart: preferenceData!.ageStart,
+            ageEnd: preferenceData!.ageEnd,
+            religion: preferenceData!.religion,
+            educationLevel: preferenceData!.educationLevel,
+            searchRadius: preferenceData!.searchRadius));
+      }
 
-      BlocProvider.of<MatchPreferenceBloc>(context).add(SubmitButtonPressed(
-          id: preferenceData!.id,
-          gender: preferenceData!.gender,
-          ageStart: preferenceData!.ageStart,
-          ageEnd: preferenceData!.ageEnd,
-          religion: preferenceData!.religion,
-          educationLevel: preferenceData!.educationLevel,
-          searchRadius: preferenceData!.searchRadius));
       print('after bloc in build');
     }
 
@@ -212,15 +227,23 @@ class _SecondStepperPageWidgetChildState
         ),
       ),
       body: !gotData
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(klightPink)),
+          ))
           : BlocListener<MatchPreferenceBloc, MatchPreferenceState>(
               listener: (context, state) {
                 print(state);
                 if (state is MatchPreferenceSuccessState) {
-                  navigateToGallaryScreen(context
-                      // , state.user
-                      );
-                  SetSharedPrefValue().setSignupValue('HasPreferenceValue');
+                  if (widget.toEditChild) {
+                    navigateBack(context
+                        // , state.user
+                        );
+                  } else {
+                    navigateToGallaryScreen(context
+                        // , state.user
+                        );
+                    SetSharedPrefValue().setSignupValue('HasPreferenceValue');
+                  }
                 }
               },
               child: Container(
@@ -540,9 +563,16 @@ class _SecondStepperPageWidgetChildState
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return GallaryScreen(
         toEdit: false,
+        user: widget.user,
         basicProfileRepository: widget.basicProfileRepository,
       );
       // Tabs(user: user, userRepository: userRepository);
     }));
+  }
+
+  void navigateBack(BuildContext context
+      // , Peoples user
+      ) {
+    Navigator.of(context).pop();
   }
 }

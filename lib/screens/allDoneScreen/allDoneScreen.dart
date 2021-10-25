@@ -6,8 +6,8 @@ import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/utils/sheredPref.dart';
 
 class AllDoneScreen extends StatefulWidget {
-  final User? user;
-  final AuthRepository? userRepository;
+  final User user;
+  final AuthRepository userRepository;
 
   const AllDoneScreen(
       {Key? key, required this.user, required this.userRepository})
