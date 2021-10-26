@@ -212,9 +212,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       'Unable to Load Recommendations. Try to check your connection!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: kNormalFont,
-                        color: Color(kBlack)
-                      ),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     ),
                   ),
                 );
@@ -230,7 +228,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Widget getBody(BuildContext context, matchRecommendations) {
     var size = MediaQuery.of(context).size;
-    
+
     print(itemLength);
     // print(json.encode(matchRecommendations[0]));
     return Padding(
@@ -295,39 +293,33 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 // width: size.width * 0.72,
                                 child: Column(
                                   children: [
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${matchRecommendations[index].fullName}, ',
-                                            // itemsTemp[index]['name'],
-                                            style: TextStyle(
-                                                color: Color(kWhite),
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            (DateTime.now().year -
-                                                    DateTime.parse(
-                                                            matchRecommendations[
-                                                                    index]
-                                                                .birthDay)
-                                                        .year)
-                                                .toString(),
-                                            style: TextStyle(
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${matchRecommendations[index].fullName}, ',
+                                          // itemsTemp[index]['name'],
+                                          style: TextStyle(
                                               color: Color(kWhite),
-                                              fontSize: 22,
-                                            ),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          (DateTime.now().year -
+                                                  DateTime.parse(
+                                                          matchRecommendations[
+                                                                  index]
+                                                              .birthDay)
+                                                      .year)
+                                              .toString(),
+                                          style: TextStyle(
+                                            color: Color(kWhite),
+                                            fontSize: kNormalFont,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 12,
+                                        ),
+                                      ],
                                     ),
                                     Row(
                                       children: [

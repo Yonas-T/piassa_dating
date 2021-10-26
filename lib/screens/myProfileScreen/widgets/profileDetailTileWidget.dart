@@ -5,10 +5,7 @@ class ProfileDetailTileWidget extends StatefulWidget {
   final Widget tileIcon;
   final String tileTitle;
 
-  ProfileDetailTileWidget(
-      {
-      required this.tileIcon,
-      required this.tileTitle});
+  ProfileDetailTileWidget({required this.tileIcon, required this.tileTitle});
 
   @override
   _ProfileDetailTileWidgetState createState() =>
@@ -19,8 +16,8 @@ class _ProfileDetailTileWidgetState extends State<ProfileDetailTileWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
-      height: 100,
+      padding: EdgeInsets.all(8),
+      height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Color(klightPink).withOpacity(0.05),
@@ -36,16 +33,10 @@ class _ProfileDetailTileWidgetState extends State<ProfileDetailTileWidget> {
               ),
               Text(
                 widget.tileTitle,
-                style:
-                    TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
+                style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
               ),
             ],
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 16,
-            color: Color(kPrimaryPink),
-          )
         ],
       ),
     );

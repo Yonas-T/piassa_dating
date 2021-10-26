@@ -11,8 +11,8 @@ class SettingTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
-      height: 100,
+      padding: EdgeInsets.all(8),
+      height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Color(klightPink).withOpacity(0.05),
@@ -23,17 +23,20 @@ class SettingTileWidget extends StatelessWidget {
           Row(
             children: [
               iconName,
-          SizedBox(
-            width: 16,
-          ),
-          Text(
-            title,
-            style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
-          ),
+              SizedBox(
+                width: 16,
+              ),
+              Text(
+                title,
+                style: TextStyle(fontSize: kNormalFont, color: Color(kBlack)),
+              ),
             ],
           ),
-          
-          Icon(Icons.arrow_forward_ios, color: Color(kPrimaryPink),size: 16,)
+          Icon(
+            Icons.arrow_forward_ios,
+            color: Color(kPrimaryPink),
+            size: 16,
+          )
         ],
       ),
     );

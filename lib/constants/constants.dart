@@ -9,7 +9,7 @@ const klightPink = 0xFFFE676E;
 const kFacebookColor = 0xFF415893;
 const kGoogleColor = 0xFFDB4437;
 const kWhite = 0xFFFFFFFF;
-const kBlack = 0xFF000000;
+const kBlack = 0xDD000000;
 
 const kNormalFont = 14.0;
 const kLargeFont = 24.0;

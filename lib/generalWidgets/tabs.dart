@@ -105,7 +105,7 @@ class _TabsChildState extends State<TabsChild> {
                               },
                               icon: Icon(
                                 Icons.logout_outlined,
-                                color: Color(kDarkGrey),
+                                color: Color(klightPink),
                                 size: 17,
                               ));
                         },
@@ -124,11 +124,11 @@ class _TabsChildState extends State<TabsChild> {
                         size: 17,
                       )),
             ),
-            colorVal: _selectedPageIndex == 0
+            colorVal: (_selectedPageIndex == 0)
                 ? Color(klightPink)
                 : _selectedPageIndex == 1
                     ? Color(kWhite)
-                    : Color(kWhite),
+                    : Color(klightPink),
             leadingIcon: Container(),
             // IconButton(
             //   icon: Icon(Icons.arrow_back, color: Color(kPrimaryPink)),
@@ -143,7 +143,7 @@ class _TabsChildState extends State<TabsChild> {
                     style: TextStyle(
                         fontSize: kTitleBoldFont,
                         fontWeight: FontWeight.bold,
-                        color: Color(kDarkGrey))),
+                        color: Color(kWhite))),
           ),
         ),
         body: _pages[_selectedPageIndex],
@@ -171,7 +171,7 @@ class _TabsChildState extends State<TabsChild> {
                   bottomLeft: Radius.circular(16)),
               child: BottomNavigationBar(
                 onTap: selectPage,
-                iconSize: 17,
+                iconSize: 26,
                 elevation: 10,
                 backgroundColor: Color(kWhite),
                 unselectedItemColor: Colors.grey,
@@ -179,17 +179,17 @@ class _TabsChildState extends State<TabsChild> {
                 currentIndex: _selectedPageIndex,
                 items: [
                   BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.user),
-                    label: "Profile",
+                    icon: Icon(FontAwesomeIcons.userAlt),
+                    label: "",
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(FontAwesomeIcons.search),
-                    label: "Discover",
+                    label: "",
                   ),
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.arrow_upward),
-                    icon: FaIcon(FontAwesomeIcons.star),
-                    label: "Matches",
+                    icon: FaIcon(FontAwesomeIcons.solidComment),
+                    label: "",
                   ),
                 ],
               ),

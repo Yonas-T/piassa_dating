@@ -39,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           colorVal: Color(klightPink),
           leadingIcon: Padding(
               padding: const EdgeInsets.only(left: 10.0), child: Container()),
-          title: Text('',
+          title: Text('Setting',
               style: TextStyle(
                   fontSize: kTitleBoldFont,
                   fontWeight: FontWeight.bold,
@@ -72,19 +72,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(
-                          fontSize: kHeadingFont, color: Color(kBlack)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: SettingTileWidget(
-                      title: 'General Setting',
+                      title: 'General setting',
                       iconName: Card(
                         shape: CircleBorder(),
                         elevation: 4,
@@ -93,8 +82,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             FontAwesomeIcons.slidersH,
-                            color: Color(kDarkGrey),
-                            size: 22,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
@@ -114,9 +103,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
-                            FontAwesomeIcons.bell,
-                            color: Color(kDarkGrey),
-                            size: 25,
+                            FontAwesomeIcons.solidBell,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
@@ -136,9 +125,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
-                            Icons.lock_outline,
-                            color: Color(kDarkGrey),
-                            size: 27,
+                            FontAwesomeIcons.userLock,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
@@ -158,9 +147,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
-                            FontAwesomeIcons.questionCircle,
-                            color: Color(kDarkGrey),
-                            size: 25,
+                            FontAwesomeIcons.solidQuestionCircle,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
