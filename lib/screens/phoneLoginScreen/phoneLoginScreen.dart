@@ -175,7 +175,8 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   Widget buildFailureUi(String message) {
     return Text(
-      message,
+      'Unable to proceed, check connection',
+      // message,
       style: TextStyle(fontSize: kNormalFont, color: Colors.red),
     );
   }

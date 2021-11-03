@@ -238,7 +238,8 @@ class _LoginPageState extends State<LoginPage> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(4))),
-                                      child: Text(state.message + ', Retry',
+                                      child: Text(
+                                        'Can\'t login' + ', Retry',
                                           style: TextStyle(
                                               fontSize: kNormalFont,
                                               color: Color(kWhite))),
