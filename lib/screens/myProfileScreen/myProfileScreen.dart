@@ -17,6 +17,7 @@ import 'package:piassa_application/screens/myProfileScreen/widgets/paymentPackag
 import 'package:piassa_application/screens/myProfileScreen/widgets/photoAndNameWidget.dart';
 import 'package:piassa_application/screens/myProfileScreen/widgets/profileDetailTileWidget.dart';
 import 'package:piassa_application/screens/preferenceScreen/preferenceScreen.dart';
+import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 
 class MyProfileScreen extends StatefulWidget {
@@ -107,17 +108,17 @@ class _MyProfileChildScreenState extends State<MyProfileChildScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.favorite,
-                            color: Color(kDarkGrey),
-                            size: 28,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
-                      tileTitle: 'Preference',
+                      tileTitle: 'Match preference',
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -135,21 +136,20 @@ class _MyProfileChildScreenState extends State<MyProfileChildScreen> {
                         elevation: 4,
                         color: Color(kWhite),
                         child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 12.0, 14.0, 12.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             FontAwesomeIcons.graduationCap,
-                            color: Color(kDarkGrey),
-                            size: 25,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
-                      tileTitle: 'Education Background',
+                      tileTitle: 'Education & Work',
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -166,20 +166,20 @@ class _MyProfileChildScreenState extends State<MyProfileChildScreen> {
                         elevation: 4,
                         color: Color(kWhite),
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             FontAwesomeIcons.glassMartini,
-                            color: Color(kDarkGrey),
-                            size: 24,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
-                      tileTitle: 'LifeStyle',
+                      tileTitle: 'Life style',
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -198,13 +198,43 @@ class _MyProfileChildScreenState extends State<MyProfileChildScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
-                            Icons.emoji_emotions_outlined,
-                            color: Color(kDarkGrey),
-                            size: 28,
+                            FontAwesomeIcons.solidGrinWink,
+                            color: Color(klightPink),
+                            size: 16,
                           ),
                         ),
                       ),
-                      tileTitle: 'Move Maker Questions',
+                      tileTitle: 'Move makers',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return SettingsScreen();
+                      }));
+                    },
+                    child: ProfileDetailTileWidget(
+                      tileIcon: Card(
+                        shape: CircleBorder(),
+                        elevation: 4,
+                        color: Color(kWhite),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            FontAwesomeIcons.slidersH,
+                            color: Color(klightPink),
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                      tileTitle: 'Settings',
                     ),
                   ),
                 ),

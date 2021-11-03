@@ -41,8 +41,8 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
     getMyProfile().then((value) {
       myProfile!.userImages.forEach((element) {
         print(element.verificationStatus);
-        if (element.fileType == 'PROFILE' 
-        // && element.verificationStatus == 'VERIFIED'
+        if (element.fileType == 'PROFILE'
+            // && element.verificationStatus == 'VERIFIED'
             ) {
           imgUrl.add(element.filePath);
         }
@@ -92,7 +92,20 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
                         backgroundColor: Colors.white,
                         radius: 20.0,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              print('pressed');
+                              return SignupQuestionsScreen(
+                                toEdit: true,
+                                user: widget.user,
+                                basicProfileRepository:
+                                    widget.basicProfileRepository,
+                                matchPreferenceRepository:
+                                    widget.matchPreferenceRepository,
+                              );
+                            }));
+                          },
                           icon: Icon(
                             Icons.edit,
                             size: 24.0,
@@ -104,7 +117,7 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
                   ),
                 ),
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 8),
               Text(
                 myProfile!.fullName,
                 style: TextStyle(fontSize: kLargeFont, color: Color(kBlack)),
@@ -113,28 +126,28 @@ class _PhotoAndNameWidgetState extends State<PhotoAndNameWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        print('pressed');
-                        return SignupQuestionsScreen(
-                          toEdit: true,
-                          user: widget.user,
-                          basicProfileRepository: widget.basicProfileRepository,
-                          matchPreferenceRepository:
-                              widget.matchPreferenceRepository,
-                        );
-                      }));
-                    },
-                    child: Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                        color: Color(kPrimaryPink),
-                        fontSize: kNormalFont,
-                      ),
-                    ),
-                  ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context)
+                  //         .push(MaterialPageRoute(builder: (context) {
+                  //       print('pressed');
+                  //       return SignupQuestionsScreen(
+                  //         toEdit: true,
+                  //         user: widget.user,
+                  //         basicProfileRepository: widget.basicProfileRepository,
+                  //         matchPreferenceRepository:
+                  //             widget.matchPreferenceRepository,
+                  //       );
+                  //     }));
+                  //   },
+                  //   child: Text(
+                  //     'Edit Profile',
+                  //     style: TextStyle(
+                  //       color: Color(kPrimaryPink),
+                  //       fontSize: kNormalFont,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               )
             ],
