@@ -35,9 +35,9 @@ class HasProfileState extends AuthState {
 }
 
 class UnauthenticatedState extends AuthState {
-  // String message;
+  String message;
 
-  // UnauthenticatedState(this.message);
+  UnauthenticatedState(this.message);
 
   @override
   // TODO: implement props

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
@@ -24,10 +26,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchEvent event,
   ) async* {
     if (event is SelectUserEvent) {
-      yield* _mapSelectToState(recommendedId: event.recommendedId);
+      yield* _mapSelectToState(
+          recommendedId: event.recommendedId, matchLoaded: event.matchLoaded);
     }
     if (event is PassUserEvent) {
-      yield* _mapPassToState(recommendedId: event.recommendedId);
+      yield* _mapPassToState(
+          recommendedId: event.recommendedId, matchLoaded: event.matchLoaded);
     }
     if (event is LoadUserEvent) {
       yield* _mapLoadUserToState();
@@ -35,36 +39,38 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Stream<SearchState> _mapSelectToState(
-      {required String recommendedId}) async* {
+      {required String recommendedId,
+      required List<UserMatch> matchLoaded}) async* {
     try {
-      List<UserMatch> _matchRecommendations =
-          await _searchRepository.fetchPeoplesToSearchFor();
-      print('MATCHRECOM:${_matchRecommendations.length}');
-      _matchRecommendations.removeWhere((item) => item.id == recommendedId);
-      print('MATCHRECOM-1:${_matchRecommendations.length}');
+      // List<UserMatch> _matchRecommendations =
+      //     await _searchRepository.fetchPeoplesToSearchFor();
+      // print('MATCHRECOM:${_matchRecommendations.length}');
+      // matchLoaded.removeWhere((item) => item.id == recommendedId);
+      // print('MATCHRECOM-1:${_matchRecommendations.length}');
 
-      String selectRecommended =
-          await _searchRepository.choosePeople(recommendedId);
-      yield LoadedUserState(_matchRecommendations);
+      await _searchRepository.choosePeople(recommendedId);
+      print('object');
+
+      yield LoadedUserState(matchLoaded);
     } catch (e) {
       yield LoadUserFailState(e.toString());
     }
-    yield SearchLoadingState();
   }
 
-  Stream<SearchState> _mapPassToState({required String recommendedId}) async* {
+  Stream<SearchState> _mapPassToState(
+      {required String recommendedId,
+      required List<UserMatch> matchLoaded}) async* {
     try {
-      yield SearchLoadingState();
-      List<UserMatch> _matchRecommendations =
-          await _searchRepository.fetchPeoplesToSearchFor();
-      print('MATCHRECOM:${_matchRecommendations.length}');
-      _matchRecommendations.removeWhere((item) => item.id == recommendedId);
-      print('MATCHRECOM-1:${_matchRecommendations.length}');
+      // yield SearchLoadingState();
+      // List<UserMatch> _matchRecommendations =
+      //     await _searchRepository.fetchPeoplesToSearchFor();
+      // print('MATCHRECOM:${_matchRecommendations.length}');
+      // matchLoaded.removeWhere((item) => item.id == recommendedId);
+      // print('MATCHRECOM-1:${_matchRecommendations.length}');
 
-      String passRecommended =
-          await _searchRepository.choosePeople(recommendedId);
-
-      yield LoadedUserState(_matchRecommendations);
+      await _searchRepository.passRecommendedUsers(recommendedId);
+      print('object');
+      yield LoadedUserState(matchLoaded);
     } catch (e) {
       yield LoadUserFailState(e.toString());
     }
@@ -75,7 +81,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     try {
       List<UserMatch> _matchRecommendations =
           await _searchRepository.fetchPeoplesToSearchFor();
-      print('IN BLOC RECOMM: $_matchRecommendations');
+      log('IN BLOC RECOMM: $_matchRecommendations');
       yield LoadedUserState(_matchRecommendations);
     } catch (e) {
       yield LoadUserFailState(e.toString());

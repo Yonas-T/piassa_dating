@@ -35,10 +35,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           print('AUTH USER: $user');
           yield AuthenticatedState(user, profData);
         } else {
-          yield UnauthenticatedState();
+          yield UnauthenticatedState('Is signed in: false');
         }
       } catch (e) {
-        yield UnauthenticatedState();
+        yield UnauthenticatedState(e.toString());
       }
     }
 
@@ -52,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     if (event is LoggedOut) {
-      yield UnauthenticatedState();
+      yield UnauthenticatedState('');
       userRepository!.signOut();
     }
 
@@ -62,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userRepository!.signOut();
       yield LogOutSuccessState();
     } else {
-      yield UnauthenticatedState();
+      yield UnauthenticatedState('');
     }
   }
 }

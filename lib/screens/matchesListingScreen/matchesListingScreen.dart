@@ -230,65 +230,6 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
               ),
             ),
 
-            // Container(
-            //   height: MediaQuery.of(context).size.height * .14,
-            //   padding: EdgeInsets.only(left: 20),
-            //   child: ListView.builder(
-            //       // shrinkWrap: true,
-            //       scrollDirection: Axis.horizontal,
-            //       physics: NeverScrollableScrollPhysics(),
-            //       itemCount: _matchesList.length,
-            //       itemBuilder: (context, i) {
-            //         return Container(
-            //           padding: EdgeInsets.only(left: 4, right: 4),
-            //           child: CircleAvatar(
-            //             radius: 44,
-            //             backgroundColor: Color(kDarkGrey),
-            //             child: CircleAvatar(
-            //               backgroundImage: NetworkImage(
-            //                 '_matchesList[i].profilePictureURL',
-            //               ),
-            //               radius: 40,
-            //               child: Align(
-            //                 alignment: Alignment.bottomRight,
-            //                 child: Card(
-            //                   shape: CircleBorder(),
-            //                   elevation: 6,
-            //                   child: InkWell(
-            //                     onTap: () {
-            //                       setState(() {
-            //                         _isLiked = true;
-
-            //                         Navigator.of(context).push(
-            //                             MaterialPageRoute(builder: (context) {
-            //                           return ItsAMatchScreen();
-            //                         }));
-            //                       });
-            //                     },
-            //                     child: CircleAvatar(
-            //                       backgroundColor: Colors.white,
-            //                       radius: 8.0,
-            //                       child: !_isLiked
-            //                           ? Icon(
-            //                               Icons.favorite,
-            //                               size: 10.0,
-            //                               color: Colors.red,
-            //                             )
-            //                           : Icon(
-            //                               Icons.check,
-            //                               size: 10.0,
-            //                               color: Colors.green,
-            //                             ),
-            //                       // ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         );
-            //       }),
-            // ),
             SizedBox(height: 4),
             Container(
               padding: EdgeInsets.only(left: 8, right: 8),
@@ -363,11 +304,7 @@ class _MatchesListingChildScreenState extends State<MatchesListingChildScreen> {
                                 onTap: () {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return ChatScreen(
-                                        'Helina',
-                                        'Female / 5km / 44m',
-                                        'I bring a lot of energy to what I do and always have some leftover to get into trouble on the weekends at my fav. local bar. (If you play your cards right, maybe we can meet there.)',
-                                        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg");
+                                    return ChatScreen(userForChat: value);
                                   }));
                                 },
                                 child: SingleMatchesListWidget(

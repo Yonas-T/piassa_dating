@@ -39,9 +39,7 @@ class HomePage extends StatelessWidget {
   AuthRepository? userRepository;
   SearchRepository searchRepository = SearchRepository();
   HomePage(
-      {
-      // required this.user,
-      required this.userRepository});
+      {required this.userRepository});
 
   @override
   Widget build(BuildContext context) {

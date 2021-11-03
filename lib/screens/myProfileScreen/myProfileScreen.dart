@@ -1,10 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:piassa_application/blocs/subscriptionBloc/subscriptionBloc.dart';
+import 'package:piassa_application/blocs/subscriptionBloc/subscriptionEvent.dart';
+import 'package:piassa_application/blocs/subscriptionBloc/subscriptionState.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/repositories/authRepository.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
+import 'package:piassa_application/repositories/subscriptionRepository.dart';
 import 'package:piassa_application/screens/educationAndProfessionScreen/educationAndProfessionScreen.dart';
 import 'package:piassa_application/screens/lifeStyleScreen/lifeStyleScreen.dart';
 import 'package:piassa_application/screens/moveMakersScreen/moveMakersScreen.dart';
@@ -17,19 +22,43 @@ import 'package:piassa_application/screens/signupquestions/widgets/secondStepper
 class MyProfileScreen extends StatefulWidget {
   final User user;
   final AuthRepository userRepository;
+  SubscriptionRepository subscriptionRepository = SubscriptionRepository();
 
-  const MyProfileScreen({required this.user, required this.userRepository});
+  MyProfileScreen({required this.user, required this.userRepository});
 
   @override
   _MyProfileScreenState createState() => _MyProfileScreenState();
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SubscriptionBloc(
+          subscriptionRepository: widget.subscriptionRepository)
+        ..add(LoadSubscriptionEvent()),
+      child: MyProfileChildScreen(
+        user: widget.user,
+        userRepository: widget.userRepository,
+      ),
+    );
+  }
+}
+
+class MyProfileChildScreen extends StatefulWidget {
+  final User user;
+  final AuthRepository userRepository;
+
+  MyProfileChildScreen({required this.user, required this.userRepository});
+
+  @override
+  _MyProfileChildScreenState createState() => _MyProfileChildScreenState();
+}
+
+class _MyProfileChildScreenState extends State<MyProfileChildScreen> {
   BasicProfileRepository basicProfileRepository = BasicProfileRepository();
   MatchPreferenceRepository matchPreferenceRepository =
       MatchPreferenceRepository();
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +78,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           children: [
             SizedBox(height: 24),
             PhotoAndNameWidget(
-              user: widget.user,
-              basicProfileRepository: basicProfileRepository,
-              matchPreferenceRepository: matchPreferenceRepository
-            ),
+                user: widget.user,
+                basicProfileRepository: basicProfileRepository,
+                matchPreferenceRepository: matchPreferenceRepository),
             SizedBox(
               height: 16,
             ),
@@ -64,7 +92,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return SecondStepperPageWidget(toEdit: true, basicProfileRepository: basicProfileRepository, user: widget.user);
+                        return SecondStepperPageWidget(
+                            toEdit: true,
+                            basicProfileRepository: basicProfileRepository,
+                            user: widget.user);
                       }));
                     },
                     child: ProfileDetailTileWidget(
@@ -180,7 +211,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ],
             ),
             SizedBox(height: 32),
-            PaymentPackageListWidget(),
+            BlocBuilder<SubscriptionBloc, SubscriptionState>(
+              builder: (context, state) {
+                print(state);
+                if (state is SubscriptionFailState) {
+                  print(state.message);
+                }
+
+                if (state is SubscriptionLoadedState) {
+                  print(state.subscription);
+                  return PaymentPackageListWidget(
+                    subscription: state.subscription,
+                  );
+                }
+                return Container();
+              },
+            ),
             SizedBox(height: 32),
           ],
         ),

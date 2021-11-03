@@ -25,24 +25,10 @@ class _FullPhoto extends State<FullPhoto> {
   List<String> imageListStrings = [];
   int? currentIndex;
 
-  List<Profile> _profile = [];
 
   @override
   void initState() {
-    _profile.add(Profile(
-        name: 'Person',
-        age: '23',
-        city: 'Addis Ababa',
-        drink: 'Occasionally',
-        education: 'Bachelors Degree',
-        height: '173cm',
-        occupation: 'Accountant',
-        religion: 'Orthodox',
-        sport: 'Daily',
-        imageUrl:
-            'https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg',
-        bio: 'I am an easy going person.'));
-
+  
     for (String imageUrl in widget.imageUrlList) {
       if (imageUrl != "") {
         imageListStrings.add(imageUrl);
@@ -145,6 +131,7 @@ class _FullPhoto extends State<FullPhoto> {
                     ),
                     child: SingleChildScrollView(
                       child: InfoTextWidget(
+                        isFromChat: false,
                           recommended: widget.matchRecommendation),
                     ),
                   ),

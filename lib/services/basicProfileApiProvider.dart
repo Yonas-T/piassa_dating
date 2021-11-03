@@ -7,33 +7,33 @@ import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/utils/tokenRefresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class BasicProfileApiProvider {
   // Client client = Client();
   final _baseUrl = 'https://api.piassadating.com';
   FirebaseAuth auth = FirebaseAuth.instance;
-  var idGenerate = Uuid();
 
   Future<Peoples> fetchBasicProfile() async {
-    var cc = auth.currentUser!.getIdToken(true).then((value) async {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/api/account'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json',
-          'X-Authorization-Firebase': '$value'
-        },
-      );
-      print('Profile Fetched: ${response.body.toString()}');
+    var cc = await auth.currentUser!.getIdToken(true);
+    // .then((value) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/api/account'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'X-Authorization-Firebase': '$cc'
+      },
+    );
+    print('Profile Fetched: ${response.body}');
+    print('Profile Fetched: ${response.statusCode}');
 
-      if (response.statusCode == 200) {
-        return Peoples.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load');
-      }
-    });
-    return cc;
+    if (response.statusCode == 200) {
+      return Peoples.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load');
+    }
+    // });
+    // return cc;
   }
 
   Future<UserMatch> fetchEntireProfile() async {
@@ -151,28 +151,28 @@ class BasicProfileApiProvider {
   }
 }
 
-class DataJson {
-  String? token;
-  String? refreshToken;
+// class DataJson {
+//   String? token;
+//   String? refreshToken;
 
-  DataJson({required this.token, required this.refreshToken});
+//   DataJson({required this.token, required this.refreshToken});
 
-  DataJson.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    refreshToken = json['refresh_token'];
-  }
-}
+//   DataJson.fromJson(Map<String, dynamic> json) {
+//     token = json['token'];
+//     refreshToken = json['refresh_token'];
+//   }
+// }
 
-class DataToken {
-  late String token;
-  late String refreshToken;
-  late String userId;
-  late String expiryDate;
+// class DataToken {
+//   late String token;
+//   late String refreshToken;
+//   late String userId;
+//   late String expiryDate;
 
-  DataToken.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    refreshToken = json['refresh_token'];
-    userId = json['userId'];
-    expiryDate = json['expiryDate'];
-  }
-}
+//   DataToken.fromJson(Map<String, dynamic> json) {
+//     token = json['token'];
+//     refreshToken = json['refresh_token'];
+//     userId = json['userId'];
+//     expiryDate = json['expiryDate'];
+//   }
+// }

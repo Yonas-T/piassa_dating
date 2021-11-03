@@ -316,11 +316,40 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 8,
                         ),
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       navigateToPhoneLoginScreen(context);
-                        //     },
-                        //     child: Text("Login with Phone")),
+                        
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: kButtonHeight,
+                          child: ElevatedButton.icon(
+                            label: Text(
+                              'Login with Phone No',
+                              style: TextStyle(
+                                fontSize: kNormalFont,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            icon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Icon(
+                                FontAwesomeIcons.phone,
+                                color: Color(kWhite),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(kLightGrey),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                                side: BorderSide(
+                                  color: Color(kLightGrey),
+                                ),
+                              ),
+                            ),
+                            onPressed: () async =>
+                                navigateToPhoneLoginScreen(context),
+                          ),
+                        ),
+                        SizedBox(height: 16),
                         Container(
                           width: MediaQuery.of(context).size.width,
                           height: kButtonHeight,
@@ -385,6 +414,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () async => loginWithGoogle(context),
                           ),
+                        ),
+                        SizedBox(
+                          height: 60,
                         ),
                       ],
                     ),

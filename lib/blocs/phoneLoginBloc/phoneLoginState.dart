@@ -30,9 +30,9 @@ class PhoneLoginCompleteState extends PhoneLoginState {
   User user;
 
   PhoneLoginCompleteState(this.user);
-  User getUser(){
-   return user;
-  }
+  // User getUser(){
+  //  return user;
+  // }
   @override
   // TODO: implement props
   List<Object> get props => [user];

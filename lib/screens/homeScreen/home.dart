@@ -1,10 +1,9 @@
-import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:piassa_application/blocs/searchBloc/searchBloc.dart';
 import 'package:piassa_application/blocs/searchBloc/searchEvent.dart';
 import 'package:piassa_application/blocs/searchBloc/searchState.dart';
@@ -31,138 +30,30 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   PageController? _pageController;
 
-  static const List explore_json = [
-    {
-      "img":
-          "https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg",
-      "userImages": [
-        "https://img.freepik.com/free-photo/portrait-young-beautiful-african-girl-dark-wall_176420-5818.jpg?size=626&ext=jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "Melat",
-      "age": "20",
-      "likes": ["Dancing", "Cooking", "Art"],
-    },
-    {
-      "img":
-          "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-      "userImages": [
-        "https://i.pinimg.com/236x/ff/d0/d3/ffd0d35d790e8212797af70ad18318f2.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "Helina",
-      "age": "18",
-      "likes": ["Instagram", "Cooking"],
-    },
-    {
-      "img":
-          "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg",
-      "userImages": [
-        "https://thumbs.dreamstime.com/b/ethiopian-dress-young-girl-wearing-white-traditional-95969103.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "Saron",
-      "age": "22",
-      "likes": ["Instagram", "Netflix", "Comedy"],
-    },
-    {
-      "img":
-          "https://image.shutterstock.com/image-photo/portrait-beautiful-happy-black-woman-600w-667483969.jpg",
-      "userImages": [
-        "https://viva.pressbooks.pub/app/uploads/sites/42/2020/10/young-ethnic-woman-pointing-at-camera-3880943-scaled-1.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "Hiwot",
-      "age": "22",
-      "likes": ["Travel", "Fashion", "Reading"],
-    },
-    {
-      "img": "https://live.staticflickr.com/2594/4069449255_9f4e09c928_n.jpg",
-      "userImages": [
-        "https://live.staticflickr.com/2594/4069449255_9f4e09c928_n.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "Selome",
-      "age": "18",
-      "likes": ["Model", "Fashion", "Working Out"],
-    },
-    {
-      "img":
-          "https://i.pinimg.com/originals/8e/6e/3f/8e6e3f007f3bfb5c568d5cfe207fe9d1.jpg",
-      "userImages": [
-        "https://i.pinimg.com/originals/8e/6e/3f/8e6e3f007f3bfb5c568d5cfe207fe9d1.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "User",
-      "age": "19",
-      "likes": ["Shopping", "Travel", "Cat lover"],
-    },
-    {
-      "img":
-          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-      "userImages": [
-        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "User",
-      "age": "20",
-      "likes": ["Model", "Nature", "Instagram"],
-    },
-    {
-      "img":
-          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-      "userImages": [
-        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "User",
-      "age": "18",
-      "likes": ["Cooking", "Art", "Working Out"],
-    },
-    {
-      "img":
-          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-      "userImages": [
-        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "User",
-      "age": "18",
-      "likes": ["Swimming", "Working Out"],
-    },
-    {
-      "img":
-          "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-      "userImages": [
-        "https://i.pinimg.com/474x/6b/7b/c5/6b7bc5c72055477530ef21012ad0fcae.jpg",
-        "https://image.shutterstock.com/image-photo/blackskin-beauty-woman-healthy-happy-600w-1932957806.jpg",
-        "https://image.shutterstock.com/image-photo/beautiful-african-american-woman-looking-600w-1683033049.jpg"
-      ],
-      "name": "User",
-      "age": "19",
-      "likes": ["Swag", "Dancing"],
-    },
-  ];
-
   @override
   void initState() {
     searchBloc = SearchBloc(searchRepository: widget.searchRepository);
     searchBloc.add(LoadUserEvent());
     print('3333333333333333333');
-    setState(() {
-      itemsTemp = explore_json;
-      // itemLength = explore_json.length;
-    });
+
     super.initState();
+  }
+
+  Future<String> _getAddressFromLatLng(lat, lon) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+      print('placemark: $placemarks');
+
+      Placemark place = placemarks[0];
+
+      // _currentAddress = "${place.locality}";
+      // print('City address: $_currentAddress');
+      return place.locality!;
+    } catch (e) {
+      print(e);
+
+      return e.toString();
+    }
   }
 
   @override
@@ -199,6 +90,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 // setState(() {
                 // print('~~~${json.encode(state.userMatchLoaded[0])}');
                 itemLength = state.userMatchLoaded.length;
+
                 matchLoaded = state.userMatchLoaded;
 
                 // });
@@ -212,9 +104,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       'Unable to Load Recommendations. Try to check your connection!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: kNormalFont,
-                        color: Color(kBlack)
-                      ),
+                          fontSize: kNormalFont, color: Color(kBlack)),
                     ),
                   ),
                 );
@@ -228,9 +118,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  Widget getBody(BuildContext context, matchRecommendations) {
+  Widget getBody(BuildContext context, List<UserMatch> matchRecommendations) {
     var size = MediaQuery.of(context).size;
-    
+    Future<String> cityAddress;
+    if (matchRecommendations[0].latitude != null &&
+        matchRecommendations[0].longitude != null) {
+      cityAddress = _getAddressFromLatLng(
+          matchRecommendations[0].latitude, matchRecommendations[0].longitude);
+    }
+
     print(itemLength);
     // print(json.encode(matchRecommendations[0]));
     return Padding(
@@ -294,47 +190,55 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               Expanded(
                                 // width: size.width * 0.72,
                                 child: Column(
+
                                   children: [
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${matchRecommendations[index].fullName}, ',
-                                            // itemsTemp[index]['name'],
-                                            style: TextStyle(
-                                                color: Color(kWhite),
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            (DateTime.now().year -
-                                                    DateTime.parse(
-                                                            matchRecommendations[
-                                                                    index]
-                                                                .birthDay)
-                                                        .year)
-                                                .toString(),
-                                            style: TextStyle(
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${matchRecommendations[index].fullName}, ',
+                                          // itemsTemp[index]['name'],
+                                          style: TextStyle(
                                               color: Color(kWhite),
-                                              fontSize: 22,
-                                            ),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          (DateTime.now().year -
+                                                  DateTime.parse(
+                                                          matchRecommendations[
+                                                                  index]
+                                                              .birthDay)
+                                                      .year)
+                                              .toString(),
+                                          style: TextStyle(
+                                            color: Color(kWhite),
+                                            fontSize: 22,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Text('Addis Ababa',
-                                            style: TextStyle(
-                                                fontSize: kNormalFont,
-                                                color: Color(kWhite))),
+                                        FutureBuilder(
+                                            future: _getAddressFromLatLng(
+                                                28.6139391, 77.2068325),
+                                            // _getAddressFromLatLng(matchRecommendations[index].latitude, matchRecommendations[index].longitude),
+                                            initialData: '',
+                                            builder: (context,
+                                                AsyncSnapshot<String> text) {
+                                              return Text(text.data!,
+                                                  style: TextStyle(
+                                                      fontSize: kTitleBoldFont,
+                                                      color: Color(kWhite)));
+                                            }),
                                       ],
                                     ),
                                     SingleChildScrollView(
@@ -428,19 +332,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
             /// Get orientation & index of swiped card!
             print('#######');
-            print(matchRecommendations!.length);
+            print(matchRecommendations.length);
             print('INDEX: $index');
-            if (index == (matchRecommendations.length - 1)) {
-              setState(() {
-                itemLength = matchRecommendations.length - 1;
-              });
-              print(matchRecommendations[index].id);
-              if (orientation == CardSwipeOrientation.LEFT) {
-                passUserFunction(matchRecommendations[index].id);
-              } else if (orientation == CardSwipeOrientation.RIGHT) {
-                selectUserFunction(matchRecommendations[index].id);
-              }
+            print(matchRecommendations[index].id);
+
+            setState(() {
+              itemLength = matchRecommendations.length - 1;
+            });
+            print(matchRecommendations[index].id);
+            if (orientation == CardSwipeOrientation.LEFT) {
+              passUserFunction(matchRecommendations[index].id, matchLoaded);
+            } else if (orientation == CardSwipeOrientation.RIGHT) {
+              selectUserFunction(matchRecommendations[index].id, matchLoaded);
             }
+
             print('INDEX222: $index');
           },
         ),
@@ -448,12 +353,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  void passUserFunction(indx) {
-    searchBloc.add(PassUserEvent(indx));
+  void passUserFunction(indx, matchLoaded) {
+    searchBloc.add(PassUserEvent(indx, matchLoaded));
+    log('PASS');
   }
 
-  void selectUserFunction(indx) {
-    searchBloc.add(SelectUserEvent(indx));
+  void selectUserFunction(indx, matchLoaded) {
+    searchBloc.add(SelectUserEvent(indx, matchLoaded));
+    log('like');
   }
 
   Widget getBottomSheet() {
@@ -510,40 +417,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               color: Colors.white,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(0.0),
-                  child: matchRecommendations[index]
-                              .userImages[i]
-                              .verificationStatus ==
-                          'VERIFIED'
-                      ? ExtendedImage.network(
-                          matchRecommendations[index].userImages[i].filePath,
-                          // width: ScreenUtil.instance.setWidth(400),
-                          // height: ScreenUtil.instance.setWidth(400),
-                          fit: BoxFit.fill,
-                          cache: true,
-                          // border: Border.all(color: Colors.red, width: 1.0),
-                          // shape: boxShape,
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          //cancelToken: cancellationToken,
-                        )
-// Image.network(
-//                           matchRecommendations[index].userImages[i].filePath,
-//                           fit: BoxFit.cover)
-                      : Container()
-                  // CachedNetworkImage(
-                  //   imageUrl: itemsTemp[index]['userImages'][i],
-                  //   placeholder: (context, url) => Container(
-                  //     transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-                  //     child: Container(
-                  //         width: double.infinity,
-                  //         height: MediaQuery.of(context).size.height * 0.77,
-                  //         child: Center(child: new CircularProgressIndicator())),
-                  //   ),
-                  //   errorWidget: (context, url, error) => new Icon(Icons.error),
-                  //   width: double.infinity,
-                  //   height: MediaQuery.of(context).size.height * 0.77,
-                  //   fit: BoxFit.cover,
-                  // ),
-                  ),
+                  child: ExtendedImage.network(
+                    matchRecommendations[index].userImages[i].filePath,
+                    // width: ScreenUtil.instance.setWidth(400),
+                    // height: ScreenUtil.instance.setWidth(400),
+                    fit: BoxFit.fill,
+                    cache: true,
+                    // border: Border.all(color: Colors.red, width: 1.0),
+                    // shape: boxShape,
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    //cancelToken: cancellationToken,
+                  )),
             ),
             onVerticalDragUpdate: (dragUpdateDetails) {
               List<String> imgList = [];

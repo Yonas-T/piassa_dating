@@ -4,10 +4,16 @@ import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
 import 'package:piassa_application/generalWidgets/customBottomNavBar.dart';
 import 'package:piassa_application/models/profile.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/screens/matchesListingScreen/widgets/topBarWidgetTransparent.dart';
 import 'package:piassa_application/screens/profileScreen/widgets/infoTextWidget.dart';
 
 class ProfileScreen extends StatefulWidget {
+  bool isFromChat;
+  UserMatch userProfile;
+
+  ProfileScreen({required this.isFromChat, required this.userProfile});
+  
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -83,7 +89,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // InfoTextWidget(myProfile: _profile[0]),
+                  
+                  InfoTextWidget(recommended: widget.userProfile, isFromChat: widget.isFromChat),
                   // Container(
                   //   height: 120,
                   //   padding: EdgeInsets.all(24),

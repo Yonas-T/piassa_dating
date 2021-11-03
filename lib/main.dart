@@ -93,16 +93,19 @@ class _ApppState extends State<Appp> {
 
   Future authval() async {
     bool isSignedInAll = await widget.userRepository.isSignedIn();
-    var userTempAll = await widget.userRepository.getCurrentUser();
+    print('SIGNALLLL ' + isSignedInAll.toString());
 
-    setState(() {
-      isSignedIn = isSignedInAll;
-      if (userTempAll != null) {
-        userTemp = userTempAll;
-        log('TEMPO USER: $userTemp');
-      }
-    });
-    if (isSignedIn) {
+    if (isSignedInAll) {
+      var userTempAll = await widget.userRepository.getCurrentUser();
+      print('TEMPALLLL ' + userTempAll.email!);
+      setState(() {
+        isSignedIn = isSignedInAll;
+        if (userTempAll != null) {
+          userTemp = userTempAll;
+          log('TEMPO USER: $userTemp');
+        }
+      });
+
       profileData = await basicProfileRepository.fetchEntireProfile();
       SharedPreferences prefs = await SharedPreferences.getInstance();
 

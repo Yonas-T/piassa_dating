@@ -15,18 +15,18 @@ class SearchApiProvider {
   var _currentAddress;
   Position? _currentPosition;
 
-  _getCurrentLocation() {
-    Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best,
-            forceAndroidLocationManager: true)
-        .then((Position position) {
-      _currentPosition = position;
-      _getAddressFromLatLng(
-          _currentPosition!.latitude, _currentPosition!.longitude);
-    }).catchError((e) {
-      print(e);
-    });
-  }
+  // _getCurrentLocation() {
+  //   Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.best,
+  //           forceAndroidLocationManager: true)
+  //       .then((Position position) {
+  //     _currentPosition = position;
+  //     _getAddressFromLatLng(
+  //         _currentPosition!.latitude, _currentPosition!.longitude);
+  //   }).catchError((e) {
+  //     print(e);
+  //   });
+  // }
 
   _getAddressFromLatLng(lat, lon) async {
     try {
@@ -60,6 +60,7 @@ class SearchApiProvider {
     // }
 
     var cc = auth.currentUser!.getIdToken(true).then((value) async {
+      // log('tokennnnnn: $value');
       final response = await http.get(
         Uri.parse('$_baseUrl/api/user-daily-recommendations'),
         headers: <String, String>{
@@ -68,11 +69,12 @@ class SearchApiProvider {
           'X-Authorization-Firebase': '$value'
         },
       );
-      // log(response.body.toString());
-      print(response.statusCode);
+      print(response.body.toString());
+      log(response.statusCode.toString());
       // getPosition().then((value) async{
-        List<Placemark> placemarks =
-          await placemarkFromCoordinates(40.730610, -73.935242, localeIdentifier: 'en_US');
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          40.730610, -73.935242,
+          localeIdentifier: 'en_US');
       print('PLACEMARK: ${placemarks[0]}');
       Placemark place = placemarks[0];
       // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
@@ -80,17 +82,20 @@ class SearchApiProvider {
       // });
 
       if (response.statusCode == 200) {
-        Iterable l = json.decode(response.body);
-        List<UserMatch> matchRecommendations =
-            List<UserMatch>.from(l.map((model) => UserMatch.fromJson(model)));
-        print(l);
-        // log(json.decode(response.body).toString());
-        print(matchRecommendations[0].longitude);
+        List<UserMatch> matchRecommendations = [];
+        if (response.body.isNotEmpty) {
+          Iterable l = json.decode(response.body);
+          matchRecommendations =
+              List<UserMatch>.from(l.map((model) => UserMatch.fromJson(model)));
+          print(l);
+          // log(json.decode(response.body).toString());
+          print(matchRecommendations[0].longitude);
+          print('Match Recomm: ${json.encode(matchRecommendations)}');
+        }
 
         // _getAddressFromLatLng(40.712776, -74.005974);
-        _getCurrentLocation();
+        // _getCurrentLocation();
 
-        print('Match Recomm: ${json.encode(matchRecommendations)}');
         return matchRecommendations;
       } else {
         throw Exception('Failed to load');
@@ -115,7 +120,7 @@ class SearchApiProvider {
       );
 
       print(response.statusCode);
-      print(response.headers);
+      print(response.body);
       if (response.statusCode == 200) {
         return 'response.body';
       } else {
@@ -140,7 +145,7 @@ class SearchApiProvider {
         ),
       );
       print(response.statusCode);
-      print(response.headers);
+      print(response.body);
       if (response.statusCode == 200) {
         return 'response.body';
         // json.decode(response.body)

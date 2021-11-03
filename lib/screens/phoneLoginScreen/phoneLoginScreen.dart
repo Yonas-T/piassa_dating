@@ -1,3 +1,4 @@
+import 'package:piassa_application/blocs/authBloc/authBloc.dart';
 import 'package:piassa_application/blocs/phoneAuthBloc/phoneAuthBloc.dart';
 import 'package:piassa_application/blocs/phoneAuthBloc/phoneAuthEvent.dart';
 import 'package:piassa_application/blocs/phoneAuthBloc/phoneAuthState.dart';
@@ -5,6 +6,12 @@ import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginBloc.dart';
 import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginEvent.dart';
 import 'package:piassa_application/blocs/phoneLoginBloc/phoneLoginState.dart';
 import 'package:piassa_application/constants/constants.dart';
+import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/repositories/basicProfileRepository.dart';
+import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
+import 'package:piassa_application/screens/gallaryScreen/gallaryScreen.dart';
+import 'package:piassa_application/screens/signupquestions/signupQuestions.dart';
+import 'package:piassa_application/screens/signupquestions/widgets/secondStepperPageWidget.dart';
 import 'package:piassa_application/utils/editTextUtils.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
@@ -20,21 +27,28 @@ import '../loginScreen/loginScreen.dart';
 import 'package:meta/meta.dart';
 
 class PhoneLoginParent extends StatelessWidget {
-  AuthRepository? userRepository;
+  AuthRepository userRepository;
 
   PhoneLoginParent({required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PhoneLoginBloc(userRepository: userRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(userRepository: userRepository),
+        ),
+        BlocProvider(
+          create: (context) => PhoneLoginBloc(userRepository: userRepository),
+        ),
+      ],
       child: PhoneLoginPage(userRepository: userRepository),
     );
   }
 }
 
 class PhoneLoginPage extends StatefulWidget {
-  AuthRepository? userRepository;
+  AuthRepository userRepository;
 
   PhoneLoginPage({required this.userRepository});
 
@@ -46,6 +60,10 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   TextEditingController phoneCntrl = TextEditingController();
 
   late String authResult;
+
+  BasicProfileRepository basicProfileRepository = BasicProfileRepository();
+  MatchPreferenceRepository matchPreferenceRepository =
+      MatchPreferenceRepository();
 
   late PhoneLoginBloc phoneLoginBloc;
   late PhoneLoginBloc _phoneLoginBloc;
@@ -61,7 +79,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   Widget build(BuildContext context) {
     phoneLoginBloc = BlocProvider.of<PhoneLoginBloc>(context);
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -81,6 +99,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                 child: BlocListener<PhoneLoginBloc, PhoneLoginState>(
                   bloc: _phoneLoginBloc,
                   listener: (context, state) {
+                    print(state);
                     if (state is PhoneLoginCompleteState) {
                       navigateToHomeScreen(context, state.user);
                     }
@@ -92,7 +111,6 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                   ),
                 ),
               ),
-              // getViewAsPerState(state),
             ],
           ),
         ),
@@ -101,13 +119,14 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   }
 
   Widget buildInitialUi() {
-    return Text("Waiting For Authentication");
+    return Text("Waiting For Authentication",
+        style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)));
   }
 
   Widget buildLoadingUi() {
     return Center(
       child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
+          valueColor: AlwaysStoppedAnimation<Color>(Color(kWhite))),
     );
   }
 
@@ -119,27 +138,45 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
       return OtpInput();
     } else if (state is PhoneLoadingState) {
       return LoadingIndicator();
-    } else if (state is PhoneLoginCompleteState) {
-      BlocProvider.of<PhoneAuthenticationBloc>(context)
-          .add(PhoneLoggedIn(token: state.getUser().uid));
-    } else {
+    } else if (state is PhoneInitialLoginState) {
       return NumberInput();
     }
     return Container();
   }
 
-  void navigateToHomeScreen(BuildContext context, User user) {
+  void navigateToHomeScreen(BuildContext context, User user) async {
+    var profileData = await basicProfileRepository.fetchEntireProfile();
+    print(profileData.toJson());
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HomePageParent(
-        // user: user, 
-        userRepository: widget.userRepository);
+      return profileData.fullName.isEmpty
+          ? SignupQuestionsScreen(
+              toEdit: false,
+              user: user,
+              basicProfileRepository: basicProfileRepository,
+              matchPreferenceRepository: matchPreferenceRepository,
+            )
+          : !profileData.haveMatchPreference
+              ? SecondStepperPageWidget(
+                  toEdit: false,
+                  basicProfileRepository: basicProfileRepository,
+                  user: user)
+              : profileData.userImages.isEmpty
+                  ? GallaryScreen(
+                      basicProfileRepository: basicProfileRepository,
+                      toEdit: false,
+                      user: user)
+                  : profileData.userImages.isNotEmpty
+                      ? Tabs(user: user, userRepository: widget.userRepository)
+                      : Tabs(user: user, userRepository: widget.userRepository);
+
+      // Tabs(user: user, userRepository: userRepository);
     }));
   }
 
   Widget buildFailureUi(String message) {
     return Text(
       message,
-      style: TextStyle(color: Colors.red),
+      style: TextStyle(fontSize: kNormalFont, color: Colors.red),
     );
   }
 
@@ -154,7 +191,7 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
         child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color(kPrimaryPurple))),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(kWhite))),
       );
 }
 
@@ -182,15 +219,15 @@ class NumberInput extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0, left: 8.0),
             child: Text(
               'Via Phone number',
-              style: TextStyle(fontSize: kNormalFont, color: Color(kWhite)),
+              style: TextStyle(fontSize: kTitleBoldFont, color: Color(kWhite)),
             ),
           ),
           SizedBox(height: 100),
           Form(
             key: _formKey,
             child: EditTextUtils().getCustomEditTextArea(
-                labelValue: "Enter phone number",
-                hintValue: "911010100",
+                // labelValue: "Enter phone number",
+                hintValue: "911 01 01 00",
                 controller: _phoneTextController,
                 keyboardType: TextInputType.number,
                 // icon: Icons.phone,
@@ -241,37 +278,41 @@ class OtpInput extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(
             top: 48, bottom: 16.0, left: 16.0, right: 16.0),
-        child: Column(
+        child: ListView(
           children: <Widget>[
-            PinCodeTextField(
-              autofocus: true,
-              controller: pinEditingController,
-              hideCharacter: true,
-              highlight: true,
-              highlightColor: Color(kDarkGrey),
-              defaultBorderColor: Color(kWhite),
-              hasTextBorderColor: Color(kWhite),
-              highlightPinBoxColor: Color(klightPink),
-              maxLength: 6,
-              onDone: (String pin) {
-                BlocProvider.of<PhoneLoginBloc>(context)
-                    .add(VerifyOtpEvent(pin));
-              },
-              pinBoxWidth: 50,
-              pinBoxHeight: 64,
-              hasUnderline: true,
-              wrapAlignment: WrapAlignment.spaceAround,
-              pinBoxDecoration:
-                  ProvidedPinBoxDecoration.defaultPinBoxDecoration,
-              pinTextStyle: TextStyle(fontSize: 22.0),
-              pinTextAnimatedSwitcherTransition:
-                  ProvidedPinBoxTextAnimation.scalingTransition,
-//                    pinBoxColor: Colors.green[100],
-              pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PinCodeTextField(
+                  autofocus: true,
+                  controller: pinEditingController,
+                  hideCharacter: false,
+                  highlight: true,
+                  highlightColor: Color(kDarkGrey),
+                  defaultBorderColor: Color(kWhite),
+                  hasTextBorderColor: Color(kWhite),
+                  highlightPinBoxColor: Color(kWhite),
+                  maxLength: 6,
+                  onDone: (String pin) {
+                    BlocProvider.of<PhoneLoginBloc>(context)
+                        .add(VerifyOtpEvent(pin));
+                  },
+                  pinBoxWidth: 40,
+                  pinBoxHeight: 50,
+                  hasUnderline: true,
+                  wrapAlignment: WrapAlignment.spaceAround,
+                  // pinBoxDecoration:
+                  //     ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                  pinTextStyle: TextStyle(fontSize: 22.0),
+                  pinTextAnimatedSwitcherTransition:
+                      ProvidedPinBoxTextAnimation.scalingTransition,
+                  pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
 //                    highlightAnimation: true,
-              highlightAnimationBeginColor: Colors.black,
-              highlightAnimationEndColor: Colors.white12,
-              keyboardType: TextInputType.number,
+                  highlightAnimationBeginColor: Color(klightPink),
+                  highlightAnimationEndColor: Color(kWhite),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
             ),
             SizedBox(height: 16),
             Container(

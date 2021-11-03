@@ -3,12 +3,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:piassa_application/models/peoples.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/errorCodes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -168,8 +165,11 @@ class AuthRepository {
     // if you remove above comment then facebook login will take username and pasword for login in Webview
     try {
       final FacebookLoginResult facebookLoginResult =
-          await fbLogin.logIn(['email', 'public_profile']);
+          await fbLogin.logIn(['email', 'public_profile', 'user_friends']);
+      log('${facebookLoginResult.errorMessage}');
+
       if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+
         FacebookAccessToken facebookAccessToken =
             facebookLoginResult.accessToken;
         final AuthCredential credential =
@@ -201,7 +201,6 @@ class AuthRepository {
           }
         });
         final User? user = userCred.user;
-
 
         assert(user!.email != null);
         assert(user!.displayName != null);
@@ -264,7 +263,6 @@ class AuthRepository {
         idToken: googleSignInAuthentication.idToken,
       );
       print('3333333333333333');
-      print(credential.token);
 
       final userCred = await firebaseAuth.signInWithCredential(credential);
       final User? user = userCred.user;
@@ -273,7 +271,7 @@ class AuthRepository {
       assert(!user!.isAnonymous);
       currentUser = firebaseAuth.currentUser!;
       assert(user!.uid == currentUser.uid);
-
+      log(currentUser.email.toString());
       // log(userCred.credential!.token.toString());
       return currentUser;
     } on PlatformException catch (e) {

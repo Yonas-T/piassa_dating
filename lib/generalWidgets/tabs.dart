@@ -61,6 +61,42 @@ class _TabsChildState extends State<TabsChild> {
     });
   }
 
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Do you want to log out?", style: TextStyle(fontSize: kNormalFont, color: Color(kBlack))),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new MaterialButton(
+              child: new Text(
+                "No",
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new MaterialButton(
+              child: new Text(
+                "Yes",
+                style: TextStyle(color: Color(klightPink)),
+              ),
+              onPressed: () {
+                authBloc.add(LogOutEvent());
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.user);
@@ -101,7 +137,7 @@ class _TabsChildState extends State<TabsChild> {
                         builder: (context, state) {
                           return IconButton(
                               onPressed: () {
-                                authBloc.add(LogOutEvent());
+                                _showDialog();
                               },
                               icon: Icon(
                                 Icons.logout_outlined,
@@ -111,18 +147,21 @@ class _TabsChildState extends State<TabsChild> {
                         },
                       ),
                     )
-                  : IconButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return SettingsScreen();
-                        }));
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.slidersH,
-                        color: Color(kDarkGrey),
-                        size: 17,
-                      )),
+                  : Container()
+                  // IconButton(
+                  //     onPressed: () {
+                  //       Navigator.of(context)
+                  //           .push(MaterialPageRoute(builder: (context) {
+                  //         return SettingsScreen();
+                  //       }));
+                  //     },
+                  //     icon: Container()
+                  //     // Icon(
+                  //     //   FontAwesomeIcons.slidersH,
+                  //     //   color: Color(kDarkGrey),
+                  //     //   size: 17,
+                  //     // )
+                  //     ),
             ),
             colorVal: _selectedPageIndex == 0
                 ? Color(klightPink)

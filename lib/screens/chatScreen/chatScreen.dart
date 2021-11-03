@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/appBar.dart';
-import 'package:piassa_application/models/profile.dart';
-import 'package:piassa_application/screens/chatScreen/widgets/chatProfileWIdget.dart';
+import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/screens/profileScreen/profileScreen.dart';
 import 'package:piassa_application/screens/settingsScreen/settingsScreen.dart';
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen(this.userName, this.userinfor, this.userIntro, this.userThumbnail);
+  UserMatch userForChat;
 
-  String userThumbnail;
-  String userName;
-  String userinfor;
-  String userIntro;
+  ChatScreen({required this.userForChat});
+
 
   @override
   State<StatefulWidget> createState() => _ChatScreen();
@@ -107,12 +104,12 @@ class _ChatScreen extends State<ChatScreen> {
                   child: ListView(children: [
                     _listItemOther(
                         context,
-                        widget.userName,
-                        widget.userThumbnail,
+                        widget.userForChat.fullName,
+                        widget.userForChat.userImages[0].filePath,
                         'Hello What are you doing?',
                         '11:30pm'),
-                    _listItemOther(context, widget.userName,
-                        widget.userThumbnail, 'How are you?', '11:41pm'),
+                    _listItemOther(context, widget.userForChat.fullName,
+                        widget.userForChat.userImages[0].filePath, 'How are you?', '11:41pm'),
                     _listItemMine(context, 'Nothing!', '11:51pm'),
                     _listItemMine(
                         context,
@@ -148,7 +145,10 @@ class _ChatScreen extends State<ChatScreen> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return ProfileScreen();
+                        return ProfileScreen(
+                          isFromChat: true,
+                          userProfile: widget.userForChat,
+                          );
                       }));
                       // Navigator.push(
                       //   context,
@@ -178,7 +178,6 @@ class _ChatScreen extends State<ChatScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: Container(
@@ -242,7 +241,6 @@ class _ChatScreen extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                 child: Container(
