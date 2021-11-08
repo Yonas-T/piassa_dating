@@ -62,7 +62,7 @@ class SecondStepperPageWidgetChild extends StatefulWidget {
 
 class _SecondStepperPageWidgetChildState
     extends State<SecondStepperPageWidgetChild> {
-  RangeLabels labels = RangeLabels('18', "70");
+  RangeLabels labels = RangeLabels('0', "70");
   RangeValues? values;
   int divisions = 5;
   List strLabels = [];
@@ -101,8 +101,11 @@ class _SecondStepperPageWidgetChildState
     print('Got Data: $gotData');
     if (widget.toEditChild) {
       myProfile().then((value) {
-        print(_myProfile!.matchPreference);
+        print(_myProfile!.matchPreference!.religion);
         print(widget.toEditChild);
+        print(_myProfile!.matchPreference!.ageStart.toString() +
+            ' ' +
+            _myProfile!.matchPreference!.ageEnd.toString());
         if (widget.toEditChild) {
           values = RangeValues(_myProfile!.matchPreference!.ageStart.toDouble(),
               _myProfile!.matchPreference!.ageEnd.toDouble());
@@ -227,9 +230,10 @@ class _SecondStepperPageWidgetChildState
         ),
       ),
       body: !gotData
-          ? Center(child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color(klightPink)),
-          ))
+          ? Center(
+              child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(klightPink)),
+            ))
           : BlocListener<MatchPreferenceBloc, MatchPreferenceState>(
               listener: (context, state) {
                 print(state);
@@ -312,7 +316,7 @@ class _SecondStepperPageWidgetChildState
                               divisions: divisions,
                               activeColor: Color(klightPink),
                               inactiveColor: Colors.grey[300],
-                              min: 18,
+                              min: 0,
                               max: 70,
                               values: values!,
                               labels: labels,

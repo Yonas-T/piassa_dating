@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -324,6 +325,13 @@ class AuthRepository {
   Future<bool> isSignedIn() async {
     var currentUser = firebaseAuth.currentUser;
     return currentUser != null;
+  }
+
+  Future<List<DateTime>> isNewUser() async {
+    var lastSignInTime = firebaseAuth.currentUser!.metadata.lastSignInTime; 
+    var creationTime = firebaseAuth.currentUser!.metadata.creationTime;
+    List<DateTime> x = [lastSignInTime!, creationTime!];
+    return x;
   }
 
   // get current user

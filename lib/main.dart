@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:piassa_application/blocs/basicProfileBloc/basicProfileBloc.dart';
 import 'package:piassa_application/constants/constants.dart';
 import 'package:piassa_application/generalWidgets/tabs.dart';
+import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/userMatch.dart';
 import 'package:piassa_application/repositories/basicProfileRepository.dart';
 import 'package:piassa_application/repositories/matchPreferenceRepository.dart';
@@ -106,13 +107,13 @@ class _ApppState extends State<Appp> {
         }
       });
 
-      profileData = await basicProfileRepository.fetchEntireProfile();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      Peoples? profileDt = await basicProfileRepository.fetchBasicProfile();
 
-      if (profileData!.userImages.isNotEmpty) {
-        log('NNNOOOTTT NULLLLL');
-        prefs.setString('profileVal', 'true');
+      if (profileDt!.id != null) {
+        // print(profileDt.);
+        profileData = await basicProfileRepository.fetchEntireProfile();
       }
+
     }
     print('======isSignedin=====$isSignedIn');
   }
@@ -149,45 +150,84 @@ class _ApppState extends State<Appp> {
               if (state is AuthInitialState) {
                 return Container();
               } else if (isSignedIn) {
-                return value == 'HasAllValue' ||
-                        profileData!.userImages.isNotEmpty
-                    ? Tabs(
-                        user: userTemp,
-                        // userId: state.user.uid,
-                        userRepository: widget.userRepository,
-                      )
-                    : value == null && profileData == null
-                        ? SignupQuestionsScreen(
-                            toEdit: false,
-                            matchPreferenceRepository:
-                                matchPreferenceRepository,
-                            basicProfileRepository: basicProfileRepository,
-                            user: userTemp)
-                        : value == 'HasImageValue'
-                            ? AllDoneScreen(
-                                user: userTemp,
-                                userRepository: widget.userRepository)
-                            : value == 'HasPreferenceValue' ||
-                                    profileData!.haveMatchPreference
-                                ? GallaryScreen(
-                                    toEdit: false,
-                                    user: userTemp,
-                                    basicProfileRepository:
-                                        basicProfileRepository)
-                                : value == 'HasBasicProfileValue' ||
-                                        profileData!.fullName.isNotEmpty
-                                    ? SecondStepperPageWidget(
-                                        toEdit: false,
-                                        basicProfileRepository:
-                                            basicProfileRepository,
-                                        user: userTemp)
-                                    : SignupQuestionsScreen(
-                                        toEdit: false,
-                                        matchPreferenceRepository:
-                                            matchPreferenceRepository,
-                                        basicProfileRepository:
-                                            basicProfileRepository,
-                                        user: userTemp);
+                if (profileData != null) {
+                  return value == 'HasAllValue' ||
+                          profileData!.userImages.isNotEmpty
+                      ? Tabs(
+                          user: userTemp,
+                          // userId: state.user.uid,
+                          userRepository: widget.userRepository,
+                        )
+                      : value == null && profileData == null
+                          ? SignupQuestionsScreen(
+                              toEdit: false,
+                              matchPreferenceRepository:
+                                  matchPreferenceRepository,
+                              basicProfileRepository: basicProfileRepository,
+                              user: userTemp)
+                          : value == 'HasImageValue'
+                              ? AllDoneScreen(
+                                  user: userTemp,
+                                  userRepository: widget.userRepository)
+                              : value == 'HasPreferenceValue' ||
+                                      profileData!.haveMatchPreference
+                                  ? GallaryScreen(
+                                      toEdit: false,
+                                      user: userTemp,
+                                      basicProfileRepository:
+                                          basicProfileRepository)
+                                  : value == 'HasBasicProfileValue' ||
+                                          profileData!.fullName.isNotEmpty
+                                      ? SecondStepperPageWidget(
+                                          toEdit: false,
+                                          basicProfileRepository:
+                                              basicProfileRepository,
+                                          user: userTemp)
+                                      : SignupQuestionsScreen(
+                                          toEdit: false,
+                                          matchPreferenceRepository:
+                                              matchPreferenceRepository,
+                                          basicProfileRepository:
+                                              basicProfileRepository,
+                                          user: userTemp);
+                } else {
+                  return value == 'HasAllValue'
+                      ? Tabs(
+                          user: userTemp,
+                          // userId: state.user.uid,
+                          userRepository: widget.userRepository,
+                        )
+                      : value == null
+                          ? SignupQuestionsScreen(
+                              toEdit: false,
+                              matchPreferenceRepository:
+                                  matchPreferenceRepository,
+                              basicProfileRepository: basicProfileRepository,
+                              user: userTemp)
+                          : value == 'HasImageValue'
+                              ? AllDoneScreen(
+                                  user: userTemp,
+                                  userRepository: widget.userRepository)
+                              : value == 'HasPreferenceValue'
+                                  ? GallaryScreen(
+                                      toEdit: false,
+                                      user: userTemp,
+                                      basicProfileRepository:
+                                          basicProfileRepository)
+                                  : value == 'HasBasicProfileValue'
+                                      ? SecondStepperPageWidget(
+                                          toEdit: false,
+                                          basicProfileRepository:
+                                              basicProfileRepository,
+                                          user: userTemp)
+                                      : SignupQuestionsScreen(
+                                          toEdit: false,
+                                          matchPreferenceRepository:
+                                              matchPreferenceRepository,
+                                          basicProfileRepository:
+                                              basicProfileRepository,
+                                          user: userTemp);
+                }
               } else if (state is UnauthenticatedState) {
                 return LoginPageParent(userRepository: widget.userRepository);
               }

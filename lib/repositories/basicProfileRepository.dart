@@ -5,10 +5,10 @@ import 'package:piassa_application/services/basicProfileApiProvider.dart';
 class BasicProfileRepository {
   BasicProfileApiProvider basicProfileApiProvider = BasicProfileApiProvider();
 
-  Future<Peoples> fetchBasicProfile() =>
+  Future<Peoples?> fetchBasicProfile() =>
       basicProfileApiProvider.fetchBasicProfile();
 
-  Future<UserMatch> fetchEntireProfile() =>
+  Future<UserMatch?> fetchEntireProfile() =>
       basicProfileApiProvider.fetchEntireProfile();
 
   Future<Peoples> editBasicProfile(userName, fullName, gender, email, height,

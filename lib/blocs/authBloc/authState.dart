@@ -14,14 +14,14 @@ class AuthInitialState extends AuthState {
 }
 
 class AuthenticatedState extends AuthState {
-  UserMatch profData;
+  // UserMatch profData;
   User user;
 
-  AuthenticatedState(this.user, this.profData);
+  AuthenticatedState(this.user );
 
   @override
   // TODO: implement props
-  List<Object> get props => [user, profData];
+  List<Object> get props => [user];
 }
 
 class HasProfileState extends AuthState {

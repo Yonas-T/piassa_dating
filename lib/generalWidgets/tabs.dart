@@ -188,7 +188,7 @@ class _TabsChildState extends State<TabsChild> {
         body: _pages[_selectedPageIndex],
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(
-              left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+              left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
           child: Container(
             height: 80,
             decoration: BoxDecoration(

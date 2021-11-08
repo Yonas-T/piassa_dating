@@ -29,11 +29,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           var user = await userRepository!.getCurrentUser();
           print('in signed in $user');
           var profData;
-          BasicProfileApiProvider()
-              .fetchEntireProfile()
-              .then((value) => profData = value);
+          // BasicProfileApiProvider()
+          //     .fetchEntireProfile()
+          //     .then((value) => profData = value);
           print('AUTH USER: $user');
-          yield AuthenticatedState(user, profData);
+          yield AuthenticatedState(user);
         } else {
           yield UnauthenticatedState('Is signed in: false');
         }
@@ -44,11 +44,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (event is LoggedIn) {
       var profData;
-      BasicProfileApiProvider()
-          .fetchEntireProfile()
-          .then((value) => profData = value);
+      // BasicProfileApiProvider()
+      //     .fetchEntireProfile()
+      //     .then((value) => profData = value);
       yield AuthenticatedState(
-          await userRepository!.getCurrentUser(), profData);
+          await userRepository!.getCurrentUser());
     }
 
     if (event is LoggedOut) {

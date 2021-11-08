@@ -1,3 +1,4 @@
+import 'package:piassa_application/models/languageValue.dart';
 import 'package:piassa_application/models/profession.dart';
 
 class Education {
@@ -8,8 +9,8 @@ class Education {
   String professionId;
   String universityId;
   String userId;
-  Profession profession;
-  Profession university;
+  LanguageValue profession;
+  LanguageValue university;
 
   Education(
       {required this.id,
@@ -31,8 +32,8 @@ class Education {
       professionId: json['professionId'],
       universityId: json['universityId'],
       userId: json['userId'],
-      profession: Profession.fromJson(json['profession']),
-      university: Profession.fromJson(json['university']),
+      profession: LanguageValue.fromJson(json['profession']),
+      university: LanguageValue.fromJson(json['university']),
     );
   }
 

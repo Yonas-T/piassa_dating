@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piassa_application/models/education.dart';
+import 'package:piassa_application/models/languageValue.dart';
+import 'package:piassa_application/models/myEducation.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/preference.dart';
 
@@ -17,13 +20,21 @@ class MyEducationLoadingState extends MyEducationState {
   List<Object> get props => [];
 }
 
-class MyEducationSuccessState extends MyEducationState {
-  // Peoples user;
-  // Preference preference;
+class MyEducationLoadedState extends MyEducationState {
+  final Education myEducationData;
+  final List<LanguageValue> universities;
+  final List<LanguageValue> professions;
 
-  // MyEducationSuccessState(
-  //   this.user, 
-  //   this.preference);
+  MyEducationLoadedState(this.universities, this.professions, this.myEducationData);
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+class MyEducationSuccessState extends MyEducationState {
+  Education posted;
+ 
+  MyEducationSuccessState(
+    this.posted);
 
   @override
   // TODO: implement props

@@ -146,31 +146,45 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   void navigateToHomeScreen(BuildContext context, User user) async {
     var profileData = await basicProfileRepository.fetchEntireProfile();
-    print(profileData.toJson());
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return profileData.fullName.isEmpty
-          ? SignupQuestionsScreen(
-              toEdit: false,
-              user: user,
-              basicProfileRepository: basicProfileRepository,
-              matchPreferenceRepository: matchPreferenceRepository,
-            )
-          : !profileData.haveMatchPreference
-              ? SecondStepperPageWidget(
-                  toEdit: false,
-                  basicProfileRepository: basicProfileRepository,
-                  user: user)
-              : profileData.userImages.isEmpty
-                  ? GallaryScreen(
-                      basicProfileRepository: basicProfileRepository,
-                      toEdit: false,
-                      user: user)
-                  : profileData.userImages.isNotEmpty
-                      ? Tabs(user: user, userRepository: widget.userRepository)
-                      : Tabs(user: user, userRepository: widget.userRepository);
+    if (profileData!.id != null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return profileData.fullName.isEmpty
+            ? SignupQuestionsScreen(
+                toEdit: false,
+                user: user,
+                basicProfileRepository: basicProfileRepository,
+                matchPreferenceRepository: matchPreferenceRepository,
+              )
+            : !profileData.haveMatchPreference
+                ? SecondStepperPageWidget(
+                    toEdit: false,
+                    basicProfileRepository: basicProfileRepository,
+                    user: user)
+                : profileData.userImages.isEmpty
+                    ? GallaryScreen(
+                        basicProfileRepository: basicProfileRepository,
+                        toEdit: false,
+                        user: user)
+                    : profileData.userImages.isNotEmpty
+                        ? Tabs(
+                            user: user, userRepository: widget.userRepository)
+                        : Tabs(
+                            user: user, userRepository: widget.userRepository);
 
-      // Tabs(user: user, userRepository: userRepository);
-    }));
+        // Tabs(user: user, userRepository: userRepository);
+      }));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return SignupQuestionsScreen(
+          toEdit: false,
+          user: user,
+          basicProfileRepository: basicProfileRepository,
+          matchPreferenceRepository: matchPreferenceRepository,
+        );
+
+        // Tabs(user: user, userRepository: userRepository);
+      }));
+    }
   }
 
   Widget buildFailureUi(String message) {

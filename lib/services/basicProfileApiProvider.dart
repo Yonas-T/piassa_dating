@@ -28,7 +28,10 @@ class BasicProfileApiProvider {
     print('Profile Fetched: ${response.statusCode}');
 
     if (response.statusCode == 200) {
-      return Peoples.fromJson(json.decode(response.body));
+      if (response.body.isNotEmpty) {
+        return Peoples.fromJson(json.decode(response.body));
+      }
+      return Peoples.fromJson({});
     } else {
       throw Exception('Failed to load');
     }
@@ -36,29 +39,35 @@ class BasicProfileApiProvider {
     // return cc;
   }
 
-  Future<UserMatch> fetchEntireProfile() async {
+  Future<UserMatch?> fetchEntireProfile() async {
     // var vv;
     String tok = await auth.currentUser!.getIdToken(true);
     print('TOKEN: $tok');
     // auth.currentUser!.getIdToken(true).then((value) async {
     // var response;
     var vv = await fetchBasicProfile();
-    // var vv = fetchBasicProfile().then((prof) async {
-    final response = await http.get(
-      Uri.parse('$_baseUrl/api/users/${vv.id}'),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-        'X-Authorization-Firebase': '$tok'
-      },
-    );
-    print('Profile Entire Fetched: ${response.body.toString()}');
 
-    if (response.statusCode == 200) {
-      return UserMatch.fromJson(json.decode(response.body));
+    // var vv = fetchBasicProfile().then((prof) async {
+    if (vv.id != null) {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/api/users/${vv.id}'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'X-Authorization-Firebase': '$tok'
+        },
+      );
+      print('Profile Entire Fetched: ${response.body.toString()}');
+
+      if (response.statusCode == 200) {
+        return UserMatch.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
     } else {
-      throw Exception('Failed to load');
+      return null;
     }
+
     // });
     // });
     // return vv;
@@ -81,38 +90,36 @@ class BasicProfileApiProvider {
 
     print(postJson);
     // var tk = '';
-    var cc = auth.currentUser!.getIdToken(true).then((value) async {
-      // log(value);
-      final response = await http.post(
-        Uri.parse('$_baseUrl/api/register'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json',
-          'X-Authorization-Firebase': '$value'
-        },
-        body: json.encode(postJson),
-      );
-      print(response.body);
-      print(response.statusCode);
+    var tok = await auth.currentUser!.getIdToken(true);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return Peoples.fromJson({
-          "userName": auth.currentUser!.uid,
-          "email": email,
-          "fullName": fullName,
-          "gender": gender,
-          "height": height,
-          "birthDay": birthDay,
-          "nationality": nationality,
-          "headline": headline,
-          "latitude": latitude,
-          "longitude": longitude
-        });
-      } else {
-        throw Exception('Failed to load');
-      }
-    });
-    return cc;
+    final response = await http.post(
+      Uri.parse('$_baseUrl/api/register'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'X-Authorization-Firebase': '$tok'
+      },
+      body: json.encode(postJson),
+    );
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return Peoples.fromJson({
+        "userName": auth.currentUser!.uid,
+        "email": email,
+        "fullName": fullName,
+        "gender": gender,
+        "height": height,
+        "birthDay": birthDay,
+        "nationality": nationality,
+        "headline": headline,
+        "latitude": latitude,
+        "longitude": longitude
+      });
+    } else {
+      throw Exception('Failed to load');
+    }
   }
 
   Future<Peoples> editBasicProfile(userName, fullName, gender, email, height,

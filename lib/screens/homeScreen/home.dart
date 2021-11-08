@@ -429,7 +429,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     //cancelToken: cancellationToken,
                   )),
             ),
-            onVerticalDragUpdate: (dragUpdateDetails) {
+            onTap: () {
               List<String> imgList = [];
               for (var i = 0;
                   i < matchRecommendations[index].userImages.length;

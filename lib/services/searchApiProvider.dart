@@ -28,19 +28,19 @@ class SearchApiProvider {
   //   });
   // }
 
-  _getAddressFromLatLng(lat, lon) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
-      print('placemark: $placemarks');
+  // _getAddressFromLatLng(lat, lon) async {
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+  //     print('placemark: $placemarks');
 
-      Placemark place = placemarks[0];
+  //     Placemark place = placemarks[0];
 
-      _currentAddress = "${place.locality}";
-      print('City address: $_currentAddress');
-    } catch (e) {
-      print(e);
-    }
-  }
+  //     _currentAddress = "${place.locality}";
+  //     print('City address: $_currentAddress');
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<List<UserMatch>> fetchPeoplesToSearchFor() async {
     var pos;
@@ -72,13 +72,13 @@ class SearchApiProvider {
       print(response.body.toString());
       log(response.statusCode.toString());
       // getPosition().then((value) async{
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          40.730610, -73.935242,
-          localeIdentifier: 'en_US');
-      print('PLACEMARK: ${placemarks[0]}');
-      Placemark place = placemarks[0];
-      // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-      print('CITY: ${place.administrativeArea}');
+      // List<Placemark> placemarks = await placemarkFromCoordinates(
+      //     40.730610, -73.935242,
+      //     localeIdentifier: 'en_US');
+      // print('PLACEMARK: ${placemarks[0]}');
+      // Placemark place = placemarks[0];
+      // // Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+      // print('CITY: ${place.administrativeArea}');
       // });
 
       if (response.statusCode == 200) {
