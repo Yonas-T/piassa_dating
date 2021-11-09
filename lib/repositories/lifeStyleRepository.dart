@@ -1,5 +1,5 @@
-import 'package:piassa_application/models/LifeStyle.dart';
-import 'package:piassa_application/services/LifeStyleApiProvider.dart';
+import 'package:piassa_application/models/lifeStyle.dart';
+import 'package:piassa_application/services/lifeStyleApiProvider.dart';
 
 class LifeStyleRepository {
   LifeStyleApiProvider lifeStyleProvider =

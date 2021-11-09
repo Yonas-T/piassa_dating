@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:piassa_application/models/lifeStyle.dart';
 import 'package:piassa_application/models/peoples.dart';
 import 'package:piassa_application/models/preference.dart';
 
@@ -12,6 +13,17 @@ class LifeStyleInitialState extends LifeStyleState {
 }
 
 class LifeStyleLoadingState extends LifeStyleState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class LifeStyleLoadedState extends LifeStyleState {
+  LifeStyle lifeStyle;
+
+  LifeStyleLoadedState(this.lifeStyle);
+
+
   @override
   // TODO: implement props
   List<Object> get props => [];
